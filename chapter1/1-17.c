@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MIN_LENGTH 5
+#define MIN_LENGTH 5 // this should be 80.
 #define MAX_LENGTH 1000
 
 int main() {
