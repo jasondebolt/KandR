@@ -1,44 +1,51 @@
 #include <stdio.h>
 #define MAX_STR_LEN 1000
 
-//for (every character in the file) DONE
-//  if (the character is a double quote) DONE
-//    (putchar until next double quote is found) DONE
-//  else if (the character is a single quote) DONE
-//    (putchar until next single quote is found) DONE
-//  else if (the next two characters are //)
-//    (skip characters until hitting newline)
-//  else if (the next character two characters are /*)
-//    (skip characters until next two characters are */)
-//  else
-//    (putchar)
-
+// Remove comments from a C program, line by line.
 int main() {
-  char c, tmp, c2;
+  char c, tmp, b1, b2;
   while ((c = getchar()) != EOF) {
     if (c == '\n') {
       putchar(c);
     } else if (c == '"') {
       putchar(c); // put the first "
-      while ((c = getchar()) != '"') {
+      while (1) {
+        tmp = c;
+        c = getchar();
         putchar(c);
+        if (c == '"') {
+          // Make sure things like " foo \" bar" are printed.
+          if (tmp != '\\') {
+            break;
+          }
+        }
       }
-      putchar(c); // put the last "
     } else if (c == '\'') {
       putchar(c); // put the first '
-      while ((c = getchar()) != '\'') {
+      while (1) {
+        tmp = c;
+        c = getchar();
         putchar(c);
+        if (c == '\'') {
+          // Make sure things like ' foo \' bar' are printed.
+          if (tmp != '\\') {
+            break;
+          }
+        }
       }
-      putchar(c); // put the last '
     } else if (c == '/') {
       tmp = getchar();
       if (tmp == '/') {
         while ((c = getchar()) != '\n') {
           //pass
         }
+        putchar(c); // Put the newline
       } else if (tmp == '*') {
-        while ((c == getchar()) != '/') {
-          //pass
+        b1 = getchar();
+        b2 = getchar();
+        while (!(b1 == '*' && b2 == '/')) {
+          b1 = b2;
+          b2 = getchar();
         }
       } else {
         putchar(c);
