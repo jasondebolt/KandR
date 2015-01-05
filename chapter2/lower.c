@@ -12,12 +12,16 @@ void lowerAll(char c[]) {
 }
 
 int strCmp(char one[], char two[]) {
-  int i;
-  for (i = 0; i < strln(one); ++i) {
+  int i = 0;
+  while (1) {
     if (one[i] < two[i])
       return -1;
-    else if (two[i] < one[i])
+    else if (one[i] > two[i])
       return 1;
+    else if (one[i] == '\0' && two[i] == '\0')
+      return 0;
+    else
+      ++i;
   }
   return 0;
 }
