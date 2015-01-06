@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-
 int btoi(char c[]) {
   int i, n;
   n = 0;
