@@ -8,3 +8,6 @@ This Repo contains the following:
 
 C USAGE:
 gcc foo.c; ./a.out
+
+RUN ALL TESTS:
+sh all_tests.sh
