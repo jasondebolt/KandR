@@ -152,11 +152,13 @@ int bitCount(unsigned int n) {
   int bitcount = 0;
 
   while(n > 0) {
-    if (n & 01) {
-      ++bitcount;
-    }
-    n = n >> 1;
+    n &= (n - 1); // Deletes rightmost bit from n.
+    ++bitcount;
   }
+  //if (n & 01) {
+  //  ++bitcount;
+  //}
+  //n >>= 1;
   return bitcount;
 }
 
