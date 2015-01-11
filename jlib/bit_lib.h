@@ -25,7 +25,7 @@ unsigned char endToFrontChar(unsigned char x);
 unsigned char rightRotateChar(unsigned char x, int n);
 unsigned int endToFrontInt(unsigned int x);
 unsigned int rightRotateInt(unsigned int x, int n);
-int bitCount(int n);
+int bitCount(unsigned int n);
 char *itob(int n);
 void printBits(int n);
 void printIntAll(int n);

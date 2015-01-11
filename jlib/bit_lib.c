@@ -142,7 +142,7 @@ unsigned int rightRotateInt(unsigned int x, int n) {
   return x;
 }
 
-int bitCount(int n) {
+int bitCount(unsigned int n) {
   int bitcount = 0;
 
   while(n > 0) {
