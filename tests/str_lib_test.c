@@ -36,7 +36,7 @@ void testSqueeze() {
 
 void testLower() {
   assert(lower('A') == 'a');
-  printf("lower tested.");
+  printf("lower tested.\n");
 }
 
 void testLowerAll() {
@@ -46,7 +46,7 @@ void testLowerAll() {
   assert(strComp(name, "jason") == 0);
   lowerAll(name2);
   assert(strComp(name2, "abcdef") == 0);
-  printf("lowerAll tested.");
+  printf("lowerAll tested.\n");
 }
 
 int main() {

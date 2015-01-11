@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <limits.h>
+#include <math.h>
+#include "../jlib/bit_lib.h"
 
 void nullTests() {
   assert('\0' == 0);
@@ -9,7 +11,28 @@ void nullTests() {
   assert(NULL == '\000');
   assert('\x0' == 0);
   assert('\000' == 0);
-  printf("Null tests finished.\n");
+  printf("Null tests tested.\n");
+}
+
+void intTests() {
+  assert(UINT_MAX == pow(2, 32) - 1);
+  assert(UINT_MAX == 0xFFFFFFFF);
+  assert(INT_MAX == pow(2, 31) - 1);
+  assert(INT_MAX == 0x7FFFFFFF);
+  assert(USHRT_MAX == pow(2, 16) - 1);
+  assert(USHRT_MAX == 0xFFFF);
+  assert(SHRT_MAX == pow(2, 15) - 1);
+  assert(SHRT_MAX == 0x7FFF);
+  assert(UCHAR_MAX == pow(2, 8) - 1);
+  assert(CHAR_MAX == pow(2, 7) - 1);
+  assert((unsigned int) 0xFFFFFFFF == UINT_MAX); // 32 on bits.
+  assert((unsigned int) 0xFFFFFFFE == UINT_MAX - 1); // 31 on bits.
+  assert((signed int) 0xFFFFFFFF == -1); // 32 on bits.
+  assert((signed int) 0xFFFFFFFE == -2); // 31 on bits.
+  assert((unsigned int) 0x7FFFFFFF == (signed int) 0x7FFFFFFF);
+  assert((signed int) UINT_MAX == -1);
+  assert((unsigned int) -1 == UINT_MAX);
+  printf("Int tests tested.\n");
 }
 
 void limitTests() {
@@ -20,18 +43,20 @@ void limitTests() {
   printf("CHAR_MAX: %d\n", CHAR_MAX);
   printf("SCHAR_MIN: %d\n", SCHAR_MIN);
   printf("SCHAR_MAX: %d\n", SCHAR_MAX);
-  printf("UCHAR_MAX: %d\n", UCHAR_MAX);
+  printf("UCHAR_MAX: %u\n", UCHAR_MAX); // Use 'u', not 'd'
   printf("SHRT_MIN: %d\n", SHRT_MIN);
   printf("SHRT_MAX: %d\n", SHRT_MAX);
-  printf("USHRT_MAX: %d\n", USHRT_MAX);
+  printf("USHRT_MAX: %u\n", USHRT_MAX); // Use 'u', not 'd'
   printf("INT_MIN: %d\n", INT_MIN);
+  // Network Roofm Giraffe == 2^31
   printf("INT_MAX: %d\n", INT_MAX);
-  printf("UINT_MAX: %d\n", UINT_MAX);
+  // Rainbow Rubbish Can Beach == 2^32
+  printf("UINT_MAX: %u\n", UINT_MAX);  // Use 'u', not 'd'
   printf("LONG_MIN: %ld\n", LONG_MIN);
   printf("LONG_MAX: %ld\n", LONG_MAX);
-  printf("ULONG_MAX: %ld\n", ULONG_MAX);
+  printf("ULONG_MAX: %lu\n", ULONG_MAX); // Use 'u', not 'd'
   printf("numbers tested.\n");
-  printf("Limit tests finished.\n");
+  printf("Limit tests tested.\n");
 }
 
 void octalTests() {
@@ -43,19 +68,59 @@ void octalTests() {
   assert(0177 == 127);
   //assert('\200' == 128); // char only goes up to 127. This will break.
   assert(0200 == 128);
-  printf("Octal tests finished.\n");
+  printf("Octal tests tested.\n");
 }
 
 void charTests() {
   assert('a' == 97);
-  printf("Char tests finished.\n");
+  assert('\x7F' == CHAR_MAX);
+  assert(0xFF == UCHAR_MAX);
+  assert((signed char)0xFF == -1);
+  assert((unsigned char) -1 == UCHAR_MAX);
+  printf("Char tests tested.\n");
+}
+
+
+void negativeOneTests() {
+  // Negative one can have many different representations!!!
+  assert(-1 == 0xFFFFFFFF);
+  assert((unsigned long) -1 == 0xFFFFFFFF);
+  assert((unsigned int) -1 == 0xFFFFFFFF);
+  assert((unsigned short) -1 == 0xFFFF);
+  assert((unsigned char) -1 == 0xFF);
+  assert((signed char) 0xFF == -1);
+  printf("Negative one tests tested.\n");
+}
+
+void minimumsTests() {
+  assert((signed int) 0x80000000 == INT_MIN);
+  assert((signed short) 0x8000 == SHRT_MIN);
+  assert((signed char) 0x80 == CHAR_MIN);
+  printf("Minimums tested.\n");
+}
+
+void maximumsTests() {
+  assert(0xFFFFFFFF == -1);
+  printIntAll(0xFFFF == USHRT_MAX);
+  printIntAll(0xFF == UCHAR_MAX);
+  assert((signed int) 0x7FFFFFFF == INT_MAX);
+  assert((signed short) 0x7FFF == SHRT_MAX);
+  assert((signed char) 0x7F == CHAR_MAX);
+  assert((unsigned int) 0xFFFFFFFF == UINT_MAX);
+  assert((unsigned short) 0xFFFF == USHRT_MAX);
+  assert((unsigned char) 0xFF == UCHAR_MAX);
+  printf("Maximums tested.\n");
 }
 
 int main() {
   printf("STARTING NUMBER TESTS.\n");
-  limitTests();
   nullTests();
+  intTests();
+  limitTests();
   octalTests();
   charTests();
+  negativeOneTests();
+  minimumsTests();
+  maximumsTests();
   return 0;
 }

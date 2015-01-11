@@ -142,6 +142,12 @@ unsigned int rightRotateInt(unsigned int x, int n) {
   return x;
 }
 
+
+/* If we didn't use unsigned int for the arg, we wouldn't
+ * be able to test if n > 0 because a signed n may fail this test.
+ * The number -1 has 32 bits, for example. This function would return
+ * a bitcount of zero for -1 if argument n was signed.
+ */
 int bitCount(unsigned int n) {
   int bitcount = 0;
 

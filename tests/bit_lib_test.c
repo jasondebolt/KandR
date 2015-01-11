@@ -57,11 +57,20 @@ void testRightRotateInt() {
 }
 
 void testBitCount() {
+  unsigned int i;
+  assert(bitCount(0) == 0);
+  assert((unsigned int) 0x80000000 == (UINT_MAX & ~((unsigned int)~0 >> 1)));
+  for (i = (unsigned int) 0x80000000; i > 0; i >>= 1) {
+    assert(bitCount(i) == 1);
+  }
   assert(bitCount(10) == 2);
   assert(bitCount(20) == 2);
   assert(bitCount(31) == 5);
   assert(bitCount(32) == 1);
   assert(bitCount(INT_MAX) == 31);
+  assert(bitCount(UINT_MAX) == 32);
+  assert(bitCount(-1) == 32);
+  assert(bitCount(-2) == 31);
   printf("bitCount tested\n");
 }
 
