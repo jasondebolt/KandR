@@ -100,9 +100,6 @@ void minimumsTests() {
 }
 
 void maximumsTests() {
-  assert(0xFFFFFFFF == -1);
-  printIntAll(0xFFFF == USHRT_MAX);
-  printIntAll(0xFF == UCHAR_MAX);
   assert((signed int) 0x7FFFFFFF == INT_MAX);
   assert((signed short) 0x7FFF == SHRT_MAX);
   assert((signed char) 0x7F == CHAR_MAX);
@@ -110,6 +107,30 @@ void maximumsTests() {
   assert((unsigned short) 0xFFFF == USHRT_MAX);
   assert((unsigned char) 0xFF == UCHAR_MAX);
   printf("Maximums tested.\n");
+}
+
+void testLogicalOperatorsCast() {
+  // Looks like logical operators cast to signed int by default
+  assert(0xFFFFFFFF == -1);
+  assert(0xFFFFFFFF > 0); // WTF?
+  assert(0xFFFF == USHRT_MAX);
+  assert(0xFF == UCHAR_MAX);
+  printf("Logical operators tested.\n");
+}
+
+// See page 44 of K&R for details.
+void testComparisonBetweenSignedAndUnsignedValues() {
+  signed int si = -1;
+  unsigned int ui = 1;
+  unsigned short us = 1;
+  assert(us > si); // This comparison works as expected.
+  assert(si < us); // This comparison works. Unsigned short is promoted to signed int.
+  assert(si > ui); // WTF? This comparison does not work. Signed int is converted into
+                   // an unsigned int, thus appearing to be a very large positive number.
+  /* Lesson to be learned: DO NOT COMPARE SIGNED AND UNSIGNED VALUES!!!
+     - See page 44 of K&R for details.
+  */
+  printf("Comparison between signed and unsigned values tested.\n");
 }
 
 int main() {
@@ -122,5 +143,7 @@ int main() {
   negativeOneTests();
   minimumsTests();
   maximumsTests();
+  testLogicalOperatorsCast();
+  testComparisonBetweenSignedAndUnsignedValues();
   return 0;
 }
