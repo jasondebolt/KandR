@@ -14,6 +14,7 @@ void squeeze(char s[], int c);
 int strln(char one[]);
 char lower(int c);
 void lowerAll(char c[]);
+void print10Char(char c[]);
 
 
 #endif

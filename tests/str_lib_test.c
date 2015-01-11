@@ -49,6 +49,11 @@ void testLowerAll() {
   printf("lowerAll tested.\n");
 }
 
+void testPrint10Char() {
+  print10Char("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+  printf("print10Char tested.\n");
+}
+
 int main() {
   printf("STARTING STRING LIB TESTS.\n");
   testStrComp();
@@ -56,5 +61,6 @@ int main() {
   testSqueeze();
   testLower();
   testLowerAll();
+  testPrint10Char();
   return 0;
 }

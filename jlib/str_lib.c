@@ -71,3 +71,11 @@ void lowerAll(char c[]) {
   for (i = 0; c[i] != '\0'; ++i)
     c[i] = lower(c[i]);
 }
+
+void print10Char(char s[]) {
+  int i;
+  for (i = 0; i < strln(s); ++i) {
+    printf("%c%c", s[i], ((i + 1)  % 10 == 0) ? '\n' : '\t');
+  }
+  printf("\n");
+}
