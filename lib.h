@@ -20,10 +20,12 @@
 
 char *itob(int n);
 char lower(int c);
+int atoi2(char s[]);
 int binsearch(int x, int v[], int n);
 int bitCount(unsigned int n);
 int getBits(int n, int pos, int len);
 int invertBits(int x, int pos, int len);
+int isDigit(char c);
 int setBits(int n, int pos, int len, int y);
 int strComp(char s[], char t[]);
 int strln(char one[]);
@@ -33,6 +35,7 @@ unsigned char rightRotateChar(unsigned char x, int n);
 unsigned int endToFrontInt(unsigned int x);
 unsigned int rightRotateInt(unsigned int x, int n);
 unsigned strlen2(char s[]);
+void escape(char s[], char t[]);
 void lowerAll(char c[]);
 void print10Char(char c[]);
 void printBits(int n);
@@ -42,5 +45,6 @@ void reverse2(char s[]);
 void seq(char *a, char *b);
 void squeeze(char s[], int c);
 void swap(char *one, char *two);
+void unescape(char s[], char t[]);
 
 #endif

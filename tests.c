@@ -302,17 +302,35 @@ void testDprint() {
   printf("dprint tested.\n");
 }
 
+void testEscapeAndUnescape() {
+	char t[] = "hi\tjason\nNext line.";
+	char s[MAX_STR_SIZE], us[MAX_STR_SIZE];
+  assert(strComp(t, "hi\tjason\nNext line.") == 0);
+	escape(s, t);
+  assert(strComp(s, "hi\\tjason\\nNext line.") == 0);
+	unescape(us, s);
+  assert(strComp(us, "hi\tjason\nNext line.") == 0);
+  printf("escape and unescape tested.\n");
+}
+
+void testAtoi2() {
+	assert(atoi2("12345") == 12345);
+	assert(atoi2("  5678910") == 5678910);
+	assert(atoi2("+123") == 123);
+	assert(atoi2("-456") == -456);
+	assert(atoi2("    -7810") == -7810);
+	assert(atoi2("  -111333abc") == -111333);
+  printf("atoi2 tested.\n");
+}
+
 int main() {
-  printf("\nSTARTING TEST LIB TESTS.\n");
   testDprint();
-  printf("\nSTARTING STRING LIB TESTS.\n");
   testStrComp();
   testReverse2();
   testSqueeze();
   testLower();
   testLowerAll();
   testPrint10Char();
-  printf("\nSTARTING BIT LIB TESTS.\n");
   testBits();
   testBtoi();
   testGetBits();
@@ -324,7 +342,6 @@ int main() {
   testItob();
   testPrintIntAll();
   testPrintCharAll();
-  printf("\nSTARTING NUMBER TESTS.\n");
   nullTests();
   intTests();
   limitTests();
@@ -335,7 +352,8 @@ int main() {
   maximumsTests();
   testLogicalOperatorsCast();
   testComparisonBetweenSignedAndUnsignedValues();
-  printf("\nSTARTING SEARCH TESTS.\n");
   testBinSearch();
+  testEscapeAndUnescape();
+  testAtoi2();
   return 0;
 }
