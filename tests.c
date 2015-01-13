@@ -323,6 +323,78 @@ void testAtoi2() {
   printf("atoi2 tested.\n");
 }
 
+void testUpperHexLetter() {
+  assert(isUpperHexLetter('F'));
+  printf("isUpperHexLetter tested.\n");
+}
+
+void testGetIntFromHexChar() {
+  assert(getIntFromHexChar('F') == 15);
+  assert(getIntFromHexChar('a') == 10);
+  assert(getIntFromHexChar('5') == 5);
+  printf("getIntFromHexChar tested.\n");
+}
+
+void testHtoi() {
+  assert(htoi("f") == 15);
+  assert(htoi("0xff") == 255);
+  assert(htoi("0XFF") == 255);
+  assert(htoi("ffff") == 65535);
+  printf("htoi tested.\n");
+}
+
+void testAny() {
+  assert(any("jason", "n") == 4);
+  assert(any("today i am working today.", "t") == 0);
+  assert(any("abcdefghijk zef", " fi") == 5);
+  printf("any tested.\n");
+}
+
+void testSqueezeMulti() {
+  char name[] = "jason debolt";
+  char name2[] = " this is it...now what.. ";
+  squeezeMulti(name, "jaol");
+  squeezeMulti(name2, " .");
+  assert(strComp(name, "sn debt") == 0);
+  assert(strComp(name2, "thisisitnowwhat") == 0);
+  printf("squeezeMulti tested.\n");
+}
+
+void testStrCat() {
+  char name[30] = "jason";
+  strcat2(name, " debolt");
+  assert(strComp(name, "jason debolt") == 0);
+  printf("strcat2 tested.\n");
+}
+
+void testRand2AndSrand2() {
+  int i;
+  for (i = 0; i < 3; ++i) {
+    printf("%d\t", rand2());
+  }
+  printf("\n");
+  srand2(24);
+  for (i = 0; i < 3; ++i) {
+    printf("%d\t", rand2());
+  }
+  printf("\n");
+  printf("rand and srand tested.\n");
+}
+
+void testIsLeapYear() {
+  assert(isLeapYear(1600) == 1);
+  assert(isLeapYear(1796) == 1);
+  assert(isLeapYear(1800) == 0);
+  assert(isLeapYear(1804) == 1);
+  assert(isLeapYear(1896) == 1);
+  assert(isLeapYear(1900) == 0);
+  assert(isLeapYear(1904) == 1);
+  assert(isLeapYear(1996) == 1);
+  assert(isLeapYear(2000) == 1);
+  assert(isLeapYear(2004) == 1);
+  printf("isLeapYear tested.\n");
+}
+
 int main() {
   testDprint();
   testStrComp();
@@ -355,5 +427,13 @@ int main() {
   testBinSearch();
   testEscapeAndUnescape();
   testAtoi2();
+  testUpperHexLetter();
+  testGetIntFromHexChar();
+  testHtoi();
+  testAny();
+  testSqueezeMulti();
+  testStrCat();
+  testRand2AndSrand2();
+  testIsLeapYear();
   return 0;
 }

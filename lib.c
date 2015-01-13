@@ -363,3 +363,129 @@ int atoi2(char s[]) {
 	
 	return sign * n;
 }
+
+int isLowerHexLetter(char c) {
+  return c >= 'a' && c <= 'f';
+}
+
+int isUpperHexLetter(char c) {
+  return c >= 'A' && c <= 'F';
+}
+
+int getIntFromHexChar(char c) {
+  if (isDigit(c))
+    return c - '0';
+  else if (isLowerHexLetter(c))
+    return c - 'a' + 10;
+  else if (isUpperHexLetter(c)) {
+    return c - 'A' + 10;
+  } else {
+    return -1;
+  }
+}
+
+int htoi(char s[]) {
+  int n = 0;
+  int i = 0;
+
+  if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
+    i += 2;
+  }
+
+  while(s[i] != '\0') {
+    n = n * 16 + getIntFromHexChar(s[i]);
+    ++i;
+  }
+
+  return n;
+}
+
+int any(char s[], char t[]) {
+  int i, j;
+
+  for (i = 0; s[i] != '\0'; ++i) {
+    for(j = 0; t[j] != '\0'; j++) {
+       if (s[i] == t[j]) {
+          return i;
+        }
+      }
+  }
+  return -1;
+}
+
+void squeezeMulti(char s[], char c[]) {
+
+  int i, j, k, match;
+
+  for (i = j = 0; s[i] != '\0'; ++i) {
+    match = 0;
+    for (k = 0; k < strln(c); ++k) {
+      if (s[i] == c[k]) {
+        match = 1;
+      }
+    }
+    if (!match) {
+      s[j++] = s[i];
+    }
+  }
+
+  s[j] = '\0';
+}
+
+/* strcat: concatenate t to end of s; s must be big enough */
+void strcat2(char s[], char t[]) {
+  int i, j;
+
+  i = j = 0;
+
+  while (s[i] != '\0') { // find end of s.
+    i++;
+  }
+
+  while ((s[i++] = t[j++]) != '\0') /* copy */
+    ;
+}
+
+int rand2(void) {
+  next2 = next2 * 1103515245 + 12345;
+  return (unsigned int)(next2/65536) % 32768;
+}
+
+void srand2(unsigned int seed) {
+  next2 = seed;
+}
+
+int isLeapYear(int year) {
+  if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+    return 1;
+  return 0;
+}
+
+/* Reads a line of input into char s[], returns the length.
+ *
+ * USAGE:
+ *   char line[MAX_LINE_LEN];
+ *   int i;
+ *   while ((i = getLine2(line, MAX_LINE_LEN)) >= 0) {
+ *     printf("%s\tlen:%d\n", line, i);
+ *   }
+ */
+int getLine2(char s[], int lim) {
+  int c, i;
+
+  i = 0;
+  while (1) {
+    c = getchar();
+    if (i >= lim)
+      break;
+    else if (c == EOF)
+      break;
+    else if (c == '\n')
+      break;
+    else
+      s[i] = c;
+      ++i;
+  }
+  s[i] = '\0';
+  return i;
+}
