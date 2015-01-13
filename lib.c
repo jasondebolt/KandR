@@ -298,70 +298,70 @@ void print10Char(char s[]) {
 }
 
 void escape(char s[], char t[]) {
-	int i, j;
-	char c;
-	
-	i = j = 0;
-	while((c = t[i++]) != 0) {
-		switch(c) {
-			case '\t':
-			case '\n':
-				s[j++] = '\\';
-				s[j++] = (c == '\t') ? 't' : 'n';
-				break;
-			default:
-				s[j++] = c;
-				break;
-		}
-	}
-	s[j] = c; // copy null char;
-		
+  int i, j;
+  char c;
+  
+  i = j = 0;
+  while((c = t[i++]) != 0) {
+    switch(c) {
+      case '\t':
+      case '\n':
+        s[j++] = '\\';
+        s[j++] = (c == '\t') ? 't' : 'n';
+        break;
+      default:
+        s[j++] = c;
+        break;
+    }
+  }
+  s[j] = c; // copy null char;
+    
 }
 
 
 void unescape(char s[], char t[]) {
-	int i, j;
-	char c;
-	
-	i = j = 0;
-	while((c = t[i++]) != '\0') {
-		switch(c) {
-			case '\\':
-				s[j++] = (t[i++] == 't') ? '\t' : '\n';
-				break;
-			default:
-				s[j++] = c;
-				break;
-		}
-	}
-	s[j] = c; // copy null char.
+  int i, j;
+  char c;
+  
+  i = j = 0;
+  while((c = t[i++]) != '\0') {
+    switch(c) {
+      case '\\':
+        s[j++] = (t[i++] == 't') ? '\t' : '\n';
+        break;
+      default:
+        s[j++] = c;
+        break;
+    }
+  }
+  s[j] = c; // copy null char.
 }
 
 int isDigit(char c) {
-	return c >= '0' && c <= '9';
+  return c >= '0' && c <= '9';
 }
 
 int atoi2(char s[]) {
-	int i, sign, n;
-	char c;
-	
-	i = 0;
-	while(!isDigit(s[i]) && (s[i] != '-' && s[i] != 0)) {
-		++i;
-	}
-	
-	sign = (s[i] == '-') ? -1 : 1;
-	if (s[i] == '-')
-		++i;
-	
-	n = 0;
-	while(1) {
-		if (!isDigit(s[i]))
-			break;
-		n = n * 10 + s[i++] - '0';
-	}
-	
-	return sign * n;
+  int i, sign, n;
+  char c;
+  
+  i = 0;
+  while(!isDigit(s[i]) && (s[i] != '-' && s[i] != 0)) {
+    ++i;
+  }
+  
+  sign = (s[i] == '-') ? -1 : 1;
+  if (s[i] == '-')
+    ++i;
+  
+  n = 0;
+  while(1) {
+    if (!isDigit(s[i]))
+      break;
+    n = n * 10 + s[i++] - '0';
+  }
+  
+  return sign * n;
 }
 
 int isLowerHexLetter(char c) {
