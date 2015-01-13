@@ -1,4 +1,4 @@
-#include "std_lib.h"
+#include "lib.h"
 
 
 unsigned btoi(char c[]) {

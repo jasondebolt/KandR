@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <math.h>
-#include "std_lib.h"
+#include "lib.h"
 
 void testBits() {
   assert(~0 << 3 == ~1 << 2);
