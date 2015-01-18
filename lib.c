@@ -263,8 +263,27 @@ int strComp(char s[], char t[]) {
   }
 }
 
+
+// Assert string equals.
 void seq(char *a, char *b) {
   assert(strComp(a, b) == 0);
+}
+
+/* Test if integer array equals.
+ * alen is length of array a.
+ * Assume array a and b are the same length.
+ */
+int intArrayEquals(int a[], int b[], int len) {
+  int i;
+  for (i = 0; i < len; ++i) {
+    if (a[i] != b[i])
+      return 0;
+  }
+  return 1;
+}
+
+void assertIntArrayEquals(int a[], int b[], int alen) {
+  assert(intArrayEquals(a, b, alen));
 }
 
 unsigned strlen2(char s[]) {
@@ -549,4 +568,21 @@ void countChars() {
     printf("digit: %d, count: %d\n", i, arr[i]);
 
   printf("digits: %d, ws: %d, other: %d\n", numDigits, numWhiteSpaces, numOther);
+}
+
+/* This function was copied directory from page 62 of K&R.
+ * Sort v[0]...v[n - 1] into increasing order.
+ */
+void shellSort(int v[], int n) {
+  int gap, i, j, tmp;
+
+  for (gap = n/2; gap > 0; gap /=2) {
+    for (i = gap; i < n; i++) {
+      for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap) {
+        tmp = v[j];
+        v[j] = v[j + gap];
+        v[j + gap] = tmp;
+      }
+    }
+  }
 }

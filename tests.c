@@ -268,6 +268,14 @@ void testReverse2() {
   printf("reverse2 tested.\n");
 }
 
+void testShellSort() {
+  int arr[] = {7, 4, 3, 9, 1, 5, 2, 8};
+  int arr2[] = {1, 2, 3, 4, 5, 7, 8, 9};
+  shellSort(arr, 8);
+  assertIntArrayEquals(arr, arr2, 8);
+  printf("Shellsort tested.\n");
+}
+
 void testSqueeze() {
   char name[] = "my first name";
   char name2[] = "-one-two-three-four five--six";
@@ -408,48 +416,57 @@ void testCountChars() {
   countChars();
 }
 
+void testIntArrayEquals() {
+  int one[] = {4, 1, 9, 1, 0, 0, 0, 10, 0};
+  int two[] = {4, 1, 9, 1, 0, 0, 0, 10, 0};
+  int three[] = {4, 1, 9, 1, 0, 0, 0, 10, 1};
+  assert(intArrayEquals(one, two, 9));
+  assert(intArrayEquals(one, three, 9) == 0);
+}
 
 int main() {
+  //testCountChars(); interactive program.
+  charTests();
+  intTests();
+  limitTests();
+  maximumsTests();
+  minimumsTests();
+  negativeOneTests();
+  nullTests();
+  octalTests();
+  testAny();
+  testAtoi2();
+  testBinSearch();
+  testBinSearch2();
+  testBitCount();
+  testBits();
+  testBtoi();
+  testComparisonBetweenSignedAndUnsignedValues();
   testDprint();
-  testStrComp();
-  testReverse2();
-  testSqueeze();
+  testEscapeAndUnescape();
+  testGetBits();
+  testGetIntFromHexChar();
+  testHtoi();
+  testIntArrayEquals();
+  testInvertBits();
+  testIsLeapYear();
+  testItob();
+  testLogicalOperatorsCast();
   testLower();
   testLowerAll();
   testPrint10Char();
-  testBits();
-  testBtoi();
-  testGetBits();
-  testSetBits();
-  testInvertBits();
+  testPrintCharAll();
+  testPrintIntAll();
+  testRand2AndSrand2();
+  testReverse2();
   testRightRotateChar();
   testRightRotateInt();
-  testBitCount();
-  testItob();
-  testPrintIntAll();
-  testPrintCharAll();
-  nullTests();
-  intTests();
-  limitTests();
-  octalTests();
-  charTests();
-  negativeOneTests();
-  minimumsTests();
-  maximumsTests();
-  testLogicalOperatorsCast();
-  testComparisonBetweenSignedAndUnsignedValues();
-  testBinSearch();
-  testBinSearch2();
-  testEscapeAndUnescape();
-  testAtoi2();
-  testUpperHexLetter();
-  testGetIntFromHexChar();
-  testHtoi();
-  testAny();
+  testSetBits();
+  testShellSort();
+  testSqueeze();
   testSqueezeMulti();
   testStrCat();
-  testRand2AndSrand2();
-  testIsLeapYear();
-  //testCountChars(); interactive program.
+  testStrComp();
+  testUpperHexLetter();
   return 0;
 }
