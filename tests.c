@@ -395,6 +395,11 @@ void testIsLeapYear() {
   printf("isLeapYear tested.\n");
 }
 
+void testCountChars() {
+  countChars();
+}
+
+
 int main() {
   testDprint();
   testStrComp();
@@ -435,5 +440,6 @@ int main() {
   testStrCat();
   testRand2AndSrand2();
   testIsLeapYear();
+  testCountChars();
   return 0;
 }

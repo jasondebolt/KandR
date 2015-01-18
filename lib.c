@@ -489,3 +489,39 @@ int getLine2(char s[], int lim) {
   s[i] = '\0';
   return i;
 }
+
+
+/* Counts number of digits, whitespace, and other chars.
+*/
+void countChars() {
+  char c, i, arr[10];
+  int numDigits, numWhiteSpaces, numOther;
+
+  numDigits = numWhiteSpaces = numOther = 0;
+
+  for (i = 0; i < 10; ++i)
+    arr[i] = 0;
+
+  while ((c = getchar()) != EOF) {
+    switch(c) {
+      case '0': case '1': case '2': case '3': case '4':
+      case '5': case '6': case '7': case '8': case '9':
+        arr[c - '0']++;
+        ++numDigits;
+        break;
+      case ' ':
+      case '\t':
+      case '\n':
+        ++numWhiteSpaces;
+        break;
+      default:
+        ++numOther;
+        break;
+    }
+  }
+
+  for (i = 0; i < 10; ++i)
+    printf("digit: %d, count: %d\n", i, arr[i]);
+
+  printf("digits: %d, ws: %d, other: %d\n", numDigits, numWhiteSpaces, numOther);
+}

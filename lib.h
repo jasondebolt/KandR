@@ -49,6 +49,7 @@ unsigned char rightRotateChar(unsigned char x, int n);
 unsigned int endToFrontInt(unsigned int x);
 unsigned int rightRotateInt(unsigned int x, int n);
 unsigned strlen2(char s[]);
+void countChars();
 void escape(char s[], char t[]);
 void lowerAll(char c[]);
 void print10Char(char c[]);
