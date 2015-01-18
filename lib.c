@@ -586,3 +586,14 @@ void shellSort(int v[], int n) {
     }
   }
 }
+
+int trim2(char arr[]) {
+  int i;
+
+  for (i = strlen2(arr) - 1; i >= 0; i--) {
+    if (arr[i] != '\n' && arr[i] != '\t' && arr[i] != ' ')
+      break;
+  }
+  arr[i + 1] = '\0';
+  return i + 1;
+}

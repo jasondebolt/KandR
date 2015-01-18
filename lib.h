@@ -45,6 +45,7 @@ int rand2(void);
 int setBits(int n, int pos, int len, int y);
 int strComp(char s[], char t[]);
 int strln(char one[]);
+int trim2(char arr[]);
 unsigned btoi(char c[]);
 unsigned char endToFrontChar(unsigned char x);
 unsigned char rightRotateChar(unsigned char x, int n);

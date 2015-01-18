@@ -422,6 +422,20 @@ void testIntArrayEquals() {
   int three[] = {4, 1, 9, 1, 0, 0, 0, 10, 1};
   assert(intArrayEquals(one, two, 9));
   assert(intArrayEquals(one, three, 9) == 0);
+  printf("intArrayEquals tested.\n");
+}
+
+void testTrim() {
+  char name[] = "jason   ";
+  char name2[] = "jason\t\t"; // with tabs.
+  char name3[] = "jason\n";
+  trim2(name);
+  seq(name, "jason");
+  trim2(name2);
+  seq(name2, "jason");
+  trim2(name3);
+  seq(name3, "jason");
+  printf("Trim2 tested.\n");
 }
 
 int main() {
@@ -467,6 +481,7 @@ int main() {
   testSqueezeMulti();
   testStrCat();
   testStrComp();
+  testTrim();
   testUpperHexLetter();
   return 0;
 }
