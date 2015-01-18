@@ -217,6 +217,31 @@ int binsearch(int x, int v[], int n) {
   return -1; // result not found.
 }
 
+/* Search for index of value x in sorted array 'arr' of length len.
+ * This is faster than binsearch.
+ */
+int binsearch2(int x, int v[], int n) {
+  int low, mid, high;
+
+  low = 0;
+  high = n - 1;
+  mid = (low + high) / 2;
+
+  while (low <= high && x != v[mid]) {
+    mid = (low + high) / 2;
+    if (x < v[mid])
+      high = mid - 1;
+    else
+      low = mid + 1;
+  }
+
+  if (x == v[mid]) {
+    return mid;
+  } else {
+    return -1; // x not found.
+  }
+}
+
 void swap(char *one, char *two) {
   char tmp = *one;
   *one = *two;

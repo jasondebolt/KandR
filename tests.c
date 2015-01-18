@@ -240,6 +240,15 @@ void testBinSearch() {
   printf("binary search tested.\n");
 }
 
+void testBinSearch2() {
+  int vals[8] = {1, 3, 4, 5, 9, 10, 23, 34}; // Must be sorted.
+  assert(binsearch2(1, vals, 8) == 0);
+  assert(binsearch2(23, vals, 8) == 6);
+  assert(binsearch2(34, vals, 8) == 7);
+  assert(binsearch2(11, vals, 8) == -1);
+  printf("binary search 2 tested.\n");
+}
+
 void testStrComp() {
   char a[] = "one";
   char b[] = "onf";
@@ -430,6 +439,7 @@ int main() {
   testLogicalOperatorsCast();
   testComparisonBetweenSignedAndUnsignedValues();
   testBinSearch();
+  testBinSearch2();
   testEscapeAndUnescape();
   testAtoi2();
   testUpperHexLetter();
@@ -440,6 +450,6 @@ int main() {
   testStrCat();
   testRand2AndSrand2();
   testIsLeapYear();
-  testCountChars();
+  //testCountChars(); interactive program.
   return 0;
 }

@@ -29,6 +29,7 @@ char lower(int c);
 int any(char s[], char t[]);
 int atoi2(char s[]);
 int binsearch(int x, int v[], int n);
+int binsearch2(int x, int v[], int n);
 int bitCount(unsigned int n);
 int getBits(int n, int pos, int len);
 int getIntFromHexChar(char c);
