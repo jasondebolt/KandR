@@ -476,8 +476,8 @@ void squeezeMulti(char s[], char c[]) {
   s[j] = '\0';
 }
 
-/* strcat: concatenate t to end of s; s must be big enough */
-void strcat2(char s[], char t[]) {
+/* strCat: concatenate t to end of s; s must be big enough */
+void strCat2(char s[], char t[]) {
   int i, j;
 
   i = j = 0;
@@ -487,6 +487,12 @@ void strcat2(char s[], char t[]) {
   }
 
   while ((s[i++] = t[j++]) != '\0') /* copy */
+    ;
+}
+
+void strCopy2(char s[], char t[]) {
+  int i = 0;
+  while ((s[i++] = t[i]) != '\0')
     ;
 }
 
@@ -596,4 +602,60 @@ int trim2(char arr[]) {
   }
   arr[i + 1] = '\0';
   return i + 1;
+}
+
+int isNumber(char c) {
+	return c >= '0' && c <= '9';
+}
+
+int isLower(char c) {
+	return c >= 'a' && c <= 'z';
+}
+
+int isUpper(char c) {
+	return c >= 'A' && c <= 'Z';
+}
+
+int isAlpha(char c) {
+	return isLower(c) || isUpper(c);
+}
+
+int isAlphaNum(char c) {
+	return isNumber(c) || isAlpha(c);
+}
+
+
+// expand c into s.
+// if c is 'a-z', then s is 'abcde...xyz'.
+void expand(char s[], char c[]) {
+  int i, j, diff;
+  char before, after;
+
+  i = j = 0;
+  s[j++] = c[i++]; // Copy first character.
+  while (1) {
+    if (c[i] == '\0') {
+      s[j] = c[i];
+      break;
+    }
+    if (c[i] == '-') {
+      before = c[i - 1];
+      after = c[i + 1];
+      diff = after - before;
+      if ((isLower(before) && isLower(after)) ||
+          (isUpper(before) && isUpper(after)) ||
+          (isNumber(before) && isNumber(after))) {
+        if (diff == 1) {
+          i++;
+          s[j] = c[i];
+        } else if (diff > 1) {
+          while (--diff >= 1) {
+            s[j++] = ++before;
+          }
+          ++i;
+        }
+      }
+    }
+    s[j++] = c[i++];
+  }
 }

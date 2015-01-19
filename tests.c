@@ -379,9 +379,9 @@ void testSqueezeMulti() {
 
 void testStrCat() {
   char name[30] = "jason";
-  strcat2(name, " debolt");
+  strCat2(name, " debolt");
   assert(strComp(name, "jason debolt") == 0);
-  printf("strcat2 tested.\n");
+  printf("strCat2 tested.\n");
 }
 
 void testRand2AndSrand2() {
@@ -438,6 +438,43 @@ void testTrim() {
   printf("Trim2 tested.\n");
 }
 
+void testStrCopy2() {
+  char s1[MAX_STR_SIZE];
+  char s2[MAX_STR_SIZE];
+  strCopy2(s1, " jason ");
+  seq(s1, " jason ");
+  printf("strCopy2 tested.\n");
+}
+
+void testExpand() {
+  char s[MAX_STR_SIZE];
+  char c[MAX_STR_SIZE];
+
+  strCopy2(c, "one two three -a-dA-Z5-9-a-b-c- four five");
+  expand(s, c);
+  seq(s, "one two three -abcdABCDEFGHIJKLMNOPQRSTUVWXYZ56789-abc- four five");
+
+  strCopy2(c, "-a-dA-Z5-9-a-b-c-");
+  expand(s, c);
+  seq(s, "-abcdABCDEFGHIJKLMNOPQRSTUVWXYZ56789-abc-");
+
+  strCopy2(c, "a-z");
+  expand(s, c);
+  seq(s, "abcdefghijklmnopqrstuvwxyz");
+
+  strCopy2(c, "\\ --0-9");
+  expand(s, c);
+  seq(s, "\\ --0123456789");
+
+  strCopy2(c, "  a-b-c");
+  expand(s, c);
+  seq(s, "  abc");
+
+  strCopy2(c, "a-j-A-t-A-G");
+  expand(s, c);
+  seq(s, "abcdefghij-A-t-ABCDEFG");
+}
+
 int main() {
   //testCountChars(); interactive program.
   charTests();
@@ -458,6 +495,7 @@ int main() {
   testComparisonBetweenSignedAndUnsignedValues();
   testDprint();
   testEscapeAndUnescape();
+  testExpand();
   testGetBits();
   testGetIntFromHexChar();
   testHtoi();
@@ -481,6 +519,7 @@ int main() {
   testSqueezeMulti();
   testStrCat();
   testStrComp();
+  testStrCopy2();
   testTrim();
   testUpperHexLetter();
   return 0;
