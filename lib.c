@@ -718,3 +718,17 @@ void itoa3(int n, char s[]) {
   s[i] = '\0';
   reverse2(s);
 }
+
+// Provide left padding by minimum field with. (see question 3-6 of K&R).
+void itoa4(int n, char s[], int width) {
+  char t[MAX_STR_SIZE];
+  int i;
+
+  itoa3(n, t);
+
+  for (i = 0; i < width; ++i)
+    s[i] = ' ';
+  s[i] = '\0';
+
+  strCat2(s, t);
+}

@@ -533,6 +533,28 @@ void testItoa3() {
   printf("Itoa3 tested.\n");
 }
 
+void testItoa4() {
+  int num = 123456789;
+  char s[MAX_STR_SIZE];
+
+  itoa4(num, s, 4);
+  seq(s, "    123456789");
+
+  num = -3819300;
+  itoa4(num, s, 1);
+  seq(s, " -3819300");
+
+  num = INT_MAX;
+  itoa4(num, s, 10);
+  seq(s, "          2147483647");
+
+  num = INT_MIN;
+  itoa4(num, s, 0);
+  seq(s, "-2147483648");
+
+  printf("Itoa4 tested.\n");
+}
+
 int main() {
   //testCountChars(); interactive program.
   charTests();
@@ -563,6 +585,7 @@ int main() {
   testItoa();
   testItoa2();
   testItoa3();
+  testItoa4();
   testItob();
   testLogicalOperatorsCast();
   testLower();

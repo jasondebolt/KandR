@@ -63,6 +63,7 @@ void expand(char s[], char c[]);
 void itoa(int n, char s[]);
 void itoa2(int n, char s[]);
 void itoa3(int n, char s[]);
+void itoa4(int n, char s[], int width);
 void lowerAll(char c[]);
 void print10Char(char c[]);
 void printBits(int n);
