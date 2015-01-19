@@ -486,11 +486,51 @@ void testItoa() {
   itoa(num, s);
   seq(s, "123456789");
 
-  num = -3819300;
+  num = INT_MAX;
   itoa(num, s);
-  seq(s, "-3819300");
+  seq(s, "2147483647");
 
   printf("Itoa tested.\n");
+}
+
+void testItoa2() {
+  int num = 123456789;
+  char s[MAX_STR_SIZE];
+
+  itoa2(num, s);
+  seq(s, "123456789");
+
+  num = INT_MAX;
+  itoa2(num, s);
+  seq(s, "2147483647");
+
+  num = -3819300;
+  itoa2(num, s);
+  seq(s, "-3819300");
+
+  printf("Itoa2 tested.\n");
+}
+
+void testItoa3() {
+  int num = 123456789;
+  char s[MAX_STR_SIZE];
+
+  itoa3(num, s);
+  seq(s, "123456789");
+
+  num = -3819300;
+  itoa3(num, s);
+  seq(s, "-3819300");
+
+  num = INT_MAX;
+  itoa3(num, s);
+  seq(s, "2147483647");
+
+  num = INT_MIN;
+  itoa3(num, s);
+  seq(s, "-2147483648");
+
+  printf("Itoa3 tested.\n");
 }
 
 int main() {
@@ -521,6 +561,8 @@ int main() {
   testInvertBits();
   testIsLeapYear();
   testItoa();
+  testItoa2();
+  testItoa3();
   testItob();
   testLogicalOperatorsCast();
   testLower();

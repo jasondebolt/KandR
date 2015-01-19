@@ -627,6 +627,7 @@ int isAlphaNum(char c) {
 
 // expand c into s.
 // if c is 'a-z', then s is 'abcde...xyz'.
+// This took me a while to get right. Could be simplified.
 void expand(char s[], char c[]) {
   int i, j, diff;
   char before, after;
@@ -660,15 +661,55 @@ void expand(char s[], char c[]) {
   }
 }
 
-
+// Handle only positive numbers.
 void itoa(int n, char s[]) {
   int last, sign;
   int i = 0;
+
+  while (n > 0) {
+    s[i++] = (n % 10) + '0';
+    n = n / 10;
+  }
+  s[i] = '\0';
+  reverse2(s);
+}
+
+// Handle negative numbers.
+void itoa2(int n, char s[]) {
+  int last, sign;
+  int i = 0;
+
   if ((sign = n) < 0) {
     n = -n;
   }
   while (n > 0) {
     s[i++] = (n % 10) + '0';
+    n = n / 10;
+  }
+  if (sign < 0) {
+    s[i++] = '-';
+  }
+  s[i] = '\0';
+  reverse2(s);
+}
+
+// Handle INT_MIN case. (see question 3-4 of K&R).
+void itoa3(int n, char s[]) {
+  int last, sign;
+  int i = 0;
+  int is_int_min = 0;
+
+  if (n == INT_MIN) {
+    n = n + 1;
+    is_int_min = 1;
+  }
+
+  if ((sign = n) < 0) {
+    n = -n;
+  }
+  while (n > 0) {
+    s[i] = (n % 10) + '0' + ((is_int_min && (i == 0)) ? 1 : 0);
+    ++i;
     n = n / 10;
   }
   if (sign < 0) {
