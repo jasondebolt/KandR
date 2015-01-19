@@ -161,7 +161,7 @@ int bitCount(unsigned int n) {
   return bitcount;
 }
 
-char *itob(int n) {
+char *itobin(int n) {
   char *result = malloc(MAX_BIT_STRING_SIZE + 1);
   int j;
   int i = 0;
@@ -185,17 +185,17 @@ char *itob(int n) {
 }
 
 void printBits(int n) {
-  printf("\t%s\n", itob(n));
+  printf("\t%s\n", itobin(n));
 }
 
 void printIntAll(int n) {
   printf("(signed/unsigned dec: %d/%u) (bin: %s) (hex: 0x%x) (oct: 0%o)\n",
-         n, n, itob(n), n, n);
+         n, n, itobin(n), n, n);
 }
 
 void printCharAll(char c) {
   printf("(char: %c) (signed/unsigned dec: %d/%u) (bin: %s) (hex: 0x%x) (oct: 0%o)\n",
-         c, c, c, itob(c), c, c);
+         c, c, c, itobin(c), c, c);
 }
 
 // Search for x in array v of length n;
@@ -731,4 +731,18 @@ void itoa4(int n, char s[], int width) {
   s[i] = '\0';
 
   strCat2(s, t);
+}
+
+// This only handles positive numbers.
+void itobase(int n, char s[], int base) {
+  int result;
+  int i = 0;
+
+  while (n > 0) {
+    result = n % base + '0'; 
+    s[i++] = (result > '9') ? (result - '9' - 1 + 'A') : result;
+    n = n / base;
+  }
+  s[i] = '\0';
+  reverse2(s);
 }

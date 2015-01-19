@@ -76,17 +76,17 @@ void testBitCount() {
   printf("BitCount tested\n");
 }
 
-void testItob() {
-  seq(itob(0), ZERO);
-  seq(itob(10), TEN);
-  seq(itob(20), TWENTY);
-  seq(itob(31), THIRTY_ONE);
-  seq(itob(32), THIRTY_TWO);
-  seq(itob(63), SIXTY_THREE);
-  seq(itob(127), ONE_TWENTY_SEVEN);
-  seq(itob(128), ONE_TWENTY_EIGHT);
-  seq(itob(255), TWO_FIFTY_FIVE);
-  printf("Itob tested.\n");
+void testItobin() {
+  seq(itobin(0), ZERO);
+  seq(itobin(10), TEN);
+  seq(itobin(20), TWENTY);
+  seq(itobin(31), THIRTY_ONE);
+  seq(itobin(32), THIRTY_TWO);
+  seq(itobin(63), SIXTY_THREE);
+  seq(itobin(127), ONE_TWENTY_SEVEN);
+  seq(itobin(128), ONE_TWENTY_EIGHT);
+  seq(itobin(255), TWO_FIFTY_FIVE);
+  printf("Itobin tested.\n");
 }
 
 void testPrintIntAll() {
@@ -555,6 +555,36 @@ void testItoa4() {
   printf("Itoa4 tested.\n");
 }
 
+void testItobase() {
+  char s[MAX_STR_SIZE];
+
+  itobase(10, s, 2);
+  seq(s, "1010");
+  
+  itobase(123, s, 10);
+  seq(s, "123");
+  
+  itobase(8, s, 8);
+  seq(s, "10");
+  
+  itobase(63, s, 8);
+  seq(s, "77");
+  
+  itobase(15, s, 16);
+  seq(s, "F");
+  
+  itobase(16, s, 16);
+  seq(s, "10");
+  
+  itobase(255, s, 16);
+  seq(s, "FF");
+  
+  itobase(1, s, 16);
+  seq(s, "1");
+
+  printf("Itobase tested.\n");
+}
+
 int main() {
   //testCountChars(); interactive program.
   charTests();
@@ -586,7 +616,8 @@ int main() {
   testItoa2();
   testItoa3();
   testItoa4();
-  testItob();
+  testItobase();
+  testItobin();
   testLogicalOperatorsCast();
   testLower();
   testLowerAll();

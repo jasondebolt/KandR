@@ -24,7 +24,7 @@ enum Months {JAN = 1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC};
 
 static unsigned long int next2 = 1;
 
-char *itob(int n);
+char *itobin(int n);
 char lower(int c);
 int any(char s[], char t[]);
 int atoi2(char s[]);
@@ -64,6 +64,7 @@ void itoa(int n, char s[]);
 void itoa2(int n, char s[]);
 void itoa3(int n, char s[]);
 void itoa4(int n, char s[], int width);
+void itobase(int n, char s[], int base);
 void lowerAll(char c[]);
 void print10Char(char c[]);
 void printBits(int n);
