@@ -659,3 +659,15 @@ void expand(char s[], char c[]) {
     s[j++] = c[i++];
   }
 }
+
+
+void itoa(int n, char s[]) {
+  int last;
+  int i = 0;
+  while (n > 0) {
+    s[i++] = (n % 10) + '0';
+    n = n / 10;
+  }
+  s[i] = '\0';
+  reverse2(s);
+}

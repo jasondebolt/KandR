@@ -60,6 +60,7 @@ void assertIntArrayEquals(int a[], int b[], int alen);
 void countChars();
 void escape(char s[], char t[]);
 void expand(char s[], char c[]);
+void itoa(int n, char s[]);
 void lowerAll(char c[]);
 void print10Char(char c[]);
 void printBits(int n);

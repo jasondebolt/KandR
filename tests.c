@@ -5,12 +5,12 @@
 
 void testBits() {
   assert(~0 << 3 == ~1 << 2);
-  printf("bits tested.\n");
+  printf("Bits tested.\n");
 }
 
 void testBtoi() {
   assert(btoi("10101010") == 0xAA);
-  printf("btoi tested.\n");
+  printf("Btoi tested.\n");
 }
 
 void testGetBits() {
@@ -18,7 +18,7 @@ void testGetBits() {
   assert(getBits(btoi("01000100"), 7, 8) == btoi("01000100"));
   assert(getBits(btoi("01000100"), 3, 4) == btoi("0100"));
   assert(getBits(btoi("01000100"), 0, 1) == btoi("0"));
-  printf("getBits tested.\n");
+  printf("GetBits tested.\n");
 }
 
 void testSetBits() {
@@ -29,7 +29,7 @@ void testSetBits() {
   assert(setBits(btoi("01101011"), 6, 6, btoi("10101010")) == btoi("01010101"));
   assert(setBits(btoi("00000000"), 7, 8, btoi("11111111")) == btoi("11111111"));
   assert(setBits(btoi("00000000"), 7, 4, btoi("11111111")) == btoi("11110000"));
-  printf("setBits tested.\n");
+  printf("SetBits tested.\n");
 }
 
 void testInvertBits() {
@@ -40,14 +40,14 @@ void testInvertBits() {
   assert(invertBits(0x0F, 7, 4) == 0xFF);
   assert(invertBits(0xFF, 3, 4) == 0xF0);
   assert(invertBits(0xAA, 7, 8) == 0x55);
-  printf("testInvertBits done.\n");
+  printf("TestInvertBits done.\n");
 }
 
 void testRightRotateChar() {
   assert(rightRotateChar(1, 8) == btoi("00000001"));
   assert(rightRotateChar(btoi("00000001"), 8) == btoi("00000001"));
   assert(rightRotateChar(btoi("00000001"), 1) == btoi("10000000"));
-  printf("rightRotateChar tested\n");
+  printf("RightRotateChar tested\n");
 }
 
 void testRightRotateInt() {
@@ -55,7 +55,7 @@ void testRightRotateInt() {
          btoi("00000000000000000000000000000001"));
   assert(rightRotateInt(btoi("00000000000000000000000000000001"), 1) ==
          btoi("10000000000000000000000000000000"));
-  printf("rightRotateInt tested\n");
+  printf("RightRotateInt tested\n");
 }
 
 void testBitCount() {
@@ -73,7 +73,7 @@ void testBitCount() {
   assert(bitCount(UINT_MAX) == 32);
   assert(bitCount(-1) == 32);
   assert(bitCount(-2) == 31);
-  printf("bitCount tested\n");
+  printf("BitCount tested\n");
 }
 
 void testItob() {
@@ -86,12 +86,12 @@ void testItob() {
   seq(itob(127), ONE_TWENTY_SEVEN);
   seq(itob(128), ONE_TWENTY_EIGHT);
   seq(itob(255), TWO_FIFTY_FIVE);
-  printf("itob tested.\n");
+  printf("Itob tested.\n");
 }
 
 void testPrintIntAll() {
   printIntAll(255);
-  printf("printIntAll tested.\n");
+  printf("PrintIntAll tested.\n");
 }
 
 void testPrintCharAll() {
@@ -99,7 +99,7 @@ void testPrintCharAll() {
   printCharAll('Z');
   printCharAll(97);
   printCharAll('z');
-  printf("printCharAll tested.\n");
+  printf("PrintCharAll tested.\n");
 }
 
 void nullTests() {
@@ -153,7 +153,7 @@ void limitTests() {
   printf("LONG_MIN: %ld\n", LONG_MIN);
   printf("LONG_MAX: %ld\n", LONG_MAX);
   printf("ULONG_MAX: %lu\n", ULONG_MAX); // Use 'u', not 'd'
-  printf("numbers tested.\n");
+  printf("Numbers tested.\n");
   printf("Limit tests tested.\n");
 }
 
@@ -237,7 +237,7 @@ void testBinSearch() {
   assert(binsearch(23, vals, 8) == 6);
   assert(binsearch(34, vals, 8) == 7);
   assert(binsearch(11, vals, 8) == -1);
-  printf("binary search tested.\n");
+  printf("Binary search tested.\n");
 }
 
 void testBinSearch2() {
@@ -246,7 +246,7 @@ void testBinSearch2() {
   assert(binsearch2(23, vals, 8) == 6);
   assert(binsearch2(34, vals, 8) == 7);
   assert(binsearch2(11, vals, 8) == -1);
-  printf("binary search 2 tested.\n");
+  printf("Binary search 2 tested.\n");
 }
 
 void testStrComp() {
@@ -258,14 +258,17 @@ void testStrComp() {
   assert(strComp(a, b) == -1);
   assert(strComp(b, a) == 1);
   assert(strComp(a, a) == 0);
-  printf("strComp tested.\n");
+  printf("StrComp tested.\n");
 }
 
 void testReverse2() {
   char name[] = "jason";
+  char name2[] = "four";
   reverse2(name);
   assert(strComp(name, "nosaj") == 0);
-  printf("reverse2 tested.\n");
+  reverse2(name2);
+  assert(strComp(name2, "ruof") == 0);
+  printf("Reverse2 tested.\n");
 }
 
 void testShellSort() {
@@ -286,12 +289,12 @@ void testSqueeze() {
   assert(strComp(name, "myfirstname") == 0);
   assert(strComp(name2, "onetwothreefour fivesix") == 0);
   assert(strComp(name3, "onetwothree") == 0);
-  printf("squeeze tested.\n");
+  printf("Squeeze tested.\n");
 }
 
 void testLower() {
   assert(lower('A') == 'a');
-  printf("lower tested.\n");
+  printf("Lower tested.\n");
 }
 
 void testLowerAll() {
@@ -301,12 +304,12 @@ void testLowerAll() {
   assert(strComp(name, "jason") == 0);
   lowerAll(name2);
   assert(strComp(name2, "abcdef") == 0);
-  printf("lowerAll tested.\n");
+  printf("LowerAll tested.\n");
 }
 
 void testPrint10Char() {
   print10Char("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-  printf("print10Char tested.\n");
+  printf("Print10Char tested.\n");
 }
 
 void testDprint() {
@@ -316,7 +319,7 @@ void testDprint() {
   dprint(x + y);
   dprint(x * y);
   dprint(x - y);
-  printf("dprint tested.\n");
+  printf("Dprint tested.\n");
 }
 
 void testEscapeAndUnescape() {
@@ -327,7 +330,7 @@ void testEscapeAndUnescape() {
   assert(strComp(s, "hi\\tjason\\nNext line.") == 0);
   unescape(us, s);
   assert(strComp(us, "hi\tjason\nNext line.") == 0);
-  printf("escape and unescape tested.\n");
+  printf("Escape and unescape tested.\n");
 }
 
 void testAtoi2() {
@@ -337,19 +340,19 @@ void testAtoi2() {
   assert(atoi2("-456") == -456);
   assert(atoi2("    -7810") == -7810);
   assert(atoi2("  -111333abc") == -111333);
-  printf("atoi2 tested.\n");
+  printf("Atoi2 tested.\n");
 }
 
 void testUpperHexLetter() {
   assert(isUpperHexLetter('F'));
-  printf("isUpperHexLetter tested.\n");
+  printf("IsUpperHexLetter tested.\n");
 }
 
 void testGetIntFromHexChar() {
   assert(getIntFromHexChar('F') == 15);
   assert(getIntFromHexChar('a') == 10);
   assert(getIntFromHexChar('5') == 5);
-  printf("getIntFromHexChar tested.\n");
+  printf("GetIntFromHexChar tested.\n");
 }
 
 void testHtoi() {
@@ -357,14 +360,14 @@ void testHtoi() {
   assert(htoi("0xff") == 255);
   assert(htoi("0XFF") == 255);
   assert(htoi("ffff") == 65535);
-  printf("htoi tested.\n");
+  printf("Htoi tested.\n");
 }
 
 void testAny() {
   assert(any("jason", "n") == 4);
   assert(any("today i am working today.", "t") == 0);
   assert(any("abcdefghijk zef", " fi") == 5);
-  printf("any tested.\n");
+  printf("Any tested.\n");
 }
 
 void testSqueezeMulti() {
@@ -374,14 +377,14 @@ void testSqueezeMulti() {
   squeezeMulti(name2, " .");
   assert(strComp(name, "sn debt") == 0);
   assert(strComp(name2, "thisisitnowwhat") == 0);
-  printf("squeezeMulti tested.\n");
+  printf("SqueezeMulti tested.\n");
 }
 
 void testStrCat() {
   char name[30] = "jason";
   strCat2(name, " debolt");
   assert(strComp(name, "jason debolt") == 0);
-  printf("strCat2 tested.\n");
+  printf("StrCat2 tested.\n");
 }
 
 void testRand2AndSrand2() {
@@ -395,7 +398,7 @@ void testRand2AndSrand2() {
     printf("%d\t", rand2());
   }
   printf("\n");
-  printf("rand and srand tested.\n");
+  printf("Rand and srand tested.\n");
 }
 
 void testIsLeapYear() {
@@ -409,7 +412,7 @@ void testIsLeapYear() {
   assert(isLeapYear(1996) == 1);
   assert(isLeapYear(2000) == 1);
   assert(isLeapYear(2004) == 1);
-  printf("isLeapYear tested.\n");
+  printf("IsLeapYear tested.\n");
 }
 
 void testCountChars() {
@@ -422,7 +425,7 @@ void testIntArrayEquals() {
   int three[] = {4, 1, 9, 1, 0, 0, 0, 10, 1};
   assert(intArrayEquals(one, two, 9));
   assert(intArrayEquals(one, three, 9) == 0);
-  printf("intArrayEquals tested.\n");
+  printf("IntArrayEquals tested.\n");
 }
 
 void testTrim() {
@@ -443,7 +446,7 @@ void testStrCopy2() {
   char s2[MAX_STR_SIZE];
   strCopy2(s1, " jason ");
   seq(s1, " jason ");
-  printf("strCopy2 tested.\n");
+  printf("StrCopy2 tested.\n");
 }
 
 void testExpand() {
@@ -473,6 +476,21 @@ void testExpand() {
   strCopy2(c, "a-j-A-t-A-G");
   expand(s, c);
   seq(s, "abcdefghij-A-t-ABCDEFG");
+  printf("Expand tested.\n");
+}
+
+void testItoa() {
+  int num = 123456789;
+  char s[MAX_STR_SIZE];
+
+  itoa(num, s);
+  seq(s, "123456789");
+
+  num = 381914300;
+  itoa(num, s);
+  seq(s, "381914300");
+
+  printf("Itoa tested.\n");
 }
 
 int main() {
@@ -502,6 +520,7 @@ int main() {
   testIntArrayEquals();
   testInvertBits();
   testIsLeapYear();
+  testItoa();
   testItob();
   testLogicalOperatorsCast();
   testLower();
