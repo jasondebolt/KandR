@@ -662,11 +662,17 @@ void expand(char s[], char c[]) {
 
 
 void itoa(int n, char s[]) {
-  int last;
+  int last, sign;
   int i = 0;
+  if ((sign = n) < 0) {
+    n = -n;
+  }
   while (n > 0) {
     s[i++] = (n % 10) + '0';
     n = n / 10;
+  }
+  if (sign < 0) {
+    s[i++] = '-';
   }
   s[i] = '\0';
   reverse2(s);

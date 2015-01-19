@@ -486,9 +486,9 @@ void testItoa() {
   itoa(num, s);
   seq(s, "123456789");
 
-  num = 381914300;
+  num = -3819300;
   itoa(num, s);
-  seq(s, "381914300");
+  seq(s, "-3819300");
 
   printf("Itoa tested.\n");
 }
