@@ -633,6 +633,18 @@ void testAtof2() {
   strCopy2(s, "    -999.3451");
   assert(atof2(s) == -999.3451);
 
+  strCopy2(s, "1");
+  assert(atof2(s) == 1);
+
+  strCopy2(s, "0.1");
+  assert(atof2(s) == 0.1);
+
+  strCopy2(s, "0");
+  assert(atof2(s) == 0);
+
+  strCopy2(s, "0.001");
+  assert(atof2(s) == 0.001);
+
   printf("Atof2 tested.\n");
 }
 
