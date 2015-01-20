@@ -762,5 +762,25 @@ int strIndex(char s[], char t[]) {
   return -1;
 }
 
+// Find rightmost position of string t in string s.
+int strIndexRight(char s[], char t[]) {
+  int i, j, k, len_s, len_t;
+  char c;
 
+  i = len_s = 0;
+  while (s[i++] != '\0')
+    ++len_s;
 
+  i = len_t = 0;
+  while (t[i++] != '\0')
+    ++len_t;
+
+  for (i = len_s - 1; i >= 0; --i) {
+    for (j = i, k = len_t - 1; t[k] == s[j] && k >= 0; --j, --k)
+      ;
+
+    if (k == -1)
+      return i - len_t + 1;
+  }
+  return -1;
+}

@@ -587,8 +587,8 @@ void testItobase() {
 
 
 void testStrIndex() {
-  char s[] = "jason was here.";
-  char t[] = "was";
+  char s[MAX_STR_SIZE] = "jason was here.";
+  char t[MAX_STR_SIZE] = "was";
   assert(strIndex(s, t) == 6);
 
   strCopy2(s, "foo bar baz");
@@ -600,6 +600,26 @@ void testStrIndex() {
   assert(strIndex(s, t) == 0);
 
   printf("StrIndex tested.\n");
+}
+
+void testStrIndexRight() {
+  char s[MAX_STR_SIZE] = "was was";
+  char t[MAX_STR_SIZE] = "was";
+  assert(strIndexRight(s, t) == 4);
+
+  strCopy2(s, "foo bar baz");
+  strCopy2(t, "a");
+  assert(strIndexRight(s, t) == 9);
+
+  strCopy2(s, "abcdef");
+  strCopy2(t, "a");
+  assert(strIndexRight(s, t) == 0);
+
+  strCopy2(s, "abcdef");
+  strCopy2(t, "f");
+  assert(strIndexRight(s, t) == 5);
+
+  printf("StrIndexRight tested.\n");
 }
 
 int main() {
@@ -653,6 +673,7 @@ int main() {
   testStrComp();
   testStrCopy2();
   testStrIndex();
+  testStrIndexRight();
   testTrim();
   testUpperHexLetter();
   return 0;
