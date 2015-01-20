@@ -622,6 +622,30 @@ void testStrIndexRight() {
   printf("StrIndexRight tested.\n");
 }
 
+
+void testAtof2() {
+  char s[MAX_STR_SIZE] = "1.23";
+  assert(atof2(s) == 1.23);
+
+  strCopy2(s, "123.456");
+  assert(atof2(s) == 123.456);
+
+  strCopy2(s, "    -999.3451");
+  assert(atof2(s) == -999.3451);
+
+  printf("Atof2 tested.\n");
+}
+
+void testPow2() {
+  assert(pow2(10, 2) == 100);
+  assert(pow2(10, 3) == 1000);
+  assert(pow2(10, 4) == 10000);
+  assert(pow2(2, 31) - 1 == INT_MAX);
+  assert(pow2(2, 32) - 1 == UINT_MAX);
+  printf("Pow2 tested.\n");
+}
+
+
 int main() {
   //testCountChars(); interactive program.
   charTests();
@@ -633,6 +657,7 @@ int main() {
   nullTests();
   octalTests();
   testAny();
+  testAtof2();
   testAtoi2();
   testBinSearch();
   testBinSearch2();
@@ -676,5 +701,6 @@ int main() {
   testStrIndexRight();
   testTrim();
   testUpperHexLetter();
+  testPow2();
   return 0;
 }

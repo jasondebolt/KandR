@@ -1,0 +1,58 @@
+762   return -1;                                                                                      |  1 #include <stdio.h>
+763 }                                                                                                 |  2 #include <stdlib.h>
+764                                                                                                   |  3 #include <assert.h>
+765 // Find rightmost position of string t in string s.                                               |  4 #include <limits.h>
+766 int strIndexRight(char s[], char t[]) {                                                           |  5 #include <math.h>
+767   int i, j, k, len_s, len_t;                                                                      |  6 #ifndef STD_LIB_H
+768   char c;                                                                                         |  7 #define STD_LIB_H
+769                                                                                                   |  8
+770   i = len_s = 0;                                                                                  |  9 #define dprint(expr)  printf(#expr " = %d\n", expr)
+771   while (s[i++] != '\0')                                                                          | 10 #define MAX_STR_SIZE 1024
+772     ++len_s;                                                                                      | 11 #define MAX_BIT_STRING_SIZE 8
+773                                                                                                   | 12 #define ZERO "00000000"
+774   i = len_t = 0;                                                                                  | 13 #define TEN "00001010"
+775   while (t[i++] != '\0')                                                                          | 14 #define TWENTY "00010100"
+776     ++len_t;                                                                                      | 15 #define THIRTY_ONE "00011111"
+777                                                                                                   | 16 #define THIRTY_TWO "00100000"
+778   for (i = len_s - 1; i >= 0; --i) {                                                              | 17 #define SIXTY_THREE "00111111"
+779     for (j = i, k = len_t - 1; t[k] == s[j] && k >= 0; --j, --k)                                  | 18 #define ONE_TWENTY_SEVEN "01111111"
+780       ;                                                                                           | 19 #define ONE_TWENTY_EIGHT "10000000"
+781                                                                                                   | 20 #define TWO_FIFTY_FIVE "11111111"
+782     if (k == -1)                                                                                  | 21
+783       return i - len_t + 1;                                                                       | 22 enum Boolean {NO, YES};
+784   }                                                                                               | 23 enum Escapes {NEWLINE = '\n', TAB = '\t'};
+785   return -1;                                                                                      | 24 enum Months {JAN = 1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC};
+786 }                                                                                                 | 25
+787                                                                                                   | 26 static unsigned long int next2 = 1;
+788 // Convert string s to double.                                                                    | 27
+789 double atof2(char s[]) {                                                                          | 28 char *itobin(int n);
+790   int i, n, sign, dot_index, power;                                                               |lib.h                                                                               5,1            Top
+791                                                                                                   |614   strCopy2(s, "abcdef");
+792   i = n = 0;                                                                                      |615   strCopy2(t, "a");
+793                                                                                                   |616   assert(strIndexRight(s, t) == 0);
+794   while (s[i] == ' ')                                                                             |617
+795     i++;                                                                                          |618   strCopy2(s, "abcdef");
+796                                                                                                   |619   strCopy2(t, "f");
+797   sign = (s[i] == '-') ? -1 : 1;                                                                  |620   assert(strIndexRight(s, t) == 5);
+798                                                                                                   |621
+799   if (sign == -1)                                                                                 |622   printf("StrIndexRight tested.\n");
+800     ++i;                                                                                          |623 }
+801                                                                                                   |624
+802   dot_index = 0;                                                                                  |625
+803   while (s[i] != '\0') {                                                                          |626 void testAtof2() {
+804     if (s[i] == '-') {                                                                            |627   //char s[MAX_STR_SIZE] = "1.23";
+805       dot_index = i;                                                                              |628   //assert(atof2(s) == 1.23);
+806     } else {                                                                                      |629   atof2(s);
+807       n = n * 10 + s[i] - '0';                                                                    |630
+808     }                                                                                             |631   //strCopy2(s, "123.456");
+809     ++i;                                                                                          |632   //assert(atof2(s) == 123.456);
+810   }                                                                                               |633
+811   printf("%f\n", (int)pow(10, 2));                                                                |634   printf("Atof2 tested.\n");
+812   //if (dot_index) {                                                                              |635 }
+813   //  power = i - dot_index - 1;                                                                  |636
+814   //  n = (n * 1.0) / pow(10, power);                                                             |637 int main() {
+815   //}                                                                                             |638   //testCountChars(); interactive program.
+816   return sign * n;                                                                                |639   charTests();
+817 }                                                                                                 |640   intTests();
+lib.c                                                                               811,22         Bot tests.c                                                                             627,3          92%
+"lib.c" 817L, 16507C written

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <math.h>
 #ifndef STD_LIB_H
 #define STD_LIB_H
 
@@ -26,6 +27,7 @@ static unsigned long int next2 = 1;
 
 char *itobin(int n);
 char lower(int c);
+double atof2(char s[]);
 int any(char s[], char t[]);
 int atoi2(char s[]);
 int binsearch(int x, int v[], int n);
@@ -45,6 +47,7 @@ int isLowerHexLetter(char c);
 int isNumber(char c);
 int isUpper(char c);
 int isUpperHexLetter(char c);
+int pow2(int base, int exp);
 int rand2(void);
 int setBits(int n, int pos, int len, int y);
 int strComp(char s[], char t[]);

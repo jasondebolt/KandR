@@ -1,5 +1,6 @@
 #include "lib.h"
 
+
 unsigned btoi(char c[]) {
   unsigned i, n;
   n = 0;
@@ -783,4 +784,43 @@ int strIndexRight(char s[], char t[]) {
       return i - len_t + 1;
   }
   return -1;
+}
+
+// Convert string s to double.
+// leading whitespace and negative numbers are supported.
+double atof2(char s[]) {
+  int i, sign, dot_index, power;
+  double n;
+
+  i = n = 0;
+
+  while (s[i] == ' ')
+    i++;
+
+  sign = (s[i] == '-') ? -1 : 1;
+
+  if (sign == -1)
+    ++i; 
+
+  dot_index = 0;
+  while (s[i] != '\0') {
+    if (s[i] == '.') {
+      dot_index = i;
+    } else {
+      n = n * 10 + s[i] - '0';
+    }
+    ++i;
+  }
+  if (dot_index) {
+    power = i - dot_index - 1;
+    n = n / pow2(10, power);
+  }
+  return sign * n;
+}
+
+int pow2(int base, int exp) {
+  int n = 1;
+  while (--exp >= 0)
+    n = n * base;
+  return n;
 }
