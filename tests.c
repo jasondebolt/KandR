@@ -585,6 +585,23 @@ void testItobase() {
   printf("Itobase tested.\n");
 }
 
+
+void testStrIndex() {
+  char s[] = "jason was here.";
+  char t[] = "was";
+  assert(strIndex(s, t) == 6);
+
+  strCopy2(s, "foo bar baz");
+  strCopy2(t, "z");
+  assert(strIndex(s, t) == 10);
+
+  strCopy2(s, "foo bar baz");
+  strCopy2(t, "f");
+  assert(strIndex(s, t) == 0);
+
+  printf("StrIndex tested.\n");
+}
+
 int main() {
   //testCountChars(); interactive program.
   charTests();
@@ -635,6 +652,7 @@ int main() {
   testStrCat();
   testStrComp();
   testStrCopy2();
+  testStrIndex();
   testTrim();
   testUpperHexLetter();
   return 0;
