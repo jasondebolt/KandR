@@ -824,3 +824,16 @@ int pow2(int base, int exp) {
     n = n * base;
   return n;
 }
+
+/* Reads a line of input into char s[], returns the length.
+ */
+int getLine3(char s[], int lim) {
+  int i;
+  char c;
+
+  for (i = 0; ((c = getchar()) != '\n') && i < lim; ++i) {
+    s[i] = c;
+  }
+  s[i] = '\0';
+  return i;
+}

@@ -657,9 +657,21 @@ void testPow2() {
   printf("Pow2 tested.\n");
 }
 
+void testGetLine3() {
+  char s[MAX_STR_SIZE];
+  int result;
+  
+  result = getLine3(s, MAX_STR_SIZE);
+  printf("%s\n", s);
+  printf("%d\n", result);
+  printf("GetLine3 tested.\n");
+}
+
 
 int main() {
-  //testCountChars(); interactive program.
+  /* Interactive programs */
+  //testCountChars();
+  //testGetLine3();
   charTests();
   intTests();
   limitTests();
