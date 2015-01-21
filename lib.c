@@ -825,6 +825,19 @@ int pow2(int base, int exp) {
   return n;
 }
 
+/* Handles negative exponents and doubles. */
+double pow3(double base, int exp) {
+  double n = 1;
+  int sign;
+  sign = (exp < 0) ? -1 : 1;
+  exp *= sign;
+  while (--exp >= 0)
+    n = n * base;
+  if (sign < 0)
+    n = 1/n;
+  return n;
+}
+
 /* Reads a line of input into char s[], returns the length.
  */
 int getLine3(char s[], int lim) {
@@ -846,4 +859,53 @@ void calculator() {
     num = atoi2(s);
     printf("\t%d\n", sum += num);
   }
+}
+
+// Convert string s to double.
+// leading whitespace and negative numbers are supported.
+// Handle scientific notation like '123.45e-6'
+double atof3(char s[]) {
+  int i, i2, sign, esign, dot_index, power1, power2, after_e;
+  double n, n2;
+
+  i = n = after_e = n2 = i2 = power1 = power2 = 0;
+
+  while (s[i] == ' ')
+    i++;
+
+  sign = (s[i] == '-') ? -1 : 1;
+  esign = 1;
+
+  if (sign == -1)
+    ++i; 
+
+  dot_index = 0;
+  while (s[i] != '\0') {
+    if (s[i] == '.') {
+      dot_index = i;
+    } else if (s[i] == 'e' || s[i] == 'E') {
+      ++i2;
+      after_e = 1;
+    } else if (after_e && s[i] == '-') {
+      ++i2;
+      esign = -1;
+    } else if (after_e) {
+      ++i2;
+      n2 = n2 * 10 + s[i] - '0';
+    } else {
+      n = n * 10 + s[i] - '0';
+    }
+    ++i;
+  }
+  power2 = esign * n2;
+  if (dot_index) {
+    power1 = i - dot_index - 1 - i2;
+  }
+  n = n * pow3(10, power2 - power1);
+  return sign * n;
+}
+
+void assertAlmostEquals(double a, double b) {
+  double diff = (a - b) < 0 ? (b - a) : (a - b);
+  assert(diff < VERY_SMALL);
 }

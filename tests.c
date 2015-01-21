@@ -648,13 +648,89 @@ void testAtof2() {
   printf("Atof2 tested.\n");
 }
 
+
+void testAtof3() {
+  char s[MAX_STR_SIZE] = "1.23";
+  assert(atof3(s) == 1.23);
+
+  strCopy2(s, "123456");
+  assert(atof3(s) == 123456);
+
+  strCopy2(s, "123.456");
+  assert(atof3(s) == 123.456);
+
+  strCopy2(s, "    -999.3451");
+  assert(atof3(s) == -999.3451);
+
+  strCopy2(s, "1");
+  assert(atof3(s) == 1);
+
+  strCopy2(s, "0.1");
+  assert(atof3(s) == 0.1);
+
+  strCopy2(s, "0");
+  assert(atof3(s) == 0);
+
+  strCopy2(s, "0.001");
+  assert(atof3(s) == 0.001);
+
+  strCopy2(s, "1.23e0");
+  assert(atof3(s) == 1.23);
+
+  strCopy2(s, "1.23e1");
+  assert(atof3(s) == 12.3);
+
+  strCopy2(s, "1.23e-1");
+  assert(atof3(s) == 0.123);
+
+  strCopy2(s, "1.23E-2");
+  assert(atof3(s) == 0.0123);
+
+  strCopy2(s, "1.23E6");
+  assert(atof3(s) == 1230000);
+
+  strCopy2(s, "1.23E-5");
+  assertAlmostEquals(atof3(s), 0.0000123);
+
+  strCopy2(s, "1.23E-6");
+  assertAlmostEquals(atof3(s), 0.00000123);
+
+  strCopy2(s, "1.23E-18");
+  assertAlmostEquals(atof3(s), 0.00000000000000000123);
+
+  strCopy2(s, "1.23009e19");
+  assertAlmostEquals(atof3(s), 12300900000000000000UL);
+
+  printf("Atof3 tested.\n");
+}
+
 void testPow2() {
   assert(pow2(10, 2) == 100);
   assert(pow2(10, 3) == 1000);
   assert(pow2(10, 4) == 10000);
   assert(pow2(2, 31) - 1 == INT_MAX);
   assert(pow2(2, 32) - 1 == UINT_MAX);
+  assert(pow2(10, 0) == 1);
   printf("Pow2 tested.\n");
+}
+
+void testPow3() {
+  assert(pow3(10, 2) == 100);
+  assert(pow3(10, 3) == 1000);
+  assert(pow3(10, 4) == 10000);
+  assert(pow3(2, 31) - 1 == INT_MAX);
+  assert(pow3(2, 32) - 1 == UINT_MAX);
+  assert(pow3(10, 0) == 1);
+  assert(pow3(10, -1) == 0.1);
+  assert(pow3(10, -2) == 0.01);
+  assert(pow3(10, -3) == 0.001);
+  assert(pow3(10, -4) == 0.0001);
+  assert(pow3(10, -5) == 0.00001);
+  assert(pow3(10, -6) == 0.000001);
+  assert(pow3(10, -7) == 0.0000001);
+  assert(pow3(1.2, 2) == 1.44);
+  assert(pow3(2.5, -2) == 0.16);
+  printf("Pow3 tested.\n");
 }
 
 void testGetLine3() {
@@ -665,6 +741,12 @@ void testGetLine3() {
   printf("%s\n", s);
   printf("%d\n", result);
   printf("GetLine3 tested.\n");
+}
+
+void testAssertAlmostEquals() {
+  assertAlmostEquals(.000000011, .000000012);
+  assertAlmostEquals(.111111123, .1111111229);
+  printf("Assert almost equals tested.\n");
 }
 
 
@@ -682,7 +764,9 @@ int main() {
   nullTests();
   octalTests();
   testAny();
+  testAssertAlmostEquals();
   testAtof2();
+  testAtof3();
   testAtoi2();
   testBinSearch();
   testBinSearch2();
@@ -727,5 +811,6 @@ int main() {
   testTrim();
   testUpperHexLetter();
   testPow2();
+  testPow3();
   return 0;
 }

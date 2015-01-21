@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
-#include <math.h>
 #ifndef STD_LIB_H
 #define STD_LIB_H
 
@@ -18,6 +17,7 @@
 #define ONE_TWENTY_SEVEN "01111111"
 #define ONE_TWENTY_EIGHT "10000000"
 #define TWO_FIFTY_FIVE "11111111"
+#define VERY_SMALL 1e-8
 
 enum Boolean {NO, YES};
 enum Escapes {NEWLINE = '\n', TAB = '\t'};
@@ -28,6 +28,8 @@ static unsigned long int next2 = 1;
 char *itobin(int n);
 char lower(int c);
 double atof2(char s[]);
+double atof3(char s[]);
+double pow3(double base, int exp);
 int any(char s[], char t[]);
 int atoi2(char s[]);
 int binsearch(int x, int v[], int n);
@@ -63,6 +65,7 @@ unsigned int endToFrontInt(unsigned int x);
 unsigned int rightRotateInt(unsigned int x, int n);
 unsigned strlen2(char s[]);
 void assertIntArrayEquals(int a[], int b[], int alen);
+void assertAlmostEquals(double a, double b);
 void calculator();
 void countChars();
 void escape(char s[], char t[]);
