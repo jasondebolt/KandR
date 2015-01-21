@@ -837,3 +837,13 @@ int getLine3(char s[], int lim) {
   s[i] = '\0';
   return i;
 }
+
+void calculator() {
+  char s[MAX_STR_SIZE];
+  int len, num, sum;
+  sum = 0;
+  while ((len = getLine3(s, MAX_STR_SIZE)) > 0) {
+    num = atoi2(s);
+    printf("\t%d\n", sum += num);
+  }
+}

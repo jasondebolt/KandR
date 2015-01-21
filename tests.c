@@ -672,6 +672,7 @@ int main() {
   /* Interactive programs */
   //testCountChars();
   //testGetLine3();
+  //calculator();
   charTests();
   intTests();
   limitTests();
