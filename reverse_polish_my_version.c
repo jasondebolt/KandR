@@ -50,10 +50,11 @@ double pop() {
    This could return a character like '+' or a number like 123.456.
 */
 double getOperatorOrOperand() {
-  char c;
+  char c, c1;
   double num;
-  int i, dot_index;
-  num = i = dot_index = 0;
+  int i, dot_index, sign, has_dot;
+  num = i = dot_index = has_dot = 0;
+  sign = 1;
 
 
   while ((c = getch()) == ' ' || c == '\t')
@@ -61,11 +62,31 @@ double getOperatorOrOperand() {
 
   ungetch(c); // put most recent non-whitespace char back on the buffer.
 
+  // This code is really smelly, but it works. Try rewriting a different version later.
   while ((c = getch()) != EOF) {
-    if (isDigit(c)) {
+    if (c == '-') { // handle negative numbers.
+      if (isDigit(c1 = getch()) || c1 == '.') {
+        sign = -1;
+        c = c1;
+      } else {
+        ungetch(c1);
+      }
+    }
+    if (c == '.') { // handle leading decimal numbers.
+      if (isDigit(c1 = getch())) {
+        c = c1;
+        dot_index = 0;
+        has_dot = 1;
+        ++i;
+      } else {
+        ungetch(c1);
+      }
+    }
+    if (isDigit(c)) { // handle all other numbers, including floats.
       while (isDigit(c) || c == '.') {
         if (c == '.') {
           dot_index = i;
+          has_dot = 1;
           ++i;
           c = getch();
           continue;
@@ -74,7 +95,7 @@ double getOperatorOrOperand() {
         ++i;
         c = getch();
       }
-      if (dot_index)
+      if (has_dot)
         num = num / pow(10, i - dot_index - 1);
       ungetch(c);
       i = 0;
@@ -83,7 +104,7 @@ double getOperatorOrOperand() {
     if (num > 0)
       break;
     switch (c) {
-      case '+': case '*': case '-': case '/':
+      case '+': case '*': case '-': case '/': case '%':
         return c;
         break;
       case '\n':
@@ -102,7 +123,7 @@ double getOperatorOrOperand() {
   if (c == EOF)
     exit(1);
 
-  return num;
+  return sign * num;
 }
 
 int main() {
@@ -120,6 +141,9 @@ int main() {
     } else if (op == '/') {
       tmp = pop();
       push(pop() / tmp);
+    } else if (op == '%') {
+      tmp = pop();
+      push(fmod(pop(), tmp));
     } else {
         push(op);
     }
