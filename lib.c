@@ -312,6 +312,13 @@ void reverse2(char s[]) {
   }
 }
 
+
+void reverseRecurse(char s[], int start, int end) {
+  if (start + 1 < end - 1)
+    reverseRecurse(s, start + 1, end - 1);
+  swap(&s[start], &s[end]);
+}
+
 void squeeze(char s[], int c) {
   int i, j;
 

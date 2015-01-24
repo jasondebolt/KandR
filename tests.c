@@ -264,11 +264,27 @@ void testStrComp() {
 void testReverse2() {
   char name[] = "jason";
   char name2[] = "four";
+  char name3[] = "a";
   reverse2(name);
   assert(strComp(name, "nosaj") == 0);
   reverse2(name2);
   assert(strComp(name2, "ruof") == 0);
+  reverse2(name3);
+  assert(strComp(name3, "a") == 0);
   printf("Reverse2 tested.\n");
+}
+
+void testReverseRecurse() {
+  char name[] = "jason";
+  char name2[] = "four";
+  char name3[] = "a";
+  reverseRecurse(name, 0, 4);
+  assert(strComp(name, "nosaj") == 0);
+  reverseRecurse(name2, 0, 3);
+  assert(strComp(name2, "ruof") == 0);
+  reverseRecurse(name3, 0, 0);
+  assert(strComp(name3, "a") == 0);
+  printf("ReverseRecurse tested.\n");
 }
 
 void testShellSort() {
@@ -836,6 +852,7 @@ int main() {
   testQuickSort();
   testRand2AndSrand2();
   testReverse2();
+  testReverseRecurse();
   testRightRotateChar();
   testRightRotateInt();
   testSetBits();
