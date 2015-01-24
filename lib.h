@@ -80,6 +80,7 @@ void print10Char(char c[]);
 void printBits(int n);
 void printCharAll(char c);
 void printIntAll(int n);
+void quickSort(int v[], int left, int right);
 void reverse2(char s[]);
 void seq(char *a, char *b);
 void shellSort(int v[], int n);
@@ -89,6 +90,7 @@ void srand2(unsigned int seed);
 void strCat2(char s[], char t[]);
 void strCopy2(char s[], char t[]);
 void swap(char *one, char *two);
+void swapInt(int *one, int *two);
 void unescape(char s[], char t[]);
 
 #endif

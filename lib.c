@@ -249,6 +249,12 @@ void swap(char *one, char *two) {
   *two = tmp;
 }
 
+void swapInt(int *one, int *two) {
+  int tmp = *one;
+  *one = *two;
+  *two = tmp;
+}
+
 int strComp(char s[], char t[]) {
   int i = 0;
 
@@ -593,6 +599,29 @@ void shellSort(int v[], int n) {
     }
   }
 }
+
+
+/* This function was copied directory from page 87 of K&R.
+ * I modified it slightly to work with my swap function.
+ * Sort v[left]...v[right] into increasing order.
+ */
+void quickSort(int v[], int left, int right) {
+  int i, last;
+
+  if (left >= right)
+    return;
+
+  swapInt(&v[left], &v[(left + right) / 2]);
+  last = left;
+  for (i = left + 1; i <= right; i++) { /* partition */
+    if (v[i] < v[left])
+      swapInt(&v[++last], &v[i]);
+  }
+  swapInt(&v[left], &v[last]);
+  quickSort(v, left, last - 1);
+  quickSort(v, last + 1, right);
+}
+
 
 int trim2(char arr[]) {
   int i;

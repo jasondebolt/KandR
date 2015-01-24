@@ -276,7 +276,15 @@ void testShellSort() {
   int arr2[] = {1, 2, 3, 4, 5, 7, 8, 9};
   shellSort(arr, 8);
   assertIntArrayEquals(arr, arr2, 8);
-  printf("Shellsort tested.\n");
+  printf("ShellSort tested.\n");
+}
+
+void testQuickSort() {
+  int arr[] = {7, 4, 3, 9, 1, 5, 2, 8};
+  int arr2[] = {1, 2, 3, 4, 5, 7, 8, 9};
+  quickSort(arr, 0, 7);
+  assertIntArrayEquals(arr, arr2, 8);
+  printf("QuickSort tested.\n");
 }
 
 void testSqueeze() {
@@ -795,6 +803,7 @@ int main() {
   testPrint10Char();
   testPrintCharAll();
   testPrintIntAll();
+  testQuickSort();
   testRand2AndSrand2();
   testReverse2();
   testRightRotateChar();
