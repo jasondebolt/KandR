@@ -4,9 +4,10 @@
 #define CALC_ERROR -2
 #define RESULT 0
 #define NUMBER 1
-#define SIN 2
-#define EXP 3
-#define POW 4
+#define VARIABLE_GET 2
+#define SIN 3
+#define EXP 4
+#define POW 5
 
 #define MAX_BUFF_SIZE 1024
 char buffer[MAX_BUFF_SIZE];
@@ -47,12 +48,17 @@ void push(double c) {
   }
 }
 
+double peek() {
+  double top = pop();
+  push(top);
+  return top;
+}
 
 int getop(char s[]) {
   int c, c1, c2, i;
   i = 0;
   
-  while ((c = getch()) == ' ' || c == '\t')
+  while ((c = getch()) == ' ')
     ;
   ungetch(c);
 
@@ -88,6 +94,17 @@ int getop(char s[]) {
       ungetch(c2);
       ungetch(c1);
     }
+    if (c >= 'a' && c <= 'z') {
+      s[i++] = c;
+      s[i] = '\0';
+      return VARIABLE_GET;
+    }
+    if (c == '\t') {
+      if ((c1 = getch()) >= 'b' && c1 <= 'z') { // 'a' cannot be assigned to.
+        return c1;
+      }
+      ungetch(c1);
+    }
     if (c == '\n')
       return RESULT;
   }
@@ -101,8 +118,20 @@ int getop(char s[]) {
 #define MAX_NUM_SIZE 1024
 int main() {
   char s[MAX_NUM_SIZE];
+  double vars[26], result;
   int i;
   double tmp;
+
+  printf("Welcome to Reverse Polish Calc.\n");
+  printf("Usage:\n");
+  printf("\t (2 * 1 ) + (3 * 4) should be typed as 2 1 * 3 4 * +\n");
+  printf("\t Most recent result is assigned to variable a.\n");
+  printf("\t Follow expression by tab and variables b through z for assignment.\n");
+  printf("\t 6.2 3.1 / 4 5 * * should return 40.\n");
+  printf("\t a -4 / should return -10.\n");
+  printf("\t 2 3 +\\tb assigns 5 to variable b.\n");
+
+  printf("\n");
 
   while ((i = getop(s)) != EOF) {
     switch(i) {
@@ -110,10 +139,14 @@ int main() {
         fprintf(stderr, "main: getop could not return a valid response.\n");
         break;
       case RESULT:
-        printf("%f\n", pop());
+        vars['a' - 'a'] = result = pop(); // store result in variable a.
+        printf("%f\n", result);
         break;
       case NUMBER:
         push(atof(s));
+        break;
+      case VARIABLE_GET:
+        push(vars[s[0] - 'a']); // push the value of the variable.
         break;
       case SIN:
         push(sin(pop()));
@@ -137,11 +170,22 @@ int main() {
         break;
       case '/':
         tmp = pop();
+        if (tmp == 0) {
+          fprintf(stderr, "main: zero division error.\n");
+          exit(1);
+        }
         push(pop() / tmp);
         break;
       case '%':
         tmp = pop();
         push(fmod(pop(), tmp));
+        break;
+      case 'b': case 'c': case 'd': case 'e': case 'f':
+      case 'g': case 'h': case 'i': case 'j': case 'k':
+      case 'l': case 'm': case 'n': case 'o': case 'p':
+      case 'q': case 'r': case 's': case 't': case 'u':
+      case 'v': case 'w': case 'x': case 'y': case 'z':
+        vars[i - 'a'] = peek();
         break;
       default:
         break;
