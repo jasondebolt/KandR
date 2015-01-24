@@ -771,6 +771,21 @@ void testPrintd() {
   printf("\nPrintd tested.\n");
 }
 
+void testItoaRecurse() {
+  char s[MAX_STR_SIZE];
+  itoaRecurse(-987654, s, 0);
+  seq(s, "-987654");
+  itoaRecurse(1, s, 0);
+  seq(s, "1");
+  itoaRecurse(12345, s, 0);
+  seq(s, "12345");
+  itoaRecurse(0, s, 0);
+  seq(s, "0");
+  itoaRecurse(-10101010, s, 0);
+  seq(s, "-10101010");
+  printf("ItoaRecurse tested.\n");
+}
+
 
 int main() {
   /* Interactive programs */
@@ -809,6 +824,7 @@ int main() {
   testItoa2();
   testItoa3();
   testItoa4();
+  testItoaRecurse();
   testItobase();
   testItobin();
   testLogicalOperatorsCast();

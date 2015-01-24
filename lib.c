@@ -763,6 +763,30 @@ void itoa4(int n, char s[], int width) {
   strCat2(s, t);
 }
 
+void itoaRecurse(int n, char s[], int index) {
+  static int max_depth;
+  static int is_neg;
+  if (index == 0) {
+    if (n < 0) {
+      s[index] = '-';
+      is_neg = 1;
+      n = -n;
+    } else {
+      is_neg = 0;
+    }
+  }
+
+  if (n / 10) {
+    itoaRecurse(n / 10, s, index + 1);
+  } else {
+    // we've hit the end.
+    s[index + 1 + is_neg] = '\0';
+    max_depth = index + is_neg;
+  }
+
+  s[max_depth - index] = n % 10 + '0';
+}
+
 // This only handles positive numbers.
 void itobase(int n, char s[], int base) {
   int result;
