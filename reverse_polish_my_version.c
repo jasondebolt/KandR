@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
+#include <string.h>
 #define CALC_ERROR -2
 #define RESULT 0
 #define NUMBER 1
@@ -24,6 +26,16 @@ void ungetch(char c) {
     fprintf(stderr, "buffer full.\n");
     exit(1);
   }
+}
+
+void ungets(char s[]) {
+  int i;
+  i = 0;
+  while (s[i] != '\0')
+    ++i;
+
+  while (i > 0)
+    ungetch(s[--i]);
 }
 
 #define MAX_STACK_SIZE 1024
@@ -115,6 +127,22 @@ int getop(char s[]) {
   return CALC_ERROR;
 }
 
+void testUngets() {
+  assert(buffp == 0); 
+  ungetch('a');
+  assert(buffp == 1); 
+  getch();
+  assert(buffp == 0); 
+  ungets("jason");
+  assert(buffp == 5); 
+  assert(getch() == 'j');
+  assert(getch() == 'a');
+  assert(getch() == 's');
+  assert(getch() == 'o');
+  assert(getch() == 'n');
+  assert(buffp == 0); 
+}
+
 #define MAX_NUM_SIZE 1024
 int main() {
   char s[MAX_NUM_SIZE];
@@ -129,7 +157,7 @@ int main() {
   printf("\t Follow expression by tab and variables b through z for assignment.\n");
   printf("\t 6.2 3.1 / 4 5 * * should return 40.\n");
   printf("\t a -4 / should return -10.\n");
-  printf("\t 2 3 +\\tb assigns 5 to variable b.\n");
+  printf("\t 2 3 +[TAB]b assigns 5 to variable b.\n");
 
   printf("\n");
 
