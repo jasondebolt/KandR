@@ -131,6 +131,7 @@ int main() {
   printf("\t 6.2 3.1 / 4 5 * * should return 40.\n");
   printf("\t a -4 / should return -10.\n");
   printf("\t 2 3 +[TAB]b assigns 5 to variable b.\n");
+  printf("\t CTRL-D sends EOF to program to signal exit.\n");
 
   printf("\n");
 
