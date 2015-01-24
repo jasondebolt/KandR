@@ -18,6 +18,7 @@
 #define ONE_TWENTY_EIGHT "10000000"
 #define TWO_FIFTY_FIVE "11111111"
 #define VERY_SMALL 1e-8
+#define max(A, B) ((A) > (B) ? (A) : (B))
 
 enum Boolean {NO, YES};
 enum Escapes {NEWLINE = '\n', TAB = '\t'};

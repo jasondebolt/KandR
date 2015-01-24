@@ -803,6 +803,17 @@ void testItoaRecurse() {
 }
 
 
+void testMax() {
+  // test the max macro.
+  assert(max(1, 2) == 2);
+  assert(max(3, 2) == 3);
+  assert(max(1.23, 1.21) == 1.23);
+  assert(max('c', 'z') == 'z');
+  assert(max(3UL, 10UL) == 10UL);
+  printf("Max macro tested.\n");
+}
+
+
 int main() {
   /* Interactive programs */
   //testCountChars();
@@ -846,6 +857,7 @@ int main() {
   testLogicalOperatorsCast();
   testLower();
   testLowerAll();
+  testMax();
   testPrint10Char();
   testPrintCharAll();
   testPrintIntAll();
