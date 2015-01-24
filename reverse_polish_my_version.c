@@ -12,14 +12,14 @@
 #define POW 5
 
 #define MAX_BUFF_SIZE 1024
-char buffer[MAX_BUFF_SIZE];
+int buffer[MAX_BUFF_SIZE];
 int buffp = 0;
 
 char getch() {
   return (buffp > 0) ? buffer[--buffp] : getchar();
 }
 
-void ungetch(char c) {
+void ungetch(int c) {
   if (buffp < MAX_BUFF_SIZE) {
     buffer[buffp++] = c;
   } else {
@@ -141,6 +141,8 @@ void testUngets() {
   assert(getch() == 'o');
   assert(getch() == 'n');
   assert(buffp == 0); 
+  ungetch(EOF);
+  assert(getch() == EOF);
 }
 
 #define MAX_NUM_SIZE 1024
@@ -149,6 +151,8 @@ int main() {
   double vars[26], result;
   int i;
   double tmp;
+
+  //testUngets();
 
   printf("Welcome to Reverse Polish Calc.\n");
   printf("Usage:\n");
