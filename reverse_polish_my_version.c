@@ -66,59 +66,77 @@ double peek() {
   return top;
 }
 
+#define MAX_STR_SIZE 1024
 int getop(char s[]) {
-  int c, c1, c2, i;
-  i = 0;
-  
-  while ((c = getch()) == ' ')
-    ;
-  ungetch(c);
+  static char line[MAX_STR_SIZE];
+  static int cursor = 0;
+  int c, c1, i, i_str;
+  i = i_str = 0;
 
-  while ((c = getch()) != EOF) {
+  if (cursor == 0) {
+    while ((c = getchar()) != '\n' && i_str < MAX_STR_SIZE - 1 && c != EOF) {
+      line[i_str++] = c;
+    }
+
+    if (c == EOF)
+      return EOF;
+
+    line[i_str] = '\n';
+    line[i_str + 1] = '\0';
+  }
+  
+  while ((c = line[cursor]) == ' ')
+    cursor++;
+
+  while ((c = line[cursor]) != EOF) {
     if (c == '-') {
-      if (isdigit(c1 = getch()) || c1 == '.') {
+      if (isdigit(c1 = line[cursor + 1]) || c1 == '.') {
         s[i++] = c; // save the negative sign.
-        c = c1; // number or dot after negative sign is our new char.
-      } else {
-        ungetch(c1); // char wasn't a digit, put it back.
+        c = line[++cursor]; // number or dot after negative sign is our new char.
       }
     }
     if (isdigit(c) || c == '.') {
       s[i++] = c;
-      while (isdigit(c = getch()) || c == '.') {
+      c = line[++cursor];
+      while (isdigit(c) || c == '.') {
         s[i++] = c;
+        c = line[++cursor];
       }
-      ungetch(c);
       s[i] = '\0';
       return NUMBER;
     }
-    if (c == '+' || c == '*' || c == '-' || c == '/' || c == '%')
+    if (c == '+' || c == '*' || c == '-' || c == '/' || c == '%') {
+      ++cursor;
       return c;
-    if (c == 's' || c == 'e' || c == 'p') {
-      c1 = getch();
-      c2 = getch();
-      if (c == 's' && c1 == 'i' && c2 == 'n')
-        return SIN;
-      if (c == 'e' && c1 == 'x' && c2 == 'p')
-        return EXP;
-      if (c == 'p' && c1 == 'o' && c2 == 'w')
-        return POW;
-      ungetch(c2);
-      ungetch(c1);
+    }
+    if (c == 's' && line[cursor + 1] == 'i' && line[cursor + 2] == 'n') {
+      cursor += 3;
+      return SIN;
+    }
+    if (c == 'e' && line[cursor + 1] == 'x' && line[cursor + 2] == 'p') {
+      cursor += 3;
+      return EXP;
+    }
+    if (c == 'p' && line[cursor + 1] == 'o' && line[cursor + 2] == 'w') {
+      cursor += 3;
+      return POW;
     }
     if (c >= 'a' && c <= 'z') {
       s[i++] = c;
       s[i] = '\0';
+      ++cursor;
       return VARIABLE_GET;
     }
     if (c == '\t') {
-      if ((c1 = getch()) >= 'b' && c1 <= 'z') { // 'a' cannot be assigned to.
+      if ((c1 = line[cursor + 1]) >= 'b' && c1 <= 'z') { // 'a' cannot be assigned to.
+        ++cursor;
         return c1;
       }
-      ungetch(c1);
     }
-    if (c == '\n')
+    if (c == '\n') {
+      cursor = 0;
       return RESULT;
+    }
   }
 
   if (c == EOF)
