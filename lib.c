@@ -938,3 +938,17 @@ void assertAlmostEquals(double a, double b) {
   double diff = (a - b) < 0 ? (b - a) : (a - b);
   assert(diff < VERY_SMALL);
 }
+
+
+// Recursively print an integer, similar to itoa.
+void printd(int n) {
+  if (n < 0) {
+    putchar('-');
+    n = -n;
+  }
+
+  if (n / 10)
+    printd(n / 10);
+
+  putchar(n % 10 + '0');
+}

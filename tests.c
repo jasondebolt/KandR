@@ -758,6 +758,20 @@ void testAssertAlmostEquals() {
 }
 
 
+void testPrintd() {
+  printd(-123);
+  printf("\t");
+  printd(0);
+  printf("\t");
+  printd(1);
+  printf("\t");
+  printd(10);
+  printf("\t");
+  printd(456);
+  printf("\nPrintd tested.\n");
+}
+
+
 int main() {
   /* Interactive programs */
   //testCountChars();
@@ -821,5 +835,6 @@ int main() {
   testUpperHexLetter();
   testPow2();
   testPow3();
+  testPrintd();
   return 0;
 }

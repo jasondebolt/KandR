@@ -79,6 +79,7 @@ void lowerAll(char c[]);
 void print10Char(char c[]);
 void printBits(int n);
 void printCharAll(char c);
+void printd(int n);
 void printIntAll(int n);
 void quickSort(int v[], int left, int right);
 void reverse2(char s[]);
