@@ -1,152 +1,153 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <math.h>
-#define MAX_STR_SIZE 1024
+#define CALC_ERROR -2
+#define RESULT 0
+#define NUMBER 1
+#define SIN 2
+#define EXP 3
+#define POW 4
 
-int isDigit(char c) {
-  return c >= '0' && c <= '9';
+#define MAX_BUFF_SIZE 1024
+char buffer[MAX_BUFF_SIZE];
+int buffp = 0;
+
+char getch() {
+  return (buffp > 0) ? buffer[--buffp] : getchar();
 }
 
-
-int buffer[MAX_STR_SIZE];
-int bufp = 0;
-
-int getch() {
-  return (bufp > 0) ? buffer[--bufp] : getchar();
-}
-
-
-void ungetch(int c) {
-  if (bufp < MAX_STR_SIZE) {
-    buffer[bufp++] = c;
+void ungetch(char c) {
+  if (buffp < MAX_BUFF_SIZE) {
+    buffer[buffp++] = c;
   } else {
-    error("ungetch: no more buffer space.\n");
+    fprintf(stderr, "buffer full.\n");
+    exit(1);
   }
 }
-
 
 #define MAX_STACK_SIZE 1024
 double stack[MAX_STACK_SIZE];
 int stackp = 0;
 
-void push(double val) {
-  if (stackp < MAX_STACK_SIZE) {
-    stack[stackp++] = val;
-  } else {
-    error("push: stack is full!\n");
-  }
-}
-
 double pop() {
   if (stackp > 0) {
     return stack[--stackp];
   } else {
-    error ("pop: stack is empty.\n");
+    fprintf(stderr, "stack is empty, cannot pop.\n");
+    exit(1);
   }
 }
 
-/* Returns the next operator or operand.
-   This could return a character like '+' or a number like 123.456.
-*/
-double getOperatorOrOperand() {
-  char c, c1;
-  double num;
-  int i, dot_index, sign, has_dot;
-  num = i = dot_index = has_dot = 0;
-  sign = 1;
+void push(double c) {
+  if (stackp < MAX_STACK_SIZE) {
+    stack[stackp++] = c;
+  } else {
+    fprintf(stderr, "stack is full, cannot push.\n");
+    exit(1);
+  }
+}
 
 
+int getop(char s[]) {
+  int c, c1, c2, i;
+  i = 0;
+  
   while ((c = getch()) == ' ' || c == '\t')
     ;
+  ungetch(c);
 
-  ungetch(c); // put most recent non-whitespace char back on the buffer.
-
-  // This code is really smelly, but it works. Try rewriting a different version later.
   while ((c = getch()) != EOF) {
-    if (c == '-') { // handle negative numbers.
-      if (isDigit(c1 = getch()) || c1 == '.') {
-        sign = -1;
-        c = c1;
+    if (c == '-') {
+      if (isdigit(c1 = getch()) || c1 == '.') {
+        s[i++] = c; // save the negative sign.
+        c = c1; // number or dot after negative sign is our new char.
       } else {
-        ungetch(c1);
+        ungetch(c1); // char wasn't a digit, put it back.
       }
     }
-    if (c == '.') { // handle leading decimal numbers.
-      if (isDigit(c1 = getch())) {
-        c = c1;
-        dot_index = 0;
-        has_dot = 1;
-        ++i;
-      } else {
-        ungetch(c1);
+    if (isdigit(c) || c == '.') {
+      s[i++] = c;
+      while (isdigit(c = getch()) || c == '.') {
+        s[i++] = c;
       }
-    }
-    if (isDigit(c)) { // handle all other numbers, including floats.
-      while (isDigit(c) || c == '.') {
-        if (c == '.') {
-          dot_index = i;
-          has_dot = 1;
-          ++i;
-          c = getch();
-          continue;
-        }
-        num = num * 10 + c - '0';
-        ++i;
-        c = getch();
-      }
-      if (has_dot)
-        num = num / pow(10, i - dot_index - 1);
       ungetch(c);
-      i = 0;
-      continue;
+      s[i] = '\0';
+      return NUMBER;
     }
-    if (num > 0)
-      break;
-    switch (c) {
-      case '+': case '*': case '-': case '/': case '%':
-        return c;
-        break;
-      case '\n':
-        if (stackp != 1) {
-          error("Stack should only have one value!\n");
-          exit(1);
-        } else {
-          printf("%f\n", pop());
-        }
-        break;
-      default:
-        // neither operator or operand. Keep going until you find one.
-        break;
+    if (c == '+' || c == '*' || c == '-' || c == '/' || c == '%')
+      return c;
+    if (c == 's' || c == 'e' || c == 'p') {
+      c1 = getch();
+      c2 = getch();
+      if (c == 's' && c1 == 'i' && c2 == 'n')
+        return SIN;
+      if (c == 'e' && c1 == 'x' && c2 == 'p')
+        return EXP;
+      if (c == 'p' && c1 == 'o' && c2 == 'w')
+        return POW;
+      ungetch(c2);
+      ungetch(c1);
     }
+    if (c == '\n')
+      return RESULT;
   }
-  if (c == EOF)
-    exit(1);
 
-  return sign * num;
+  if (c == EOF)
+    return EOF;
+
+  return CALC_ERROR;
 }
 
+#define MAX_NUM_SIZE 1024
 int main() {
-  double op, tmp;
+  char s[MAX_NUM_SIZE];
+  int i;
+  double tmp;
 
-  while (1) {
-    op = getOperatorOrOperand();
-    if (op == '+') {
-      push(pop() + pop());
-    } else if (op == '*') {
-      push(pop() * pop());
-    } else if (op == '-') {
-      tmp = pop();
-      push(pop() - tmp);
-    } else if (op == '/') {
-      tmp = pop();
-      push(pop() / tmp);
-    } else if (op == '%') {
-      tmp = pop();
-      push(fmod(pop(), tmp));
-    } else {
-        push(op);
+  while ((i = getop(s)) != EOF) {
+    switch(i) {
+      case CALC_ERROR:
+        fprintf(stderr, "main: getop could not return a valid response.\n");
+        break;
+      case RESULT:
+        printf("%f\n", pop());
+        break;
+      case NUMBER:
+        push(atof(s));
+        break;
+      case SIN:
+        push(sin(pop()));
+        break;
+      case EXP:
+        push(exp(pop()));
+        break;
+      case POW:
+        tmp = pop();
+        push(pow(pop(), tmp));
+        break;
+      case '+':
+        push(pop() + pop());
+        break;
+      case '*':
+        push(pop() * pop());
+        break;
+      case '-':
+        tmp = pop();
+        push(pop() - tmp);
+        break;
+      case '/':
+        tmp = pop();
+        push(pop() / tmp);
+        break;
+      case '%':
+        tmp = pop();
+        push(fmod(pop(), tmp));
+        break;
+      default:
+        break;
     }
   }
+
+  printf("Thank you for using Reverse Polish Calculator.\n");
   return 0;
 }
