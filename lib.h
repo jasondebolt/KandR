@@ -19,6 +19,9 @@
 #define TWO_FIFTY_FIVE "11111111"
 #define VERY_SMALL 1e-8
 #define max(A, B) ((A) > (B) ? (A) : (B))
+#define swap2(t, x, y) (t = *x, *x = *y, *y = t)
+#define paste(front, back) front ## back
+#define square(x) ((x) * (x))
 
 enum Boolean {NO, YES};
 enum Escapes {NEWLINE = '\n', TAB = '\t'};

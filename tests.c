@@ -813,6 +813,43 @@ void testMax() {
   printf("Max macro tested.\n");
 }
 
+void testSquare() {
+  int z = 3;
+  assert(square(3) == 9);
+  assert(square(z + 1) == 16);
+  printf("Square tested.\n");
+}
+
+// paste(arg1, arg2) into token arg1arg2.
+void testPaste() {
+  char name1[MAX_STR_SIZE];
+  char nameA[MAX_STR_SIZE];
+  // paste(1, 2) is replaced by token 12.
+  assert(paste(1, 2) == 12);
+  // paste(name, 1) is replaced with token name1.
+  assert(paste(name, 1) == name1);
+  assert(paste(name, A) == nameA);
+  printf("paste macro tested.\n");
+}
+
+void testSwap2() {
+  // test the max macro.
+
+  int tmp, x = 1, y = 2;
+  swap2(tmp, &x, &y);
+  assert(x == 2 && y == 1);
+
+  char tmp2, a = 'a', b = 'b';
+  swap2(tmp2, &a, &b);
+  assert(a == 'b' && b == 'a');
+
+  double tmp3, first = 2.34, second = -9.23;
+  swap2(tmp3, &first, &second);
+  assert(first == -9.23 && second == 2.34);
+
+  printf("swap2 macro tested.\n");
+}
+
 
 int main() {
   /* Interactive programs */
@@ -858,6 +895,7 @@ int main() {
   testLower();
   testLowerAll();
   testMax();
+  testPaste();
   testPrint10Char();
   testPrintCharAll();
   testPrintIntAll();
@@ -869,6 +907,7 @@ int main() {
   testRightRotateInt();
   testSetBits();
   testShellSort();
+  testSquare();
   testSqueeze();
   testSqueezeMulti();
   testStrCat();
@@ -876,6 +915,7 @@ int main() {
   testStrCopy2();
   testStrIndex();
   testStrIndexRight();
+  testSwap2();
   testTrim();
   testUpperHexLetter();
   testPow2();
