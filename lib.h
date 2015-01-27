@@ -74,6 +74,7 @@ void calculator();
 void countChars();
 void escape(char s[], char t[]);
 void expand(char s[], char c[]);
+void getInt(int *n);
 void itoa(int n, char s[]);
 void itoa2(int n, char s[]);
 void itoa3(int n, char s[]);
