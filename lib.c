@@ -983,3 +983,27 @@ void printd(int n) {
 
   putchar(n % 10 + '0');
 }
+
+
+void getInt(int *n) {
+  char c;
+  int sign;
+
+  while ((c = getchar()) == ' ' || c == '\t')
+    ;
+
+  sign = (c == '-') ? -1 : 1;
+
+  if (c == '-' || c == '+')
+    c = getchar();
+
+  *n = 0;
+  if (isdigit(c)) {
+    while (isdigit(c)) {
+      *n = *n * 10 + c - '0';
+      c = getchar();
+    }
+  }
+
+  *n = *n * sign;
+}
