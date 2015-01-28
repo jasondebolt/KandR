@@ -998,8 +998,8 @@ void getInt(int *n) {
     c = getchar();
 
   *n = 0;
-  if (isdigit(c)) {
-    while (isdigit(c)) {
+  if (isDigit(c)) {
+    while (isDigit(c)) {
       *n = *n * 10 + c - '0';
       c = getchar();
     }
