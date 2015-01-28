@@ -108,7 +108,7 @@ int invertBits(int x, int pos, int len) {
 
 // private.
 unsigned char endToFrontChar(unsigned char x) {
-  if (x & 01 == 01) { // x is an odd number.
+  if ((x & 01) == 01) { // x is an odd number.
     x = x >> 1;
     x = x | ~((unsigned char) ~0 >> 1);
   } else {
@@ -126,7 +126,7 @@ unsigned char rightRotateChar(unsigned char x, int n) {
 
 // private.
 unsigned int endToFrontInt(unsigned int x) {
-  if (x & 01 == 01) { // x is an odd number.
+  if ((x & 01) == 01) { // x is an odd number.
     x = x >> 1;
     x = x | ~((unsigned int) ~0 >> 1);
   } else {
@@ -506,8 +506,8 @@ void strCat2(char s[], char t[]) {
 
 void strCopy2(char s[], char t[]) {
   int i = 0;
-  while ((s[i++] = t[i]) != '\0')
-    ;
+  while ((s[i] = t[i]) != '\0')
+    ++i;
 }
 
 int rand2(void) {

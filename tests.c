@@ -182,7 +182,7 @@ void charTests() {
 void negativeOneTests() {
   // Negative one can have many different representations!!!
   assert(-1 == 0xFFFFFFFF);
-  assert((unsigned long) -1 == 0xFFFFFFFF);
+  //assert((unsigned long) -1 == 0xFFFFFFFF); // doesn't work on mac.
   assert((unsigned int) -1 == 0xFFFFFFFF);
   assert((unsigned short) -1 == 0xFFFF);
   assert((unsigned char) -1 == 0xFF);
