@@ -850,12 +850,20 @@ void testSwap2() {
   printf("swap2 macro tested.\n");
 }
 
+void testGetInt() {
+  int n;
+  getInt(&n);
+  printf("There number you typed was %d\n", n);
+  printf("getInt tested.\n");
+}
+
 
 int main() {
   /* Interactive programs */
   //testCountChars();
   //testGetLine3();
   //calculator();
+  //testGetInt();
   charTests();
   intTests();
   limitTests();
