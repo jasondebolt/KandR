@@ -13,11 +13,11 @@
 
 #define MAX_STACK_SIZE 1024
 double stack[MAX_STACK_SIZE];
-int stackp = 0;
+double *stack_ptr = stack;
 
 double pop() {
-  if (stackp > 0) {
-    return stack[--stackp];
+  if (stack_ptr > stack) {
+    return *(--stack_ptr);
   } else {
     fprintf(stderr, "stack is empty, cannot pop.\n");
     exit(1);
@@ -25,8 +25,8 @@ double pop() {
 }
 
 void push(double c) {
-  if (stackp < MAX_STACK_SIZE) {
-    stack[stackp++] = c;
+  if (stack_ptr < stack + MAX_STACK_SIZE) {
+    *(stack_ptr++) = c;
   } else {
     fprintf(stderr, "stack is full, cannot push.\n");
     exit(1);
@@ -40,74 +40,76 @@ double peek() {
 }
 
 #define MAX_STR_SIZE 1024
-int getop(char s[]) {
+int getop(char *s) {
   static char line[MAX_STR_SIZE];
-  static int cursor = 0;
-  int c, c1, i, i_str;
-  i = i_str = 0;
+  static char *ptr = line;
+  int c, c1;
 
-  if (cursor == 0) {
-    while ((c = getchar()) != '\n' && i_str < MAX_STR_SIZE - 1 && c != EOF) {
-      line[i_str++] = c;
+  /* INPUT CODE START */
+  if (ptr == line) { // This block should only execute on the very first function call.
+    while ((c = getchar()) != '\n' && (ptr + 1 != NULL) && c != EOF) {
+      *ptr++ = c;
     }
 
     if (c == EOF)
       return EOF;
 
-    line[i_str] = '\n';
-    line[i_str + 1] = '\0';
+    *ptr++ = '\n';
+    *ptr = '\0';
+    ptr = line; // Send pointer back to first element of line, which now has data.
   }
-  
-  while ((c = line[cursor]) == ' ')
-    cursor++;
+  /* INPUT CODE END */
 
-  while ((c = line[cursor]) != EOF) {
+  while ((c = *ptr) == ' ')
+    ++ptr;
+
+  while ((c = *ptr) != EOF) {
     if (c == '-') {
-      if (isdigit(c1 = line[cursor + 1]) || c1 == '.') {
-        s[i++] = c; // save the negative sign.
-        c = line[++cursor]; // number or dot after negative sign is our new char.
+      if (isdigit(c1 = *(ptr + 1)) || c1 == '.') {
+        *s++ = c; // save the negative sign.
+        c = *(++ptr); // number or dot after negative sign is our new char.
       }
     }
     if (isdigit(c) || c == '.') {
-      s[i++] = c;
-      c = line[++cursor];
+      *s++ = c;
+      c = *(++ptr);
       while (isdigit(c) || c == '.') {
-        s[i++] = c;
-        c = line[++cursor];
+        *s++ = c;
+        c = *(++ptr);
       }
-      s[i] = '\0';
+      *s = '\0';
       return NUMBER;
     }
     if (c == '+' || c == '*' || c == '-' || c == '/' || c == '%') {
-      ++cursor;
+      ++ptr;
       return c;
     }
-    if (c == 's' && line[cursor + 1] == 'i' && line[cursor + 2] == 'n') {
-      cursor += 3;
+    if (c == 's' && *(ptr + 1) == 'i' && *(ptr + 2) == 'n') {
+      ptr += 3;
       return SIN;
     }
-    if (c == 'e' && line[cursor + 1] == 'x' && line[cursor + 2] == 'p') {
-      cursor += 3;
+    if (c == 'e' && *(ptr + 1) == 'x' && *(ptr + 2) == 'p') {
+      ptr += 3;
       return EXP;
     }
-    if (c == 'p' && line[cursor + 1] == 'o' && line[cursor + 2] == 'w') {
-      cursor += 3;
+    if (c == 'p' && *(ptr + 1) == 'o' && *(ptr + 2) == 'w') {
+      ptr += 3;
       return POW;
     }
     if (c >= 'a' && c <= 'z') {
-      s[i++] = c;
-      s[i] = '\0';
-      ++cursor;
+      *s++ = c;
+      *s = '\0';
+      ++ptr;
       return VARIABLE_GET;
     }
     if (c == '\t') {
-      if ((c1 = line[cursor + 1]) >= 'b' && c1 <= 'z') { // 'a' cannot be assigned to.
-        ++cursor;
+      if ((c1 = *(ptr + 1)) >= 'b' && c1 <= 'z') { // 'a' cannot be assigned to.
+        ++ptr;
         return c1;
       }
     }
     if (c == '\n') {
-      cursor = 0;
+      ptr = line; // Reset pointer to we can gather user input again.
       return RESULT;
     }
 
