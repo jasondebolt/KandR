@@ -1,4 +1,5 @@
 #include "lib.h"
+#include "math.h"
 
 
 unsigned btoi(char c[]) {
@@ -1006,4 +1007,37 @@ void getInt(int *n) {
   }
 
   *n = *n * sign;
+}
+
+
+// Reads a line of input into pointer to a double.
+int getFloat(double *f) {
+  char c;
+  int sign, dot_index, len;
+
+  while((c = getchar()) == ' ' || c == '\t')
+    ;
+
+  sign = (c == '-') ? -1 : 1;
+
+  if (c == '-' || c == '+')
+    c = getchar();
+
+  len = 0;
+  *f = 0;
+  while (c != '\n' && c != EOF) {
+    if (c == '.') {
+      dot_index = len;
+    } else if (isDigit(c)) {
+      *f = *f * 10 + c - '0';
+    } else {
+      return -1; // c is not a number.
+    }
+    ++len;
+    c = getchar();
+  }
+
+  *f = *f / pow3(10, len - dot_index - 1);
+  *f = sign * *f;
+  return 0;
 }

@@ -858,12 +858,28 @@ void testGetInt() {
 }
 
 
+
+void testGetFloat() {
+  double f;
+  printf("Enter a floating point number: ");
+  int error = getFloat(&f);
+  if (error) {
+    fprintf(stderr, "This number you entered was not a number.\n");
+    exit(1);
+  }
+  printf("%f\n", f);
+  printf("There number you typed was %f\n", f);
+  printf("getFloat tested.\n");
+}
+
+
 int main() {
   /* Interactive programs */
   //testCountChars();
   //testGetLine3();
   //calculator();
   //testGetInt();
+  //testGetFloat();
   charTests();
   intTests();
   limitTests();
