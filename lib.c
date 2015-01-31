@@ -1041,3 +1041,10 @@ int getFloat(double *f) {
   *f = sign * *f;
   return 0;
 }
+
+unsigned strlen3(char *s) {
+  int len = 0;
+  while (*s++ != '\0')
+    ++len;
+  return len;
+}

@@ -68,6 +68,7 @@ unsigned char rightRotateChar(unsigned char x, int n);
 unsigned int endToFrontInt(unsigned int x);
 unsigned int rightRotateInt(unsigned int x, int n);
 unsigned strlen2(char s[]);
+unsigned strlen3(char *s);
 void assertIntArrayEquals(int a[], int b[], int alen);
 void assertAlmostEquals(double a, double b);
 void calculator();

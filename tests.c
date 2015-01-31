@@ -873,6 +873,15 @@ void testGetFloat() {
 }
 
 
+void testStrLen3() {
+  char s[MAX_STR_SIZE] = "jason";
+  assert(strlen3(s) == 5);
+  strCopy2(s, "");
+  assert(strlen3(s) == 0);
+  printf("strlen3 tested.\n");
+}
+
+
 int main() {
   /* Interactive programs */
   //testCountChars();
@@ -939,6 +948,7 @@ int main() {
   testStrCopy2();
   testStrIndex();
   testStrIndexRight();
+  testStrLen3();
   testSwap2();
   testTrim();
   testUpperHexLetter();
