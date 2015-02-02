@@ -473,6 +473,37 @@ void testStrCopy2() {
   printf("StrCopy2 tested.\n");
 }
 
+void testStrCopy3() {
+  char s1[MAX_STR_SIZE];
+  char s2[MAX_STR_SIZE];
+  int result = strCopy3(s1, " jason ");
+  seq(s1, " jason ");
+  assert(result == 7);
+  printf("StrCopy3 tested.\n");
+}
+
+void testStrCopy4() {
+  char s1[MAX_STR_SIZE];
+  char s2[MAX_STR_SIZE];
+  unsigned result = strCopy4(s1, " jason ");
+  seq(s1, " jason ");
+  assert(result == 7);
+  result = strCopy4(s1, "");
+  seq(s1, "");
+  assert(result == 0);
+  printf("StrCopy4 tested.\n");
+}
+
+void testStrCopy5() {
+  char s1[MAX_STR_SIZE];
+  char s2[MAX_STR_SIZE];
+  strCopy5(s1, " jason ");
+  seq(s1, " jason ");
+  strCopy5(s1, "");
+  seq(s1, "");
+  printf("StrCopy5 tested.\n");
+}
+
 void testExpand() {
   char s[MAX_STR_SIZE];
   char c[MAX_STR_SIZE];
@@ -760,7 +791,7 @@ void testPow3() {
 void testGetLine3() {
   char s[MAX_STR_SIZE];
   int result;
-  
+
   result = getLine3(s, MAX_STR_SIZE);
   printf("%s\n", s);
   printf("%d\n", result);
@@ -967,6 +998,9 @@ int main() {
   testStrCat();
   testStrComp();
   testStrCopy2();
+  testStrCopy3();
+  testStrCopy4();
+  testStrCopy5();
   testStrIndex();
   testStrIndexRight();
   testStrLen3();

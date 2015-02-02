@@ -1077,3 +1077,24 @@ void free2(char *c) {
     exit(1);
   }
 }
+
+
+int strCopy3(char to[], char from[]) {
+  int i = 0;
+  while ((to[i] = from[i]) != '\0')
+    ++i;
+  return i;
+}
+
+
+unsigned strCopy4(char *to, char *from) {
+  char *diff = to;
+  while ((*to++ = *from++) != '\0')
+    ;
+  return to - diff - 1;
+}
+
+void strCopy5(char *to, char *from) {
+  while (*to++ = *from++) // '\0'
+    ;
+}
