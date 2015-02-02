@@ -881,6 +881,16 @@ void testStrLen3() {
   printf("strlen3 tested.\n");
 }
 
+
+void testStrLen4() {
+  char s[MAX_STR_SIZE] = "jason";
+  assert(strlen4(s) == 5);
+  strCopy2(s, "");
+  assert(strlen4(s) == 0);
+  printf("strlen4 tested.\n");
+}
+
+
 void testAlloc2() {
   // TODO(jason): Figure out why address of allocp is unchanged after alloc2 is
   // called.
@@ -960,6 +970,7 @@ int main() {
   testStrIndex();
   testStrIndexRight();
   testStrLen3();
+  testStrLen4();
   testSwap2();
   testTrim();
   testUpperHexLetter();

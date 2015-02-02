@@ -1049,6 +1049,14 @@ unsigned strlen3(char *s) {
   return len;
 }
 
+unsigned strlen4(char *s) {
+  char *c = s;
+  while (*s != '\0') {
+    s++;
+  }
+  return s - c;
+}
+
 char *alloc2(int n) {
   if (n <= allocbuf + BUFSIZE - allocp) {
     printf("OLD ALLOCP: %p\n", allocp);
