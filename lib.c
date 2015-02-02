@@ -1048,3 +1048,24 @@ unsigned strlen3(char *s) {
     ++len;
   return len;
 }
+
+char *alloc2(int n) {
+  if (n <= allocbuf + BUFSIZE - allocp) {
+    printf("OLD ALLOCP: %p\n", allocp);
+    allocp += n;
+    printf("NEW ALLOCP: %p\n", allocp);
+    return (allocp - n);
+  } else {
+    fprintf(stderr, "Not enough space.\n");
+    exit(1);
+  }
+}
+
+void free2(char *c) {
+  if (c >= allocbuf && c < allocbuf + BUFSIZE) {
+    allocp = c;
+  } else {
+    fprintf(stderr, "Pointer not within range.\n");
+    exit(1);
+  }
+}

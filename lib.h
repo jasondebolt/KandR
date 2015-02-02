@@ -29,8 +29,13 @@ enum Months {JAN = 1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC};
 
 static unsigned long int next2 = 1;
 
+#define BUFSIZE 1024
+static char allocbuf[BUFSIZE];
+static char *allocp = allocbuf;
+
 char *itobin(int n);
 char lower(int c);
+char *alloc2(int n);
 double atof2(char s[]);
 double atof3(char s[]);
 double pow3(double base, int exp);
@@ -75,6 +80,7 @@ void calculator();
 void countChars();
 void escape(char s[], char t[]);
 void expand(char s[], char c[]);
+void free2(char *c);
 int getFloat(double *f);
 void getInt(int *n);
 void itoa(int n, char s[]);

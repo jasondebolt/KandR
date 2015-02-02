@@ -881,6 +881,16 @@ void testStrLen3() {
   printf("strlen3 tested.\n");
 }
 
+void testAlloc2() {
+  // TODO(jason): Figure out why address of allocp is unchanged after alloc2 is
+  // called.
+  char *bp = alloc2(1024);
+  free2(bp);
+  bp = alloc2(1024);
+  free2(bp);
+  printf("alloc2 tested.\n");
+}
+
 
 int main() {
   /* Interactive programs */
@@ -902,6 +912,7 @@ int main() {
   testAtof2();
   testAtof3();
   testAtoi2();
+  testAlloc2();
   testBinSearch();
   testBinSearch2();
   testBitCount();
