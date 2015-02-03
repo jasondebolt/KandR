@@ -44,6 +44,7 @@ double atof3(char s[]);
 double pow3(double base, int exp);
 int any(char s[], char t[]);
 int atoi2(char s[]);
+int atoi3(char *s);
 int binsearch(int x, int v[], int n);
 int binsearch2(int x, int v[], int n);
 int bitCount(unsigned int n);

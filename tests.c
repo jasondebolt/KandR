@@ -403,6 +403,16 @@ void testAtoi2() {
   printf("Atoi2 tested.\n");
 }
 
+void testAtoi3() {
+  assert(atoi3("12345") == 12345);
+  assert(atoi3("  5678910") == 5678910);
+  assert(atoi3("+123") == 123);
+  assert(atoi3("-456") == -456);
+  assert(atoi3("    -7810") == -7810);
+  assert(atoi3("  -111333abc") == -111333);
+  printf("Atoi3 tested.\n");
+}
+
 void testUpperHexLetter() {
   assert(isUpperHexLetter('F'));
   printf("IsUpperHexLetter tested.\n");
@@ -1047,6 +1057,7 @@ int main() {
   testAtof2();
   testAtof3();
   testAtoi2();
+  testAtoi3();
   testAlloc2();
   testBinSearch();
   testBinSearch2();

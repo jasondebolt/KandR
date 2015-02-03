@@ -1088,9 +1088,7 @@ unsigned strlen4(char *s) {
 
 char *alloc2(int n) {
   if (n <= allocbuf + BUFSIZE - allocp) {
-    printf("OLD ALLOCP: %p\n", allocp);
     allocp += n;
-    printf("NEW ALLOCP: %p\n", allocp);
     return (allocp - n);
   } else {
     fprintf(stderr, "Not enough space.\n");
@@ -1184,4 +1182,24 @@ int strncmp2(char *s, char *t, unsigned n) {
     t++;
   }
   return *s - *t;
+}
+
+int atoi3(char *s) {
+  int n, sign;
+
+  while (*s == ' ' || *s == '\t')
+    ++s;
+
+  sign = (*s == '-') ? -1 : 1;
+
+  if (*s == '+' || *s == '-')
+    ++s;
+
+  n = 0;
+  while (*s != '\0' && isDigit(*s)) {
+    n = n * 10 + *s - '0';
+    ++s;
+  }
+
+  return sign * n;
 }
