@@ -663,6 +663,28 @@ void testItoa4() {
   printf("Itoa4 tested.\n");
 }
 
+void testItoa5() {
+  int num = 123456789;
+  char s[MAX_STR_SIZE];
+
+  itoa5(num, s);
+  seq(s, "123456789");
+
+  num = -3819300;
+  itoa5(num, s);
+  seq(s, "-3819300");
+
+  num = INT_MAX;
+  itoa5(num, s);
+  seq(s, "2147483647");
+
+  num = INT_MIN;
+  itoa5(num, s);
+  seq(s, "-2147483648");
+
+  printf("Itoa5 tested.\n");
+}
+
 void testItobase() {
   char s[MAX_STR_SIZE];
 
@@ -1078,6 +1100,8 @@ int main() {
   testItoa2();
   testItoa3();
   testItoa4();
+  testItoa5();
+  testItoa2();
   testItoaRecurse();
   testItobase();
   testItobin();

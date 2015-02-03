@@ -1203,3 +1203,38 @@ int atoi3(char *s) {
 
   return sign * n;
 }
+
+void itoa5(int n, char *s) {
+  int last, sign, is_max_or_min;
+
+  char *p = s;
+  sign = 1;
+
+  is_max_or_min = 0;
+  if (n == INT_MAX) {
+    n = n - 1;
+    is_max_or_min = 1;
+  }
+  if (n == INT_MIN) {
+    n = n + 1;
+    is_max_or_min = 1;
+  }
+
+  if (n < 0) {
+    sign = -1;
+    n = -n;
+  }
+
+  while (n > 0) {
+    last = n % 10;
+    *s++ = last + '0';
+    n = (n - last) / 10;
+  }
+  if (is_max_or_min) {
+    *p = *p + 1;
+  }
+  if (sign == -1)
+    *s++ = '-';
+  *s = '\0';
+  reverse2(p);
+}

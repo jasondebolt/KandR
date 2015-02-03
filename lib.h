@@ -98,6 +98,7 @@ void itoa(int n, char s[]);
 void itoa2(int n, char s[]);
 void itoa3(int n, char s[]);
 void itoa4(int n, char s[], int width);
+void itoa5(int n, char *s);
 void itoaRecurse(int n, char s[], int index);
 void itobase(int n, char s[], int base);
 void lowerAll(char c[]);
