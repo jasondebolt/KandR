@@ -255,8 +255,8 @@ void testStrComp() {
   char name[] = "my first name";
   char name2[] = "-one-two-three-four five--six";
   char name3[] = "AoneAtwoAthree";
-  assert(strComp(a, b) == -1);
-  assert(strComp(b, a) == 1);
+  assert(strComp(a, b) < 0);
+  assert(strComp(b, a) > 0);
   assert(strComp(a, a) == 0);
   printf("StrComp tested.\n");
 }
@@ -267,8 +267,8 @@ void testStrComp2() {
   char name[] = "my first name";
   char name2[] = "-one-two-three-four five--six";
   char name3[] = "AoneAtwoAthree";
-  assert(strComp2(a, b) == -1);
-  assert(strComp2(b, a) == 1);
+  assert(strComp2(a, b) < 0);
+  assert(strComp2(b, a) > 0);
   assert(strComp2(a, a) == 0);
   printf("StrComp2 tested.\n");
 }
@@ -279,8 +279,8 @@ void testStrComp3() {
   char name[] = "my first name";
   char name2[] = "-one-two-three-four five--six";
   char name3[] = "AoneAtwoAthree";
-  assert(strComp3(a, b) == -1);
-  assert(strComp3(b, a) == 1);
+  assert(strComp3(a, b) < 0);
+  assert(strComp3(b, a) > 0);
   assert(strComp3(a, a) == 0);
   printf("StrComp3 tested.\n");
 }
@@ -291,8 +291,8 @@ void testStrComp4() {
   char name[] = "my first name";
   char name2[] = "-one-two-three-four five--six";
   char name3[] = "AoneAtwoAthree";
-  assert(strComp4(a, b) == -1);
-  assert(strComp4(b, a) == 1);
+  assert(strComp4(a, b) < 0);
+  assert(strComp4(b, a) > 0);
   assert(strComp4(a, a) == 0);
   printf("StrComp4 tested.\n");
 }
@@ -984,6 +984,48 @@ void testAlloc2() {
   printf("alloc2 tested.\n");
 }
 
+void testStrnCpy2() {
+  char s[MAX_STR_SIZE];
+  char t[MAX_STR_SIZE] = "jason";
+  char *result = strncpy2(s, t, 1);
+  seq(result, "j");
+  result = strncpy2(s, "a  bcde", 3);
+  seq(result, "a  ");
+  result = strncpy2(s, "a  bcde", 100);
+  seq(result, "a  bcde");
+  printf("StrnCpy2 tested.\n");
+}
+
+
+void testStrnCat2() {
+  char s[MAX_STR_SIZE] = "jason";
+  char t[MAX_STR_SIZE] = " foo blah";
+  char *result = strncat2(s, t, 4);
+  seq(s, "jason foo");
+  result = strncat2(s, " bar.", 100);
+  seq(s, "jason foo bar.");
+  result = strncat2(s, t, 100);
+  seq(s, "jason foo bar. foo blah");
+  printf("StrnCat2 tested.\n");
+}
+
+
+void testStrnCmp2() {
+  char s[MAX_STR_SIZE] = "jason";
+  char t[MAX_STR_SIZE] = "jasoo";
+  assert(strncmp2(s, s, 0) == 0);
+  assert(strncmp2(s, s, 1) == 0);
+  assert(strncmp2(s, s, 2) == 0);
+  assert(strncmp2(s, s, 3) == 0);
+  assert(strncmp2(s, s, 4) == 0);
+  assert(strncmp2(s, t, 5) < 0);
+  assert(strncmp2(s, t, 100) < 0);
+  assert(strncmp2(t, s, 5) > 0);
+  assert(strncmp2(t, s, 100) > 0);
+  printf("StrnCmp2 tested.\n");
+}
+ 
+
 
 int main() {
   /* Interactive programs */
@@ -1047,6 +1089,9 @@ int main() {
   testSquare();
   testSqueeze();
   testSqueezeMulti();
+  testStrnCpy2();
+  testStrnCat2();
+  testStrnCmp2();
   testStrCat();
   testStrCat3();
   testStrComp();

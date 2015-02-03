@@ -1148,3 +1148,40 @@ int strEnd2(char *s, char *t) {
   }
   return 0;
 }
+
+char *strncpy2(char *s, char *t, unsigned n) {
+  int i;
+  char *p = s;
+  for (i = 0; i < n; ++i, ++s, ++t) {
+    *s = *t;
+    if (*s == '\0')
+      return p;
+  }
+  *s = '\0';
+  return p;
+}
+
+char *strncat2(char *s, char *t, unsigned n) {
+  int i;
+  char *p = s;
+  while (*s != '\0')
+    ++s;
+  for (i = 0; i < n; ++i, ++s, ++t) {
+    *s = *t;
+    if (*s == '\0')
+      return p;
+  }
+  *s = '\0';
+  return p;
+}
+
+int strncmp2(char *s, char *t, unsigned n) {
+  char *p = s;
+  while (*s == *t && s - p < n) {
+    if (*s == '\0')
+      return 0;
+    s++;
+    t++;
+  }
+  return *s - *t;
+}
