@@ -1135,3 +1135,16 @@ void strCat3(char *s, char *t) {
   for (; (*s = *t) != '\0'; s++, t++)
     ;
 }
+
+int strEnd2(char *s, char *t) {
+  char *p = t;
+  while (*t != '\0')
+    t++;
+  while (*s != '\0')
+    s++;
+  for (; *s == *t; --s, --t) {
+    if (p == t)
+      return 1;
+  }
+  return 0;
+}

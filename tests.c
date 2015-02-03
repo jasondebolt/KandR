@@ -964,6 +964,15 @@ void testStrLen4() {
   printf("strlen4 tested.\n");
 }
 
+void testStrEnd2() {
+  assert(strEnd2("jason", "on") == 1);
+  assert(strEnd2("jason ", "on ") == 1);
+  assert(strEnd2("jason a ", " ") == 1);
+  assert(strEnd2("jason", "n") == 1);
+  assert(strEnd2(" j a s o n ", " a s o n ") == 1);
+  assert(strEnd2(" j a s o n ", " j a s o n ") == 1);
+  printf("strEnd2 tested.\n");
+}
 
 void testAlloc2() {
   // TODO(jason): Figure out why address of allocp is unchanged after alloc2 is
@@ -1048,6 +1057,7 @@ int main() {
   testStrCopy3();
   testStrCopy4();
   testStrCopy5();
+  testStrEnd2();
   testStrIndex();
   testStrIndexRight();
   testStrLen3();
