@@ -1127,3 +1127,11 @@ void strCopy5(char *to, char *from) {
   while (*to++ = *from++) // '\0'
     ;
 }
+
+
+void strCat3(char *s, char *t) {
+  while (*s != '\0')
+    s++;
+  for (; (*s = *t) != '\0'; s++, t++)
+    ;
+}

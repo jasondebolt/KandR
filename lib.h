@@ -110,6 +110,7 @@ void squeeze(char s[], int c);
 void squeezeMulti(char s[], char c[]);
 void srand2(unsigned int seed);
 void strCat2(char s[], char t[]);
+void strCat3(char *s, char *t);
 void strCopy2(char s[], char t[]);
 void strCopy5(char *to, char *from);
 void swap(char *one, char *two);

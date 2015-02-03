@@ -447,6 +447,13 @@ void testStrCat() {
   printf("StrCat2 tested.\n");
 }
 
+void testStrCat3() {
+  char name[30] = "jason";
+  strCat3(name, " debolt");
+  assert(strComp4(name, "jason debolt") == 0);
+  printf("StrCat3 tested.\n");
+}
+
 void testRand2AndSrand2() {
   int i;
   for (i = 0; i < 3; ++i) {
@@ -1032,6 +1039,7 @@ int main() {
   testSqueeze();
   testSqueezeMulti();
   testStrCat();
+  testStrCat3();
   testStrComp();
   testStrComp2();
   testStrComp3();
