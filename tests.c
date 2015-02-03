@@ -261,6 +261,42 @@ void testStrComp() {
   printf("StrComp tested.\n");
 }
 
+void testStrComp2() {
+  char a[] = "one";
+  char b[] = "onf";
+  char name[] = "my first name";
+  char name2[] = "-one-two-three-four five--six";
+  char name3[] = "AoneAtwoAthree";
+  assert(strComp2(a, b) == -1);
+  assert(strComp2(b, a) == 1);
+  assert(strComp2(a, a) == 0);
+  printf("StrComp2 tested.\n");
+}
+
+void testStrComp3() {
+  char a[] = "one";
+  char b[] = "onf";
+  char name[] = "my first name";
+  char name2[] = "-one-two-three-four five--six";
+  char name3[] = "AoneAtwoAthree";
+  assert(strComp3(a, b) == -1);
+  assert(strComp3(b, a) == 1);
+  assert(strComp3(a, a) == 0);
+  printf("StrComp3 tested.\n");
+}
+
+void testStrComp4() {
+  char a[] = "one";
+  char b[] = "onf";
+  char name[] = "my first name";
+  char name2[] = "-one-two-three-four five--six";
+  char name3[] = "AoneAtwoAthree";
+  assert(strComp4(a, b) == -1);
+  assert(strComp4(b, a) == 1);
+  assert(strComp4(a, a) == 0);
+  printf("StrComp4 tested.\n");
+}
+
 void testReverse2() {
   char name[] = "jason";
   char name2[] = "four";
@@ -997,6 +1033,9 @@ int main() {
   testSqueezeMulti();
   testStrCat();
   testStrComp();
+  testStrComp2();
+  testStrComp3();
+  testStrComp4();
   testStrCopy2();
   testStrCopy3();
   testStrCopy4();
