@@ -1238,3 +1238,15 @@ void itoa5(int n, char *s) {
   *s = '\0';
   reverse2(p);
 }
+
+void reverse3(char *s) {
+  char tmp, *p = s;
+
+  while (*p != '\0')
+    ++p;
+  --p;
+
+  for (; s < p; s++, p--) {
+    tmp = *s, *s = *p, *p = tmp;
+  }
+}

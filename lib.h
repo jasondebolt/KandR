@@ -109,6 +109,7 @@ void printd(int n);
 void printIntAll(int n);
 void quickSort(int v[], int left, int right);
 void reverse2(char s[]);
+void reverse3(char *s);
 void reverseRecurse(char s[], int start, int end);
 void seq(char *a, char *b);
 void shellSort(int v[], int n);

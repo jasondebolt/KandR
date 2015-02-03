@@ -310,6 +310,19 @@ void testReverse2() {
   printf("Reverse2 tested.\n");
 }
 
+void testReverse3() {
+  char name[] = "jason";
+  char name2[] = "four";
+  char name3[] = "a";
+  reverse3(name);
+  assert(strComp(name, "nosaj") == 0);
+  reverse3(name2);
+  assert(strComp(name2, "ruof") == 0);
+  reverse3(name3);
+  assert(strComp(name3, "a") == 0);
+  printf("Reverse3 tested.\n");
+}
+
 void testReverseRecurse() {
   char name[] = "jason";
   char name2[] = "four";
@@ -1116,6 +1129,7 @@ int main() {
   testQuickSort();
   testRand2AndSrand2();
   testReverse2();
+  testReverse3();
   testReverseRecurse();
   testRightRotateChar();
   testRightRotateInt();
