@@ -745,6 +745,24 @@ void testStrIndex() {
   printf("StrIndex tested.\n");
 }
 
+
+void testStrIndex2() {
+  char s[MAX_STR_SIZE] = "jason was here.";
+  char t[MAX_STR_SIZE] = "was";
+  assert(strIndex2(s, t) == 6);
+
+  strCopy2(s, "foo bar baz");
+  strCopy2(t, "z");
+  assert(strIndex2(s, t) == 10);
+
+  strCopy2(s, "foo bar baz");
+  strCopy2(t, "f");
+  assert(strIndex2(s, t) == 0);
+
+  printf("StrIndex2 tested.\n");
+}
+
+
 void testStrIndexRight() {
   char s[MAX_STR_SIZE] = "was was";
   char t[MAX_STR_SIZE] = "was";
@@ -1153,6 +1171,7 @@ int main() {
   testStrCopy5();
   testStrEnd2();
   testStrIndex();
+  testStrIndex2();
   testStrIndexRight();
   testStrLen3();
   testStrLen4();

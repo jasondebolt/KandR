@@ -1250,3 +1250,14 @@ void reverse3(char *s) {
     tmp = *s, *s = *p, *p = tmp;
   }
 }
+
+int strIndex2(char *s, char *t) {
+  char *sp, *tp, *start = s;
+  for (; *s != '\0'; ++s) {
+    for (sp = s, tp = t; *sp == *tp && *tp != '\0'; ++sp, ++tp)
+      ;
+    if (*tp == '\0')
+      return  s - start;
+  }
+  return -1;
+}

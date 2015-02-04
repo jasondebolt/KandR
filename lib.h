@@ -74,6 +74,7 @@ int strComp4(char *s, char *t);
 int strCopy3(char to[], char from[]);
 int strEnd2(char *s, char *t);
 int strIndex(char s[], char t[]);
+int strIndex2(char *s, char *t);
 int strIndexRight(char s[], char t[]);
 int strln(char one[]);
 int trim2(char arr[]);
