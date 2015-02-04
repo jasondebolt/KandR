@@ -894,14 +894,37 @@ void testPow3() {
   printf("Pow3 tested.\n");
 }
 
+void testGetLine2() {
+  char s[MAX_STR_SIZE];
+  int result;
+
+  printf("Type the name 'jason' and press enter: ");
+  result = getLine2(s, MAX_STR_SIZE);
+  char expected[MAX_STR_SIZE] = {'j', 'a', 's', 'o', 'n', '\n'};
+  seq(s, expected);
+  printf("GetLine2 tested.\n");
+}
+
 void testGetLine3() {
   char s[MAX_STR_SIZE];
   int result;
 
+  printf("Type the name 'jason' and press enter: ");
   result = getLine3(s, MAX_STR_SIZE);
-  printf("%s\n", s);
-  printf("%d\n", result);
+  char expected[MAX_STR_SIZE] = {'j', 'a', 's', 'o', 'n', '\n'};
+  seq(s, expected);
   printf("GetLine3 tested.\n");
+}
+
+void testGetLine4() {
+  char s[MAX_STR_SIZE];
+  int result;
+
+  printf("Type the name 'jason' and press enter: ");
+  result = getLine4(s, MAX_STR_SIZE);
+  char expected[MAX_STR_SIZE] = {'j', 'a', 's', 'o', 'n', '\n'};
+  seq(s, expected);
+  printf("GetLine4 tested.\n");
 }
 
 void testAssertAlmostEquals() {
@@ -1093,7 +1116,9 @@ void testStrnCmp2() {
 int main() {
   /* Interactive programs */
   //testCountChars();
+  //testGetLine2();
   //testGetLine3();
+  //testGetLine4();
   //calculator();
   //testGetInt();
   //testGetFloat();

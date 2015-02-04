@@ -555,35 +555,6 @@ int isLeapYear(int year) {
   return 0;
 }
 
-/* Reads a line of input into char s[], returns the length.
- *
- * USAGE:
- *   char line[MAX_LINE_LEN];
- *   int i;
- *   while ((i = getLine2(line, MAX_LINE_LEN)) >= 0) {
- *     printf("%s\tlen:%d\n", line, i);
- *   }
- */
-int getLine2(char s[], int lim) {
-  int c, i;
-
-  i = 0;
-  while (1) {
-    c = getchar();
-    if (i >= lim)
-      break;
-    else if (c == EOF)
-      break;
-    else if (c == '\n')
-      break;
-    else
-      s[i] = c;
-      ++i;
-  }
-  s[i] = '\0';
-  return i;
-}
-
 
 /* Counts number of digits, whitespace, and other chars.
 */
@@ -929,16 +900,64 @@ double pow3(double base, int exp) {
 }
 
 /* Reads a line of input into char s[], returns the length.
+ *
+ * USAGE:
+ *   char line[MAX_LINE_LEN];
+ *   int i;
+ *   while ((i = getLine2(line, MAX_LINE_LEN)) >= 0) {
+ *     printf("%s\tlen:%d\n", line, i);
+ *   }
+ */
+int getLine2(char s[], int lim) {
+  int c, i;
+
+  i = 0;
+  while (1) {
+    c = getchar();
+    if (i >= lim)
+      break;
+    else if (c == EOF)
+      break;
+    else if (c == '\n')
+      break;
+    else
+      s[i] = c;
+      ++i;
+  }
+  if (c == '\n')
+    s[i++] = '\n';
+  s[i] = '\0';
+  return i;
+}
+
+/* Reads a line of input into char s[], returns the length.
  */
 int getLine3(char s[], int lim) {
   int i;
   char c;
 
-  for (i = 0; ((c = getchar()) != '\n') && i < lim; ++i) {
+  for (i = 0; ((c = getchar()) != '\n' && c != EOF) && i < lim; ++i) {
     s[i] = c;
   }
+  // Notice that no newline is appended for EOF
+  if (c == '\n')
+    s[i++] = '\n';
   s[i] = '\0';
   return i;
+}
+
+
+int getLine4(char *line, int maxlen) {
+  char c;
+  char *start = line;
+  while((c = getchar()) != '\n' && c != EOF && line - start < maxlen) {
+    *line++ = c;
+  }
+  // Notice that no newline is appended for EOF
+  if (c == '\n')
+    *line++ = c;
+  *line = '\0';
+  return line - start;
 }
 
 void calculator() {

@@ -53,6 +53,7 @@ int getFloat(double *f);
 int getIntFromHexChar(char c);
 int getLine2(char s[], int lim);
 int getLine3(char s[], int lim);
+int getLine4(char *line, int maxlen);
 int htoi(char s[]);
 int intArrayEquals(int a[], int b[], int alen);
 int invertBits(int x, int pos, int len);
