@@ -1134,7 +1134,7 @@ void testStrings1() {
   int i;
   for (i = 0; vals[i] != NULL; ++i)
     printf("%s\t", vals[i]);
-  printf("\ntestString1 tested.\n");
+  printf("\ntestStrings1 tested.\n");
 }
 
 void testStrings2() {
@@ -1142,7 +1142,7 @@ void testStrings2() {
   char **items = vals;
   while (*items != NULL)
     printf("%s\t", *items++);
-  printf("\ntestString2 tested.\n");
+  printf("\ntestStrings2 tested.\n");
 }
 
 void testStrings3() {
@@ -1152,6 +1152,35 @@ void testStrings3() {
     printf("%s\t", vals[i]);
   }
   printf("\ntestString3 tested.\n");
+}
+
+void testStrings4() {
+  char *vals[] = {"jason", "stella", "rachelle", "justin", "greg", "kourtni", "adam"};
+  char **items = vals;
+  int i;
+  seq(*items, "jason");
+  assert(**items == 'j');
+  assert(*(*items)++ == 'j');
+  assert(*(*items)++ == 'a');
+  assert(*(*items)++ == 's');
+  assert(*(*items)++ == 'o');
+  assert(*(*items)++ == 'n');
+  assert(*(*items) == '\0');
+  seq(*++items, "stella");
+  assert(*(*items)++ == 's');
+  assert(*(*items)++ == 't');
+  assert(*(*items)++ == 'e');
+  assert(*(*items)++ == 'l');
+  assert(*(*items)++ == 'l');
+  assert(*(*items)++ == 'a');
+  assert(*(*items) == '\0');
+  seq(*++items, "rachelle");
+  seq(*++items, "justin");
+  seq(*++items, "greg");
+  seq(*++items, "kourtni");
+  seq(*++items, "adam");
+  // *++items is garbage after this...
+  printf("\ntestStrings4 tested.\n");
 }
 
 int main() {
@@ -1166,6 +1195,7 @@ int main() {
   testStrings1();
   testStrings2();
   testStrings3();
+  testStrings4();
   charTests();
   intTests();
   limitTests();

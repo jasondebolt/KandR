@@ -209,20 +209,21 @@ void testMergeInt() {
   printf("mergeInt tested.\n");
 }
 
-void mergeString(char *v[], int low, int mid, int high) {
-  // Jason to implement.
+void mergeString(char **v, int low, int mid, int high) {
+  printf("%c\n", *(*v)++);
+  printf("%c\n", *(*v)++);
 }
 
 void testMergeString() {
   char *v[] = {"afoo", "cfoo", "ffoo", "bfoo", "dfoo", "jfoo", NULL};
   int low = 0, mid = 2, high = 5;
   mergeString(v, low, mid, high);
-  printf("%s\n", v[0]);
-  printf("%s\n", v[1]);
-  printf("%s\n", v[2]);
-  printf("%s\n", v[3]);
-  printf("%s\n", v[4]);
-  printf("%s\n", v[5]);
+  //printf("%s\n", v[0]);
+  //printf("%s\n", v[1]);
+  //printf("%s\n", v[2]);
+  //printf("%s\n", v[3]);
+  //printf("%s\n", v[4]);
+  //printf("%s\n", v[5]);
   printf("mergeString tested.\n");
 }
 
