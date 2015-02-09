@@ -992,22 +992,40 @@ void testPaste() {
   printf("paste macro tested.\n");
 }
 
-void testSwap2() {
+void testSwapMacro() {
   // test the max macro.
 
   int tmp, x = 1, y = 2;
-  swap2(tmp, &x, &y);
+  swapMacro(tmp, &x, &y);
   assert(x == 2 && y == 1);
 
   char tmp2, a = 'a', b = 'b';
-  swap2(tmp2, &a, &b);
+  swapMacro(tmp2, &a, &b);
   assert(a == 'b' && b == 'a');
 
   double tmp3, first = 2.34, second = -9.23;
-  swap2(tmp3, &first, &second);
+  swapMacro(tmp3, &first, &second);
   assert(first == -9.23 && second == 2.34);
 
-  printf("swap2 macro tested.\n");
+  printf("swapMacro macro tested.\n");
+}
+
+void testSwap3() {
+  // test swap 3.
+
+  int x = 1, y = 2;
+  swap3(&x, &y, sizeof(int));
+  assert(x == 2 && y == 1);
+
+  char a = 'a', b = 'b';
+  swap3(&a, &b, sizeof(char));
+  assert(a == 'b' && b == 'a');
+
+  double first = 2.34, second = -9.23;
+  swap3(&first, &second, sizeof(double));
+  assert(first == -9.23 && second == 2.34);
+
+  printf("swap3 tested.\n");
 }
 
 void testGetInt() {
@@ -1110,8 +1128,31 @@ void testStrnCmp2() {
   assert(strncmp2(t, s, 100) > 0);
   printf("StrnCmp2 tested.\n");
 }
- 
 
+void testStrings1() {
+  char *vals[] = {"jason", "stella", "rachelle", "justin", "greg", "kourtni", "adam", NULL};
+  int i;
+  for (i = 0; vals[i] != NULL; ++i)
+    printf("%s\t", vals[i]);
+  printf("\ntestString1 tested.\n");
+}
+
+void testStrings2() {
+  char *vals[] = {"jason", "stella", "rachelle", "justin", "greg", "kourtni", "adam", NULL};
+  char **items = vals;
+  while (*items != NULL)
+    printf("%s\t", *items++);
+  printf("\ntestString2 tested.\n");
+}
+
+void testStrings3() {
+  char *vals[] = {"jason", "stella", "rachelle", "justin", "greg", "kourtni", "adam"};
+  int i;
+  for (i = 0; i < sizeof(vals) / sizeof(vals[0]); ++i) {
+    printf("%s\t", vals[i]);
+  }
+  printf("\ntestString3 tested.\n");
+}
 
 int main() {
   /* Interactive programs */
@@ -1122,6 +1163,9 @@ int main() {
   //calculator();
   //testGetInt();
   //testGetFloat();
+  testStrings1();
+  testStrings2();
+  testStrings3();
   charTests();
   intTests();
   limitTests();
@@ -1200,7 +1244,8 @@ int main() {
   testStrIndexRight();
   testStrLen3();
   testStrLen4();
-  testSwap2();
+  testSwap3();
+  testSwapMacro();
   testTrim();
   testUpperHexLetter();
   testPow2();

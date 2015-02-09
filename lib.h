@@ -7,6 +7,8 @@
 
 #define dprint(expr)  printf(#expr " = %d\n", expr)
 #define MAX_STR_SIZE 1024
+#define MAX_LINE_LEN 1024
+#define MAX_LINES 10000
 #define MAX_BIT_STRING_SIZE 8
 #define ZERO "00000000"
 #define TEN "00001010"
@@ -19,7 +21,7 @@
 #define TWO_FIFTY_FIVE "11111111"
 #define VERY_SMALL 1e-8
 #define max(A, B) ((A) > (B) ? (A) : (B))
-#define swap2(t, x, y) (t = *x, *x = *y, *y = t)
+#define swapMacro(t, x, y) (t = *x, *x = *y, *y = t)
 #define paste(front, back) front ## back
 #define square(x) ((x) * (x))
 
@@ -123,6 +125,8 @@ void strCat3(char *s, char *t);
 void strCopy2(char s[], char t[]);
 void strCopy5(char *to, char *from);
 void swap(char *one, char *two);
+//void swap2(void *arr[], int a, int b);
+void swap3(void *a, void *b, size_t size);
 void swapInt(int *one, int *two);
 void unescape(char s[], char t[]);
 

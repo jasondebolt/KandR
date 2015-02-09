@@ -250,6 +250,25 @@ void swap(char *one, char *two) {
   *two = tmp;
 }
 
+//void swap2(void *arr[], int a, int b) {
+//  void *tmp = arr[a];
+//  arr[a] = arr[b];
+//  arr[b] = tmp;
+//}
+
+// Copied from the web. Works with any object.
+void swap3(void *a, void *b, size_t size) {
+  unsigned char *ap = a;
+  unsigned char *bp = b;
+  size_t i;
+
+  for (i = 0; i < size; ++i) {
+    unsigned char tmp = ap[i];
+    ap[i] = bp[i];
+    bp[i] = tmp;
+  }
+}
+
 void swapInt(int *one, int *two) {
   int tmp = *one;
   *one = *two;
