@@ -1189,6 +1189,33 @@ void testStrings4() {
   printf("\ntestStrings4 tested.\n");
 }
 
+
+void testDayOfYear() {
+  assert(dayOfYear(2012, 1, 31) == 31);
+  assert(dayOfYear(2012, 2, 20) == 51);
+  assert(dayOfYear(1999, 3, 1) == 60);
+  assert(dayOfYear(2000, 3, 1) == 61); // leap year.
+  assert(dayOfYear(1999, 12, 31) == 365);
+  assert(dayOfYear(2000, 12, 31) == 366); // leap year.
+  printf("DayOfYear tested.\n");
+}
+
+void testMonthDay() {
+  int pmonth, pday;
+  monthDay(2012, 31, &pmonth, &pday);
+  assert(pmonth == 1 && pday == 31);
+  monthDay(2012, 51, &pmonth, &pday);
+  assert(pmonth == 2 && pday == 20);
+  monthDay(1999, 60, &pmonth, &pday);
+  assert(pmonth == 3 && pday == 1);
+  monthDay(2000, 61, &pmonth, &pday);
+  assert(pmonth == 3 && pday == 1);
+  monthDay(1999, 365, &pmonth, &pday);
+  assert(pmonth == 12 && pday == 31);
+  monthDay(2000, 366, &pmonth, &pday);
+  assert(pmonth == 12 && pday == 31);
+}
+
 int main() {
   /* Interactive programs */
   //testCountChars();
@@ -1223,6 +1250,7 @@ int main() {
   testBits();
   testBtoi();
   testComparisonBetweenSignedAndUnsignedValues();
+  testDayOfYear();
   testDprint();
   testEscapeAndUnescape();
   testExpand();
@@ -1245,6 +1273,7 @@ int main() {
   testLower();
   testLowerAll();
   testMax();
+  testMonthDay();
   testPaste();
   testPrint10Char();
   testPrintCharAll();
