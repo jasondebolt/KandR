@@ -4,6 +4,7 @@
 #define MAX_LINE_LEN 1024
 #define MAX_LINES 10000
 #define MAX_BUF_LEN MAX_LINE_LEN * MAX_LINES
+#define MAX_LINE_STORE MAX_LINES * 100
 
 static char buf[MAX_BUF_LEN];
 static char *bufp = buf;
@@ -37,15 +38,28 @@ int ReadLine(char *s, size_t max_len) {
   s[i++] = '\0';
   if (c == EOF)
     return EOF;
-  return c;
+  return i;
 }
 
 size_t ReadLines(char **g, size_t max_lines) {
-  int i, cnt;
+  int cnt;
   char s[MAX_LINE_LEN];
   for (cnt = 0; ReadLine(s, MAX_LINE_LEN) != EOF && cnt < max_lines; ++cnt) {
     *g = alloc2(MAX_LINE_LEN);
     strcpy(*g++, s);
+  }
+  return cnt;
+}
+
+size_t ReadLinesFaster(char **g, char *linestore, size_t max_lines) {
+  int len, cnt = 0;
+  char *p = linestore;
+  char s[MAX_LINE_LEN];
+  while ((len = ReadLine(s, MAX_LINE_LEN)) != EOF && cnt < max_lines && p + len <= linestore + MAX_LINE_STORE) {
+    strcpy(p, s);
+    *g++ = p;
+    p += len;
+    cnt++;
   }
   return cnt;
 }
@@ -140,6 +154,25 @@ void testQuickSortStrings() {
   printStrVals(vals, len);
 }
 
+void testUnixSort() {
+  char **g = calloc(MAX_LINES, sizeof(char *));
+  size_t len;
+  len = ReadLines(g, MAX_LINES);
+  QuickSortStrings(g, 0, len - 1);
+  WriteLines(g, len);
+  printf("\nUnix sort tested.\n");
+}
+
+void testUnixSortFaster() {
+  char *g[MAX_LINES];
+  char linestore[MAX_LINE_STORE];
+  size_t len;
+  len = ReadLinesFaster(g, linestore, MAX_LINES);
+  QuickSortStrings(g, 0, len - 1);
+  WriteLines(g, len);
+  printf("\nUnix sort faster tested.\n");
+}
+
 int main() {
   //testAlloc();
   //testReadLine();
@@ -147,9 +180,6 @@ int main() {
   //testWriteLine();
   //testWriteLines();
   //testQuickSortStrings();
-  char **g = calloc(MAX_LINES, sizeof(char *));
-  size_t len;
-  len = ReadLines(g, MAX_LINES);
-  QuickSortStrings(g, 0, len - 1);
-  WriteLines(g, len);
+  //testUnixSort();
+  testUnixSortFaster();
 }
