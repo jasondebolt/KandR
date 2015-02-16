@@ -1308,6 +1308,10 @@ static char daytab[2][13] = {
 // Copied from page 111 of K&R.
 int dayOfYear(int year, int month, int day) {
   int i, leap;
+
+  if (year < 0 || month < 1 || day < 1 || month > 12 || day > 31) {
+    fprintf(stderr, "invalid input for dayOfYear function.\n");
+  }
   
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
   for (i = 1; i < month; i++) {
@@ -1319,6 +1323,10 @@ int dayOfYear(int year, int month, int day) {
 // Copied from page 111 of K&R.
 void monthDay(int year, int yearday, int *pmonth, int *pday) {
   int i, leap;
+
+  if (year < 0 || yearday < 1 || yearday > 366) {
+    fprintf(stderr, "invalid input for monthDay function.\n");
+  }
 
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
   for (i = 1; yearday > daytab[leap][i]; i++) {
