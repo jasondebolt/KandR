@@ -347,8 +347,14 @@ void testShellSort() {
 void testQuickSort() {
   int arr[] = {7, 4, 3, 9, 1, 5, 2, 8};
   int arr2[] = {1, 2, 3, 4, 5, 7, 8, 9};
-  quickSort(arr, 0, 7);
-  assertIntArrayEquals(arr, arr2, 8);
+  int len = sizeof(arr) / sizeof(arr[0]);
+  quickSort(arr, 0, len - 1);
+  assertIntArrayEquals(arr, arr2, len);
+  int arr3[] = {5, 3, 2, 4, 2, 1};
+  int arr4[] = {1, 2, 2, 3, 4, 5};
+  len = sizeof(arr3) / sizeof(arr3[0]);
+  quickSort(arr3, 0, len - 1);
+  assertIntArrayEquals(arr3, arr4, len);
   printf("QuickSort tested.\n");
 }
 
