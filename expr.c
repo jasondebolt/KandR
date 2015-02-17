@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_STACK_SIZE 6
+#define MAX_STACK_SIZE 1000
 #define NUMBER 1
 #define UNKNOWN_TOKEN 2
 
