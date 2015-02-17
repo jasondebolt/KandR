@@ -1313,9 +1313,11 @@ int dayOfYear(int year, int month, int day) {
     fprintf(stderr, "invalid input for dayOfYear function.\n");
   }
   
+  int *dayp = &day;
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
   for (i = 1; i < month; i++) {
-    day += daytab[leap][i];
+    //day += daytab[leap][i];
+    day += *(*(daytab + leap) + i);
   }
   return day;
 }
@@ -1329,8 +1331,9 @@ void monthDay(int year, int yearday, int *pmonth, int *pday) {
   }
 
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-  for (i = 1; yearday > daytab[leap][i]; i++) {
-    yearday -= daytab[leap][i];
+  for (i = 1; yearday > *(*(daytab + leap) + i); i++) {
+    //yearday -= daytab[leap][i];
+    yearday -= *(*(daytab + leap) + i);
   }
   *pmonth = i;
   *pday = yearday;
