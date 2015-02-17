@@ -38,6 +38,7 @@ static char *allocp = allocbuf;
 //void swap2(void *arr[], int a, int b);
 char *alloc2(int n);
 char *itobin(int n);
+char *monthName(int n);
 char *strncat2(char *s, char *t, unsigned n);
 char *strncpy2(char *s, char *t, unsigned n);
 char lower(int c);

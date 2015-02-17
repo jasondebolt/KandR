@@ -1214,6 +1214,18 @@ void testMonthDay() {
   assert(pmonth == 12 && pday == 31);
   monthDay(2000, 366, &pmonth, &pday);
   assert(pmonth == 12 && pday == 31);
+  printf("MonthDay tested.\n");
+}
+
+void testMonthName() {
+  seq(monthName(0), "Illegal month");
+  seq(monthName(1), "January");
+  seq(monthName(3), "March");
+  seq(monthName(6), "June");
+  seq(monthName(9), "September");
+  seq(monthName(12), "December");
+  seq(monthName(13), "Illegal month");
+  printf("MonthName tested.\n");
 }
 
 int main() {
@@ -1274,6 +1286,7 @@ int main() {
   testLowerAll();
   testMax();
   testMonthDay();
+  testMonthName();
   testPaste();
   testPrint10Char();
   testPrintCharAll();
