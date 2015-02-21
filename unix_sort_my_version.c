@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <string.h>
 #define MAX_LINE_LEN 1024
 #define MAX_LINES 10000
@@ -9,12 +10,24 @@
 static char buf[MAX_BUF_LEN];
 static char *bufp = buf;
 
+int numComp(char *a, char *b) {
+  double one = atof(a);
+  double two = atof(b);
+  if (one < two) {
+    return -1;
+  } else if (one > two) {
+    return 1;
+  }
+  return 0;
+}
+
 char *alloc2(size_t len) {
   if (bufp + len <= buf + MAX_BUF_LEN) {
     bufp += len;
     return bufp - len;
   } else {
     fprintf(stderr, "Not enough buffer space.");
+    return NULL;
   }
 }
 
@@ -65,7 +78,7 @@ size_t ReadLinesFaster(char **g, char *linestore, size_t max_lines) {
 }
 
 
-int WriteLine(char *s) {
+void WriteLine(char *s) {
   printf("%s", s);
 }
 
@@ -75,12 +88,34 @@ int WriteLines(char **s, size_t len) {
   for (i = 0; i < len; ++i) {
     WriteLine(*s++);
   }
+  return i;
 }
 
 void swapCharPtr(char **a, char **b) {
   char *tmp = *a;
   *a = *b;
   *b = tmp;
+}
+
+void SwapGeneric(void *vals[], int a, int b) {
+  void *tmp = vals[a];
+  vals[a] = vals[b];
+  vals[b] = tmp;
+}
+
+void QuickSort(void *vals[], int low, int high, int (*comp)(void *, void *)) {
+  if (high <= low)
+    return;
+  int mid = (low + high) / 2;
+  int k, i;
+  SwapGeneric((void **) vals, low, mid);
+  for (k = low, i = low + 1; i <= high; ++i) {
+    if ((*comp)(vals[i], vals[low]) < 0)
+      SwapGeneric((void **) vals, ++k, i);
+  }
+  SwapGeneric((void **) vals, k, low);
+  QuickSort((void **) vals, low, k - 1, comp);
+  QuickSort((void **) vals, k + 1, high, comp);
 }
 
 void QuickSortStrings(char *vals[], int low, int high) {
@@ -152,6 +187,20 @@ void testQuickSortStrings() {
   printStrVals(vals, len);
   QuickSortStrings(vals, 0, len - 1);
   printStrVals(vals, len);
+  printf("QuickSortStrings tested.\n");
+}
+
+void testQuickSort() {
+  char *vals[] = {"jason", "brian", "zelda", "stella", "jessica"};
+  size_t len = sizeof(vals) / sizeof(vals[0]);
+  printStrVals(vals, len);
+  QuickSort((void **) vals, 0, len - 1, (int (*)(void *, void *)) strcmp);
+  printStrVals(vals, len);
+  char *vals2[] = {"913.14", "82", "504", "0", "0.01", "123"};
+  size_t len2 = sizeof(vals2) / sizeof(vals2[0]);
+  QuickSort((void **) vals2, 0, len2 - 1, (int (*)(void *, void *)) numComp);
+  printStrVals(vals2, len2);
+  printf("QuickSort tested.\n");
 }
 
 void testUnixSort() {
@@ -173,13 +222,62 @@ void testUnixSortFaster() {
   printf("\nUnix sort faster tested.\n");
 }
 
-int main() {
+void testUnixSortGeneric(int (*comp)(void *, void *)) {
+  char *g[MAX_LINES];
+  char linestore[MAX_LINE_STORE];
+  size_t len;
+  len = ReadLinesFaster(g, linestore, MAX_LINES);
+  QuickSort((void **) g, 0, len - 1, comp);
+  WriteLines(g, len);
+  printf("\nUnix sort generic tested.\n");
+}
+
+void testNumComp() {
+  char a[MAX_LINE_LEN], b[MAX_LINE_LEN];
+  strcpy(a, "0"), strcpy(b, "0");
+  assert(numComp(a, b) == 0);
+  strcpy(a, "123.45"), strcpy(b, "123.45");
+  assert(numComp(a, b) == 0);
+  strcpy(a, "123.444"), strcpy(b, "123.555");
+  assert(numComp(a, b) == -1);
+  strcpy(a, ".0031"), strcpy(b, ".0000045");
+  assert(numComp(a, b) == 1);
+  printf("NumComp tested.\n");
+}
+
+void testSwapGeneric() {
+  char *vals[] = {"one", "two", "three", "four"};
+  SwapGeneric((void **) vals, 0, 1);
+  assert(strcmp(vals[0], "two") == 0);
+  assert(strcmp(vals[1], "one") == 0);
+  int a = 1, b = 2, c = 3, d = 4;
+  int *ap = &a, *bp = &b, *cp = &c, *dp = &d;
+  int *vals2[] = {ap, bp, cp, dp};
+  SwapGeneric((void **) vals2, 2, 3);
+  assert(*vals2[2] == 4);
+  assert(*vals2[3] == 3);
+  printf("Swap generic tested.\n");
+}
+
+
+// USAGE: ./a.out
+// ./a.out -n
+int main(int argc, char *argv[]) {
+  int (*comp)(void *, void *);
+  comp = (int (*)(void *, void *)) strcmp;
+  // Handle numeric sort.
+  if (argv[1] && strcmp(argv[1], "-n") == 0)
+    comp = (int (*)(void *, void *)) numComp;
   //testAlloc();
   //testReadLine();
   //testReadLines();
   //testWriteLine();
   //testWriteLines();
   //testQuickSortStrings();
+  //testSwapGeneric();
+  //testNumComp();
+  //testQuickSort();
   //testUnixSort();
-  testUnixSortFaster();
+  //testUnixSortFaster();
+  testUnixSortGeneric(comp);
 }

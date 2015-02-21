@@ -250,12 +250,6 @@ void swap(char *one, char *two) {
   *two = tmp;
 }
 
-//void swap2(void *arr[], int a, int b) {
-//  void *tmp = arr[a];
-//  arr[a] = arr[b];
-//  arr[b] = tmp;
-//}
-
 // Copied from the web. Works with any object.
 void swap3(void *a, void *b, size_t size) {
   unsigned char *ap = a;
@@ -273,6 +267,12 @@ void swapInt(int *one, int *two) {
   int tmp = *one;
   *one = *two;
   *two = tmp;
+}
+
+void SwapGeneric(void *vals[], int a, int b) {
+  void *tmp = vals[a];
+  vals[a] = vals[b];
+  vals[b] = tmp;
 }
 
 int strComp(char s[], char t[]) {

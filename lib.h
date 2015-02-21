@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <string.h>
 #ifndef STD_LIB_H
 #define STD_LIB_H
 
@@ -35,7 +36,6 @@ static unsigned long int next2 = 1;
 static char allocbuf[BUFSIZE];
 static char *allocp = allocbuf;
 
-//void swap2(void *arr[], int a, int b);
 char *alloc2(int n);
 char *itobin(int n);
 char *monthName(int n);
@@ -131,6 +131,7 @@ void strCopy5(char *to, char *from);
 void swap(char *one, char *two);
 void swap3(void *a, void *b, size_t size);
 void swapInt(int *one, int *two);
+void SwapGeneric(void *vals[], int a, int b);
 void unescape(char s[], char t[]);
 
 #endif

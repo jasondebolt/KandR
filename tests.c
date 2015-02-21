@@ -1034,13 +1034,26 @@ void testSwap3() {
   printf("swap3 tested.\n");
 }
 
+void testSwapGeneric() {
+  char *vals[] = {"one", "two", "three", "four"};
+  SwapGeneric((void **) vals, 0, 1);
+  assert(strcmp(vals[0], "two") == 0);
+  assert(strcmp(vals[1], "one") == 0);
+  int a = 1, b = 2, c = 3, d = 4;
+  int *ap = &a, *bp = &b, *cp = &c, *dp = &d;
+  int *vals2[] = {ap, bp, cp, dp};
+  SwapGeneric((void **) vals2, 2, 3);
+  assert(*vals2[2] == 4);
+  assert(*vals2[3] == 3);
+  printf("Swap generic tested.\n");
+}
+
 void testGetInt() {
   int n;
   getInt(&n);
   printf("There number you typed was %d\n", n);
   printf("getInt tested.\n");
 }
-
 
 
 void testGetFloat() {
@@ -1323,6 +1336,7 @@ int main() {
   testStrLen3();
   testStrLen4();
   testSwap3();
+  testSwapGeneric();
   testSwapMacro();
   testTrim();
   testUpperHexLetter();
