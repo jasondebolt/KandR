@@ -266,7 +266,8 @@ void testSwapGeneric() {
 
 
 // USAGE: ./a.out
-// ./a.out -n
+// ./a.out -nr
+// ./a.out -n -r
 int main(int argc, char *argv[]) {
   int (*comp)(void *, void *, int);
   comp = (int (*)(void *, void *, int)) strComp;
