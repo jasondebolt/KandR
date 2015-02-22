@@ -10,7 +10,18 @@
 static char buf[MAX_BUF_LEN];
 static char *bufp = buf;
 
-int numComp(char *a, char *b, int reverse) {
+int isUpper(char c) {
+  return c <= 'Z' && c >= 'A';
+}
+
+char toLower(char c) {
+  if (isUpper(c)) {
+    return c + 'a' - 'A';
+  }
+  return c;
+}
+
+int numComp(char *a, char *b, int reverse, int folding) {
   double one = atof(a);
   double two = atof(b);
   if (one < two) {
@@ -21,9 +32,25 @@ int numComp(char *a, char *b, int reverse) {
   return 0;
 }
 
+int strCompFold(char *a, char *b, int reverse, int folding) {
+  if (folding) {
+    while (toLower(*a) == toLower(*b) && *a != '\0') {
+      a++;
+      b++;
+    }
+    return (reverse) ? toLower(*b) - toLower(*a) : toLower(*a) - toLower(*b);
+  } else {
+    while (*a == *b && *a != '\0') {
+      a++;
+      b++;
+    }
+    return (reverse) ? *b - *a : *a - *b;
+  }
+}
 
-int strComp(char *a, char *b, int reverse) {
-  return (reverse) ? -1 * strcmp(a, b) : strcmp(a, b);
+
+int strComp(char *a, char *b, int reverse, int folding) {
+  return strCompFold(a, b, reverse, folding);
 }
 
 char *alloc2(size_t len) {
@@ -108,19 +135,20 @@ void SwapGeneric(void *vals[], int a, int b) {
   vals[b] = tmp;
 }
 
-void QuickSort(void *vals[], int low, int high, int (*comp)(void *, void *, int), int reverse) {
+void QuickSort(void *vals[], int low, int high,
+    int (*comp)(void *, void *, int, int), int reverse, int folding) {
   if (high <= low)
     return;
   int mid = (low + high) / 2;
   int k, i;
   SwapGeneric((void **) vals, low, mid);
   for (k = low, i = low + 1; i <= high; ++i) {
-    if ((*comp)(vals[i], vals[low], reverse) < 0)
+    if ((*comp)(vals[i], vals[low], reverse, folding) < 0)
       SwapGeneric((void **) vals, ++k, i);
   }
   SwapGeneric((void **) vals, k, low);
-  QuickSort((void **) vals, low, k - 1, comp, reverse);
-  QuickSort((void **) vals, k + 1, high, comp, reverse);
+  QuickSort((void **) vals, low, k - 1, comp, reverse, folding);
+  QuickSort((void **) vals, k + 1, high, comp, reverse, folding);
 }
 
 void QuickSortStrings(char *vals[], int low, int high) {
@@ -199,11 +227,11 @@ void testQuickSort() {
   char *vals[] = {"jason", "brian", "zelda", "stella", "jessica"};
   size_t len = sizeof(vals) / sizeof(vals[0]);
   printStrVals(vals, len);
-  QuickSort((void **) vals, 0, len - 1, (int (*)(void *, void *, int)) strComp, 0);
+  QuickSort((void **) vals, 0, len - 1, (int (*)(void *, void *, int, int)) strComp, 0, 0);
   printStrVals(vals, len);
   char *vals2[] = {"913.14", "82", "504", "0", "0.01", "123"};
   size_t len2 = sizeof(vals2) / sizeof(vals2[0]);
-  QuickSort((void **) vals2, 0, len2 - 1, (int (*)(void *, void *, int)) numComp, 0);
+  QuickSort((void **) vals2, 0, len2 - 1, (int (*)(void *, void *, int, int)) numComp, 0, 0);
   printStrVals(vals2, len2);
   printf("QuickSort tested.\n");
 }
@@ -227,12 +255,12 @@ void testUnixSortFaster() {
   printf("\nUnix sort faster tested.\n");
 }
 
-void testUnixSortGeneric(int (*comp)(void *, void *, int), int reverse) {
+void testUnixSortGeneric(int (*comp)(void *, void *, int, int), int reverse, int folding) {
   char *g[MAX_LINES];
   char linestore[MAX_LINE_STORE];
   size_t len;
   len = ReadLinesFaster(g, linestore, MAX_LINES);
-  QuickSort((void **) g, 0, len - 1, comp, reverse);
+  QuickSort((void **) g, 0, len - 1, comp, reverse, folding);
   WriteLines(g, len);
   printf("\nUnix sort generic tested.\n");
 }
@@ -240,21 +268,21 @@ void testUnixSortGeneric(int (*comp)(void *, void *, int), int reverse) {
 void testNumComp() {
   char a[MAX_LINE_LEN], b[MAX_LINE_LEN];
   strcpy(a, "0"), strcpy(b, "0");
-  assert(numComp(a, b, 0) == 0);
+  assert(numComp(a, b, 0, 0) == 0);
   strcpy(a, "123.45"), strcpy(b, "123.45");
-  assert(numComp(a, b, 0) == 0);
+  assert(numComp(a, b, 0, 0) == 0);
   strcpy(a, "123.444"), strcpy(b, "123.555");
-  assert(numComp(a, b, 0) == -1);
+  assert(numComp(a, b, 0, 0) == -1);
   strcpy(a, ".0031"), strcpy(b, ".0000045");
-  assert(numComp(a, b, 0) == 1);
+  assert(numComp(a, b, 0, 0) == 1);
   printf("NumComp tested.\n");
 }
 
 void testSwapGeneric() {
   char *vals[] = {"one", "two", "three", "four"};
   SwapGeneric((void **) vals, 0, 1);
-  assert(strComp(vals[0], "two", 0) == 0);
-  assert(strComp(vals[1], "one", 0) == 0);
+  assert(strComp(vals[0], "two", 0, 0) == 0);
+  assert(strComp(vals[1], "one", 0, 0) == 0);
   int a = 1, b = 2, c = 3, d = 4;
   int *ap = &a, *bp = &b, *cp = &c, *dp = &d;
   int *vals2[] = {ap, bp, cp, dp};
@@ -264,16 +292,44 @@ void testSwapGeneric() {
   printf("Swap generic tested.\n");
 }
 
+void testStrCompFold() {
+  assert(strCompFold("a", "a", 0, 0) == 0);
+  assert(strCompFold("a", "b", 0, 0) == -1);
+  assert(strCompFold("b", "a", 0, 0) == 1);
+  assert(strCompFold("a", "a", 1, 0) == 0);
+  assert(strCompFold("a", "b", 1, 0) == 1);
+  assert(strCompFold("b", "a", 1, 0) == -1);
+  assert(strCompFold("A", "a", 0, 1) == 0);
+  assert(strCompFold("a", "B", 0, 1) == -1);
+  assert(strCompFold("B", "a", 0, 1) == 1);
+  assert(strCompFold("a", "A", 1, 1) == 0);
+  assert(strCompFold("A", "B", 1, 1) == 1);
+  assert(strCompFold("B", "a", 1, 1) == -1);
+  printf("StrCompFold tested.\n");
+}
+
+
+void testToLower() {
+  assert(toLower('A') == 'a');
+  assert(toLower('B') == 'b');
+  assert(toLower('Z') == 'z');
+  assert(toLower('0') == '0');
+  assert(toLower('\n') == '\n');
+  assert(toLower('\0') == '\0');
+  printf("ToLower tested.\n");
+}
+
 
 // USAGE: ./a.out
 // ./a.out -nr
 // ./a.out -n -r
 int main(int argc, char *argv[]) {
-  int (*comp)(void *, void *, int);
-  comp = (int (*)(void *, void *, int)) strComp;
+  int (*comp)(void *, void *, int, int);
+  comp = (int (*)(void *, void *, int, int)) strComp;
   // Handle numeric sort.
   int numeric = 0;
   int reverse = 0;
+  int folding = 0;
   for (++argv; --argc > 0; ++argv) {
     if (*argv[0] == '-') {
       (*argv)++;
@@ -284,13 +340,16 @@ int main(int argc, char *argv[]) {
         } else if (**argv == 'r') {
           printf("Reverse yes!!!\n");
           reverse = 1;
+        } else if (**argv == 'f') {
+          printf("Folding/Ignore case yes!!!\n");
+          folding = 1;
         }
         (*argv)++;
       }
     }
   }
   if (numeric)
-    comp = (int (*)(void *, void *, int)) numComp;
+    comp = (int (*)(void *, void *, int, int)) numComp;
   //testAlloc();
   //testReadLine();
   //testReadLines();
@@ -301,6 +360,7 @@ int main(int argc, char *argv[]) {
   //testNumComp();
   //testQuickSort();
   //testUnixSort();
-  //testUnixSortFaster();
-  testUnixSortGeneric(comp, reverse);
+  testStrCompFold();
+  testToLower();
+  testUnixSortGeneric(comp, reverse, folding);
 }
