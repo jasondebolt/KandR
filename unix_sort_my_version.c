@@ -851,6 +851,7 @@ void BaseTests() {
 int main(int argc, char *argv[]) {
   //BaseTests();
   //UnixSortTest(argc, argv);
+  // NEXT STEPS: Start working on these TODO's by adding new unit tests for the badAssCompare function.
   // TODO(jason): Handle delimeter types other than blank space(s).
   // TODO(jason): When using comma as a delimeter, handle
   //              double optional quote delimited fields by default (jason "De Bolt")
