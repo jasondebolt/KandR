@@ -143,7 +143,7 @@ int dir_dcl() {
       fprintf(stderr, "Error: There was no closing parentheses.\n");
     }
   }
-  while (getToken() >= 0 && token_type != ')') {
+  while (getToken() >= 0 && token_type == PARENS || token_type == BRACKETS) {
     if (token_type == PARENS) {
       strcat(out, "function returning ");
     }
@@ -152,6 +152,9 @@ int dir_dcl() {
       strcat(out, token);
       strcat(out, " of ");
     }
+  }
+  if (token_type != ')' && token_type != EOF) {
+    fprintf(stderr, "Invalid token input within dir_dcl\n");
   }
   return 0;
 }
@@ -163,6 +166,33 @@ void printTokenOutput() {
                        (token_type == BRACKETS) ? "BRACKETS" : "OTHER"),
                        token);
   }
+}
+
+void validateDataType(char *token) {
+  int is_char = strcmp(token, "char") == 0;
+  int is_short = strcmp(token, "short") == 0;
+  int is_int = strcmp(token, "int") == 0;
+  int is_long = strcmp(token, "long") == 0;
+  int is_float = strcmp(token, "float") == 0;
+  int is_double = strcmp(token, "double") == 0;
+  int sum = is_char + is_short + is_int + is_long +
+            is_float + is_double;
+  if (sum != 1)
+    fprintf(stderr, "Unknown data type.\n");
+}
+
+void RunDcl() {
+  getToken();
+  // first token will be the data type.
+  validateDataType(token);
+  strcpy(data_type, token);
+  getToken();
+  if (DEBUG) {
+    printf("calling dcl() from main()\t");
+    printState();
+  }
+  dcl();
+  printf("%s: %s%s\n", name, out, data_type);
 }
 
 // Converts streams like x () * [] * () char
@@ -230,24 +260,26 @@ void testUnDcl() {
 }
 
 void testDcl() {
-  getToken();
-  // first token will be the data type.
-  strcpy(data_type, token);
-  getToken();
-  if (DEBUG) {
-    printf("calling dcl() from main()\t");
-    printState();
-  }
-  dcl();
-  printf("%s: %s%s\n", name, out, data_type);
+  RunDcl();
 }
 
+void testDclUnknownType() {
+}
+
+/* Page 122 of K&R...
+ *
+ * dcl:        optional *'s direct-dcl
+ * direct-dcl: name
+ *             (dcl)
+ *             direct-dcl[optoinal size]
+ *             direct-dcl()
+ */
 int main() {
   //printTokenOutput();
   //testSPrintf();
   //testGetTokenInteractive();
   //testGetToken();
-  //testDcl();
-  testUnDcl();
+  testDcl();
+  //testUnDcl();
   return 0;
 }
