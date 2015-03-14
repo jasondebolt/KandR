@@ -82,7 +82,6 @@ int getToken() {
       } else {
         myungetchar(d);
       }
-      *tmp++ = c;
       while (isdigit(d = mygetchar())) {
         *tmp++ = d;
       }
@@ -157,6 +156,39 @@ int dir_dcl() {
   return 0;
 }
 
+void printTokenOutput() {
+  while (getToken() != EOF) {
+    printf("%s: %s\n", ((token_type == NAME) ? "NAME" :
+                       (token_type == PARENS) ? "PARENS":
+                       (token_type == BRACKETS) ? "BRACKETS" : "OTHER"),
+                       token);
+  }
+}
+
+// Converts streams like x () * [] * () char
+// to
+// char (*(*x())[])()
+void un_dcl() {
+  getToken();
+  strcpy(out, token);
+  char tmp[MAX_OUTPUT_LEN];
+  while (getToken() != EOF) {
+    if (token_type == NAME) {
+      strcpy(data_type, token);
+    } else if (token_type == PARENS) {
+      strcat(out, token);
+    } else if (token_type == BRACKETS) {
+      strcat(out, token);
+    } else if (token_type == '*') {
+      sprintf(tmp, "(*%s)", out);
+      strcpy(out, tmp);
+    }
+  }
+  sprintf(tmp, "%s %s", data_type, out);
+  strcpy(out, tmp);
+  printf("%s\n", out);
+}
+
 
 void testGetToken() {
   int result;
@@ -192,11 +224,12 @@ void testSPrintf() {
   printf("%s\n", tmp);
 }
 
-int main() {
-  //testSPrintf();
-  //testGetTokenInteractive();
-  //testGetToken();
+void testUnDcl() {
+  un_dcl();
+  printf("un_dcl tested.\n");
+}
 
+void testDcl() {
   getToken();
   // first token will be the data type.
   strcpy(data_type, token);
@@ -207,5 +240,14 @@ int main() {
   }
   dcl();
   printf("%s: %s%s\n", name, out, data_type);
+}
+
+int main() {
+  //printTokenOutput();
+  //testSPrintf();
+  //testGetTokenInteractive();
+  //testGetToken();
+  //testDcl();
+  testUnDcl();
   return 0;
 }
