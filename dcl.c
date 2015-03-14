@@ -125,6 +125,7 @@ int dcl() {
 
 int dir_dcl() {
   char tmp[MAX_OUTPUT_LEN];
+  int last_token_type = -1;
   if (token_type == NAME) {
     strcpy(name, token);
   } else if (token_type == '(') {
@@ -141,13 +142,26 @@ int dir_dcl() {
     if (token_type != ')') {
       printf("Token was actually %c", token_type);
       fprintf(stderr, "Error: There was no closing parentheses.\n");
+      exit(1);
     }
   }
   while (getToken() >= 0 && token_type == PARENS || token_type == BRACKETS) {
     if (token_type == PARENS) {
+      if (last_token_type == BRACKETS) {
+        fprintf(stderr, "Cannot have an array of functions. "
+                        "Use of array of pointers to functions instead.\n");
+        exit(1);
+      }
+      last_token_type = PARENS;
       strcat(out, "function returning ");
     }
     if (token_type == BRACKETS) {
+      if (last_token_type == PARENS) {
+        fprintf(stderr, "Cannot return an array from a function. "
+                        "Return a pointer to an array instead.\n");
+        exit(1);
+      }
+      last_token_type = BRACKETS;
       strcat(out, "array");
       strcat(out, token);
       strcat(out, " of ");
@@ -155,6 +169,7 @@ int dir_dcl() {
   }
   if (token_type != ')' && token_type != EOF) {
     fprintf(stderr, "Invalid token input within dir_dcl\n");
+    exit(1);
   }
   return 0;
 }
@@ -177,8 +192,10 @@ void validateDataType(char *token) {
   int is_double = strcmp(token, "double") == 0;
   int sum = is_char + is_short + is_int + is_long +
             is_float + is_double;
-  if (sum != 1)
+  if (sum != 1) {
     fprintf(stderr, "Unknown data type.\n");
+    exit(1);
+  }
 }
 
 void RunDcl() {
