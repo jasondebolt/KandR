@@ -145,7 +145,7 @@ int dir_dcl() {
       exit(1);
     }
   }
-  while (getToken() >= 0 && token_type == PARENS || token_type == BRACKETS) {
+  while (getToken() >= 0 && (token_type == PARENS || token_type == BRACKETS)) {
     if (token_type == PARENS) {
       if (last_token_type == BRACKETS) {
         fprintf(stderr, "Cannot have an array of functions. "
@@ -219,15 +219,28 @@ void un_dcl() {
   getToken();
   strcpy(out, token);
   char tmp[MAX_OUTPUT_LEN];
+  int last_token = -1;
   while (getToken() != EOF) {
     if (token_type == NAME) {
+      last_token = NAME;
       strcpy(data_type, token);
     } else if (token_type == PARENS) {
+      if (last_token == '*') {
+        sprintf(tmp, "(%s)", out);
+        strcpy(out, tmp);
+      }
+      last_token = PARENS;
       strcat(out, token);
     } else if (token_type == BRACKETS) {
+      if (last_token == '*') {
+        sprintf(tmp, "(%s)", out);
+        strcpy(out, tmp);
+      }
+      last_token = BRACKETS;
       strcat(out, token);
     } else if (token_type == '*') {
-      sprintf(tmp, "(*%s)", out);
+      last_token = '*';
+      sprintf(tmp, "*%s", out);
       strcpy(out, tmp);
     }
   }
@@ -296,7 +309,7 @@ int main() {
   //testSPrintf();
   //testGetTokenInteractive();
   //testGetToken();
-  testDcl();
-  //testUnDcl();
+  //testDcl();
+  testUnDcl();
   return 0;
 }
