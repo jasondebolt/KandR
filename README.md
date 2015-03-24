@@ -9,5 +9,8 @@ This Repo contains the following:
 C USAGE:
 gcc foo.c; ./a.out
 
+to include the math lib
+gcc foo.c -lm
+
 RUN ALL TESTS:
 sh all_tests.sh
