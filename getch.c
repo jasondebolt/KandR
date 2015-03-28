@@ -60,25 +60,74 @@ int getword(char *word, int lim) {
   return word[0];
 }
 
+/* getword2: get next word or character from input.
+ * Same as getword above, except we handle underscores, string constants
+ * and preprocessor control lines.
+ */
+int getword2(char *word, int lim) {
+  char c, c1, c2, c3;
+  char *w = word;
+  while ((c = getch()) == ' ' && c == '\t' && c == '\n')
+    ;
+  if (c == '/') {
+    if ((c1 = getch()) == '/') {
+      // We are in a comment. Go to the end.
+      while ((c2 = getch()) != '\n')
+        ;
+    } else if (c1 == '*') {
+      while (1) {
+        while ((c2 = getch()) != '*')
+          ;
+        // At this point, we might have the end of comment.
+        if ((c3 = getch()) == '/') {
+          break;
+        } else {
+          ungetch(c3);
+        }
+      }
+    } else {
+      // This wasn't a comment.
+      ungetch(c1);
+    }
+  }
+  printf("DONE\n");
+  while ((c = getch()) == ' ' && c == '\t' && c == '\n')
+    ;
+  printf("c %c\n", c);
+  if (c == '"') {
+    *w++ = c;
+    while ((c = getch()) != '"') {
+      *w++ = c;
+      if (c == '\\') {
+        *w++ = getch();
+      }
+    }
+    *w++ = c;
+    *w= '\0';
+    return *word;
+  }
+  return 0;
+}
+
 void testGetchAndUngetch() {
-  assert(buffp == 0); 
+  assert(buffp == 0);
   ungetch('a');
-  assert(buffp == 1); 
+  assert(buffp == 1);
   getch();
-  assert(buffp == 0); 
+  assert(buffp == 0);
   printf("Getch and ungetch tested.\n");
 }
 
 void testUngets() {
-  assert(buffp == 0); 
+  assert(buffp == 0);
   ungets("jason");
-  assert(buffp == 5); 
+  assert(buffp == 5);
   assert(getch() == 'j');
   assert(getch() == 'a');
   assert(getch() == 's');
   assert(getch() == 'o');
   assert(getch() == 'n');
-  assert(buffp == 0); 
+  assert(buffp == 0);
   ungetch(EOF);
   assert(getch() == EOF);
   printf("Ungets tested.\n");
@@ -138,9 +187,21 @@ void testGetWord() {
   printf("getWord tested.\n");
 }
 
+void testGetWord2() {
+  printf("Enter the following string: "
+         "_ab12 AB_12 12ab_ 12AB test 123 455abc_* 1jason2 "
+         "\"this is a 123#test&.\"\n");
+  char c, word[MAX_LINE_LEN];
+  c = getword2(word, MAX_LINE_LEN);
+  printf("c %c\n", c);
+  printf("word %s\n", word);
+  printf("getWord2 tested.\n");
+}
+
 int main() {
-  testGetchAndUngetch();
-  testUngets();
-  testGetWord();
+  //testGetchAndUngetch();
+  //testUngets();
+  //testGetWord();
+  testGetWord2();
   return 0;
 }
