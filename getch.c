@@ -67,33 +67,32 @@ int getword(char *word, int lim) {
 int getword2(char *word, int lim) {
   char c, c1, c2, c3;
   char *w = word;
-  while ((c = getch()) == ' ' && c == '\t' && c == '\n')
-    ;
-  if (c == '/') {
-    if ((c1 = getch()) == '/') {
-      // We are in a comment. Go to the end.
-      while ((c2 = getch()) != '\n')
-        ;
-    } else if (c1 == '*') {
-      while (1) {
-        while ((c2 = getch()) != '*')
+  while (isspace(c = getch()) || c == '/') {
+    ungetch(c);
+    while (isspace(c = getch()))
+      ;
+    if (c == '/') {
+      if ((c1 = getch()) == '/') {
+        // We are in a comment. Go to the end.
+        while ((c2 = getch()) != '\n')
           ;
-        // At this point, we might have the end of comment.
-        if ((c3 = getch()) == '/') {
-          break;
-        } else {
-          ungetch(c3);
+      } else if (c1 == '*') {
+        while (1) {
+          while ((c2 = getch()) != '*')
+            ;
+          // At this point, we might have the end of comment.
+          if ((c3 = getch()) == '/') {
+            break;
+          } else {
+            ungetch(c3);
+          }
         }
+      } else {
+        // This wasn't a comment.
+        ungetch(c1);
       }
-    } else {
-      // This wasn't a comment.
-      ungetch(c1);
     }
   }
-  printf("DONE\n");
-  while ((c = getch()) == ' ' && c == '\t' && c == '\n')
-    ;
-  printf("c %c\n", c);
   if (c == '"') {
     *w++ = c;
     while ((c = getch()) != '"') {
@@ -106,7 +105,13 @@ int getword2(char *word, int lim) {
     *w= '\0';
     return *word;
   }
-  return 0;
+  while (isalnum(c) || c == '_') {
+    *w++ = c;
+    c = getch();
+  }
+  ungetch(c);
+  *w = '\0';
+  return w[0];
 }
 
 void testGetchAndUngetch() {
@@ -190,7 +195,7 @@ void testGetWord() {
 void testGetWord2() {
   printf("Enter the following string: "
          "_ab12 AB_12 12ab_ 12AB test 123 455abc_* 1jason2 "
-         "\"this is a 123#test&.\"\n");
+         "\"this is a 125#test&.\"\n");
   char c, word[MAX_LINE_LEN];
   c = getword2(word, MAX_LINE_LEN);
   printf("c %c\n", c);
