@@ -95,9 +95,9 @@ int getword2(char *word, int lim) {
       while (isspace(c = getch()))
         ; 
       ungetch(c);  // ungetch the last non-whitespace char.
-    } else if (c == '/') {
-      next = getch();
-      if (next == '/') {
+    } else if (c == '/') {                     // Check if inside comment.
+      next = getch();                          // If inside comment, skip past comment.
+      if (next == '/') {                       // If not inside comment, ungetch one char.
         // We're in a single line comment.
         // skip through the entire comment.
         while ((c = getch()) != '\n')
@@ -124,9 +124,6 @@ int getword2(char *word, int lim) {
         *w = '\0';
         break;
       }
-      // Check if inside comment.
-      // If inside comment, skip past comment.
-      // If not inside comment, ungetch one char.
     } else if (isalpha(c) || c == '_') {
       // We may have a full word.
       // Loop through all digit, chars, and underscores until reach space.
