@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #define MAX_LINE_LEN 1024
+#define dprint(expr) printf(#expr " = %g\n", expr)
 
 #define MAX_BUFF_SIZE 1024
 int buffer[MAX_BUFF_SIZE];
@@ -63,55 +64,89 @@ int getword(char *word, int lim) {
 /* getword2: get next word or character from input.
  * Same as getword above, except we handle underscores, string constants
  * and preprocessor control lines.
+ * A word is one of the following:
+ *   - A string starting with a letter or an understore, containg letters, numbers
+ *      or underscores.
+ *   - A string literal, including the quotes.
+ *   - A preprocessor control line (#include <ctype.h>)
+ *   - A single non-whitespace character.
  */
 int getword2(char *word, int lim) {
-  char c, c1, c2, c3;
+  char c, next, last, end;
   char *w = word;
-  while (isspace(c = getch()) || c == '/') {
-    ungetch(c);
-    while (isspace(c = getch()))
-      ;
-    if (c == '/') {
-      if ((c1 = getch()) == '/') {
-        // We are in a comment. Go to the end.
-        while ((c2 = getch()) != '\n')
+  // At this point, c is a non whitespace character.
+  while ((c = getch()) != EOF) {
+    if (c == '#') {
+      *w++ = c;
+      while ((c = getch()) != '\n')
+        *w++ = c;
+      *w = '\0';
+      // Save preprocessor directive until end of line.
+      break;
+    } else if (c == '"') {
+      // We may have a string literal.
+      *w++ = c;
+      while ((c = getch()) != '"')
+        *w++ = c;
+      *w++ = c;
+      *w = '\0';
+      break;
+    } else if (isspace(c)) {
+      while (isspace(c = getch()))
+        ; 
+      ungetch(c);  // ungetch the last non-whitespace char.
+    } else if (c == '/') {
+      next = getch();
+      if (next == '/') {
+        // We're in a single line comment.
+        // skip through the entire comment.
+        while ((c = getch()) != '\n')
           ;
-      } else if (c1 == '*') {
+      } else if (next == '*') {
+        // We're in a possible multi-line comment.
+        // Skip through the entire multi-line comment.
         while (1) {
-          while ((c2 = getch()) != '*')
+          // skip until the next '*' char. This may be the end.
+          while ((last = getch()) != '*')
             ;
-          // At this point, we might have the end of comment.
-          if ((c3 = getch()) == '/') {
+          // Check to see if this really is the end of the comment.
+          if ((end = getch()) == '/') {
+            // We've found the end of the comment.
             break;
           } else {
-            ungetch(c3);
+            ungetch(next);
           }
         }
       } else {
-        // This wasn't a comment.
-        ungetch(c1);
+        // This is not a comment. Return the single '/' char.
+        ungetch(next);
+        *w++ = c;
+        *w = '\0';
+        break;
       }
-    }
-  }
-  if (c == '"') {
-    *w++ = c;
-    while ((c = getch()) != '"') {
+      // Check if inside comment.
+      // If inside comment, skip past comment.
+      // If not inside comment, ungetch one char.
+    } else if (isalpha(c) || c == '_') {
+      // We may have a full word.
+      // Loop through all digit, chars, and underscores until reach space.
+      // Store results in word.
+      // Return first char.
       *w++ = c;
-      if (c == '\\') {
-        *w++ = getch();
-      }
+      while (isalnum(c = getch()) || c == '_')
+        *w++ = c;
+      *w = '\0';
+      ungetch(c); // ungetch that last non _aA123 char.
+      break;
+    } else {
+      // Store single character in word.
+      // Return character. (could be digit, /, *, etc.)
+      *w++ = c;
+      *w = '\0';
+      break;
     }
-    *w++ = c;
-    *w= '\0';
-    return *word;
   }
-  while (isalnum(c) || c == '_') {
-    *w++ = c;
-    c = getch();
-  }
-  ungetch(c);
-  *w = '\0';
-  return w[0];
+  return word[0];
 }
 
 void testGetchAndUngetch() {
@@ -150,15 +185,19 @@ void testGetWord() {
   assert(strcmp(word, "AB12") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '1');
+  assert(strcmp(word, "1") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '2');
+  assert(strcmp(word, "2") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == 'a');
   assert(strcmp(word, "ab") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '1');
+  assert(strcmp(word, "1") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '2');
+  assert(strcmp(word, "2") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == 'A');
   assert(strcmp(word, "AB") == 0);
@@ -167,25 +206,34 @@ void testGetWord() {
   assert(strcmp(word, "test") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '1');
+  assert(strcmp(word, "1") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '2');
+  assert(strcmp(word, "2") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '3');
+  assert(strcmp(word, "3") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '4');
+  assert(strcmp(word, "4") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '5');
+  assert(strcmp(word, "5") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '5');
+  assert(strcmp(word, "5") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == 'a');
   assert(strcmp(word, "abc") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '_');
+  assert(strcmp(word, "_") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '*');
+  assert(strcmp(word, "*") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == '1');
+  assert(strcmp(word, "1") == 0);
   c = getword(word, MAX_LINE_LEN);
   assert(c == 'j');
   assert(strcmp(word, "jason2") == 0);
@@ -193,13 +241,103 @@ void testGetWord() {
 }
 
 void testGetWord2() {
-  printf("Enter the following string: "
-         "_ab12 AB_12 12ab_ 12AB test 123 455abc_* 1jason2 "
-         "\"this is a 125#test&.\"\n");
+  printf("Enter the following program:\n"
+         "#include <stdio.h>\n"
+         "\n"
+         "/* this is the /*main* program\n"
+         " * to \"execute\" in this file.\n"
+         " */\n"
+         "int main() {\n"
+         "  // create a string.\n"
+         "  char _someName_123[10] = \"jason\";\n"
+         "  return 123 / 12 ** 4;\n"
+         "}\n");
   char c, word[MAX_LINE_LEN];
+  //while ((c = getword2(word, MAX_LINE_LEN))) {
+  //  printf("assert(c == '%c');\n", c);
+  //  printf("assert(strcmp(word, \"%s\") == 0);\n", word);
+  //}
   c = getword2(word, MAX_LINE_LEN);
-  printf("c %c\n", c);
-  printf("word %s\n", word);
+  assert(c == '#');
+  assert(strcmp(word, "#include <stdio.h>") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == 'i');
+  assert(strcmp(word, "int") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == 'm');
+  assert(strcmp(word, "main") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '(');
+  assert(strcmp(word, "(") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == ')');
+  assert(strcmp(word, ")") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '{');
+  assert(strcmp(word, "{") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == 'c');
+  assert(strcmp(word, "char") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '_');
+  assert(strcmp(word, "_someName_123") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '[');
+  assert(strcmp(word, "[") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '0');
+  assert(strcmp(word, "0") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == ']');
+  assert(strcmp(word, "]") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '=');
+  assert(strcmp(word, "=") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '"');
+  assert(strcmp(word, "\"jason\"") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == ';');
+  assert(strcmp(word, ";") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == 'r');
+  assert(strcmp(word, "return") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '3');
+  assert(strcmp(word, "3") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '/');
+  assert(strcmp(word, "/") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '*');
+  assert(strcmp(word, "*") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '*');
+  assert(strcmp(word, "*") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '4');
+  assert(strcmp(word, "4") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == ';');
+  assert(strcmp(word, ";") == 0);
+  c = getword2(word, MAX_LINE_LEN);
+  assert(c == '}');
+  assert(strcmp(word, "}") == 0);
   printf("getWord2 tested.\n");
 }
 
