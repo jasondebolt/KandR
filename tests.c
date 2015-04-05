@@ -1241,6 +1241,202 @@ void testMonthName() {
   printf("MonthName tested.\n");
 }
 
+void testGetchAndUngetch() {
+  extern int getch_buffp;
+  getch_buffp = 0;
+  assert(getch_buffp == 0);
+  ungetch('a');
+  assert(getch_buffp == 1);
+  getch();
+  assert(getch_buffp == 0);
+  printf("Getch and ungetch tested.\n");
+}
+
+void testUngets() {
+  extern int getch_buffp;
+  getch_buffp = 0;
+  assert(getch_buffp == 0);
+  ungets("jason");
+  assert(getch_buffp == 5);
+  assert(getch() == 'j');
+  assert(getch() == 'a');
+  assert(getch() == 's');
+  assert(getch() == 'o');
+  assert(getch() == 'n');
+  assert(getch_buffp == 0);
+  ungetch(EOF);
+  assert(getch() == EOF);
+  printf("Ungets tested.\n");
+}
+
+void testGetWord() {
+  printf("Enter the following string: "
+         "ab12 AB12 12ab 12AB test 123 455abc_* 1jason2\n");
+  char c, word[MAX_LINE_LEN];
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'a');
+  assert(strcmp(word, "ab12") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'A');
+  assert(strcmp(word, "AB12") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'a');
+  assert(strcmp(word, "ab") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'A');
+  assert(strcmp(word, "AB") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 't');
+  assert(strcmp(word, "test") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '3');
+  assert(strcmp(word, "3") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '4');
+  assert(strcmp(word, "4") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '5');
+  assert(strcmp(word, "5") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '5');
+  assert(strcmp(word, "5") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'a');
+  assert(strcmp(word, "abc") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '_');
+  assert(strcmp(word, "_") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '*');
+  assert(strcmp(word, "*") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getword(word, MAX_LINE_LEN);
+  assert(c == 'j');
+  assert(strcmp(word, "jason2") == 0);
+  printf("getWord tested.\n");
+}
+
+void testGetCToken() {
+  printf("Enter the following program:\n"
+         "#include <stdio.h>\n"
+         "\n"
+         "/* this is the /*main* program\n"
+         " * to \"execute\" in this file.\n"
+         " */\n"
+         "int main() {\n"
+         "  // create a string.\n"
+         "  char _someName_123[10] = \"jason\";\n"
+         "  return 123 / 12 ** 4;\n"
+         "}\n");
+  char c, word[MAX_LINE_LEN];
+  //while ((c = getCToken(word, MAX_LINE_LEN))) {
+  //  printf("assert(c == '%c');\n", c);
+  //  printf("assert(strcmp(word, \"%s\") == 0);\n", word);
+  //}
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '#');
+  assert(strcmp(word, "#include <stdio.h>") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == 'i');
+  assert(strcmp(word, "int") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == 'm');
+  assert(strcmp(word, "main") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '(');
+  assert(strcmp(word, "(") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == ')');
+  assert(strcmp(word, ")") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '{');
+  assert(strcmp(word, "{") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == 'c');
+  assert(strcmp(word, "char") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '_');
+  assert(strcmp(word, "_someName_123") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '[');
+  assert(strcmp(word, "[") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '0');
+  assert(strcmp(word, "0") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == ']');
+  assert(strcmp(word, "]") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '=');
+  assert(strcmp(word, "=") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '"');
+  assert(strcmp(word, "\"jason\"") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == ';');
+  assert(strcmp(word, ";") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == 'r');
+  assert(strcmp(word, "return") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '3');
+  assert(strcmp(word, "3") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '/');
+  assert(strcmp(word, "/") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '1');
+  assert(strcmp(word, "1") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '2');
+  assert(strcmp(word, "2") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '*');
+  assert(strcmp(word, "*") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '*');
+  assert(strcmp(word, "*") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '4');
+  assert(strcmp(word, "4") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == ';');
+  assert(strcmp(word, ";") == 0);
+  c = getCToken(word, MAX_LINE_LEN);
+  assert(c == '}');
+  assert(strcmp(word, "}") == 0);
+  printf("getWord2 tested.\n");
+}
+
 int main() {
   /* Interactive programs */
   //testCountChars();
@@ -1250,6 +1446,8 @@ int main() {
   //calculator();
   //testGetInt();
   //testGetFloat();
+  //testGetWord();
+  //testGetCToken();
   testStrings1();
   testStrings2();
   testStrings3();
@@ -1280,6 +1478,7 @@ int main() {
   testEscapeAndUnescape();
   testExpand();
   testGetBits();
+  testGetchAndUngetch();
   testGetIntFromHexChar();
   testHtoi();
   testIntArrayEquals();
@@ -1301,6 +1500,9 @@ int main() {
   testMonthDay();
   testMonthName();
   testPaste();
+  testPow2();
+  testPow3();
+  testPrintd();
   testPrint10Char();
   testPrintCharAll();
   testPrintIntAll();
@@ -1340,8 +1542,6 @@ int main() {
   testSwapMacro();
   testTrim();
   testUpperHexLetter();
-  testPow2();
-  testPow3();
-  testPrintd();
+  testUngets();
   return 0;
 }

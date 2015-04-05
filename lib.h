@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <string.h>
+#include <ctype.h>
 #ifndef STD_LIB_H
 #define STD_LIB_H
 
@@ -11,6 +12,8 @@
 #define MAX_LINE_LEN 1024
 #define MAX_LINES 10000
 #define MAX_BIT_STRING_SIZE 8
+#define BUFSIZE 1024
+#define MAX_GETCH_BUFF_SIZE 1024
 #define ZERO "00000000"
 #define TEN "00001010"
 #define TWENTY "00010100"
@@ -30,13 +33,8 @@ enum Boolean {NO, YES};
 enum Escapes {NEWLINE = '\n', TAB = '\t'};
 enum Months {JAN = 1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC};
 
-static unsigned long int next2 = 1;
-
-#define BUFSIZE 1024
-static char allocbuf[BUFSIZE];
-static char *allocp = allocbuf;
-
 char *alloc2(int n);
+char getch();
 char *itobin(int n);
 char *monthName(int n);
 char *strncat2(char *s, char *t, unsigned n);
@@ -53,11 +51,13 @@ int binsearch2(int x, int v[], int n);
 int bitCount(unsigned int n);
 int dayOfYear(int year, int month, int day);
 int getBits(int n, int pos, int len);
+int getCToken(char *word, int lim);
 int getFloat(double *f);
 int getIntFromHexChar(char c);
 int getLine2(char s[], int lim);
 int getLine3(char s[], int lim);
 int getLine4(char *line, int maxlen);
+int getword(char *word, int lim);
 int htoi(char s[]);
 int intArrayEquals(int a[], int b[], int alen);
 int invertBits(int x, int pos, int len);
@@ -133,5 +133,7 @@ void swap3(void *a, void *b, size_t size);
 void swapInt(int *one, int *two);
 void SwapGeneric(void *vals[], int a, int b);
 void unescape(char s[], char t[]);
+void ungetch(int c);
+void ungets(char s[]);
 
 #endif

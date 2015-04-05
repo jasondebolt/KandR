@@ -559,6 +559,7 @@ void strCopy2(char s[], char t[]) {
     ++i;
 }
 
+static unsigned long int next2 = 1;
 int rand2(void) {
   next2 = next2 * 1103515245 + 12345;
   return (unsigned int)(next2/65536) % 32768;
@@ -1124,6 +1125,8 @@ unsigned strlen4(char *s) {
   return s - c;
 }
 
+static char allocbuf[BUFSIZE];
+static char *allocp = allocbuf;
 char *alloc2(int n) {
   if (n <= allocbuf + BUFSIZE - allocp) {
     allocp += n;
@@ -1346,4 +1349,143 @@ char *monthName(int n) {
     "September", "October", "November", "December"
   };
   return (n < 1 || n > 12) ? name[0] : name[n];
+}
+
+static int getch_buffer[MAX_GETCH_BUFF_SIZE];
+int getch_buffp = 0;
+
+char getch() {
+  return (getch_buffp > 0) ? getch_buffer[--getch_buffp] : getchar();
+}
+
+void ungetch(int c) {
+  if (getch_buffp < MAX_GETCH_BUFF_SIZE) {
+    getch_buffer[getch_buffp++] = c;
+  } else {
+    fprintf(stderr, "getch_buffer full.\n");
+    exit(1);
+  }
+}
+
+void ungets(char s[]) {
+  int i;
+  i = 0;
+  while (s[i] != '\0')
+    ++i;
+
+  while (i > 0)
+    ungetch(s[--i]);
+}
+
+/* getword: get next word or character from input.
+ * Copied from page 136 of K&R.
+ * Fetches the next "word" from the input, where a word is either a string
+ * of letters and digits beginning with a letter, or a single non-whitespace
+ * character. The return value is the first character of the word, or EOF
+ * for end of file, or the character itself if it is not alphabetic.
+ */
+int getword(char *word, int lim) {
+  int c;
+  char *w = word;
+  while (isspace(c = getch()))
+    ;
+  if (c != EOF)
+    *w++ = c;
+  if (!isalpha(c)) {
+    *w = '\0';
+    return c;
+  }
+  for ( ; --lim > 0; w++) {
+    if (!isalnum(*w = getch())) {
+      ungetch(*w);
+      break;
+    }
+  }
+  *w = '\0';
+  return word[0];
+}
+
+/* getCToken: get next word or character from input.
+ * Same as getword above, except we handle underscores, string constants
+ * and preprocessor control lines.
+ * A word is one of the following:
+ *   - A string starting with a letter or an understore, containg letters, numbers
+ *      or underscores.
+ *   - A string literal, including the quotes.
+ *   - A preprocessor control line (#include <ctype.h>)
+ *   - A single non-whitespace character.
+ */
+int getCToken(char *word, int lim) {
+  char c, next, last, end;
+  char *w = word;
+  // At this point, c is a non whitespace character.
+  while ((c = getch()) != EOF) {
+    if (c == '#') {
+      *w++ = c;
+      while ((c = getch()) != '\n')
+        *w++ = c;
+      *w = '\0';
+      // Save preprocessor directive until end of line.
+      break;
+    } else if (c == '"') {
+      // We may have a string literal.
+      *w++ = c;
+      while ((c = getch()) != '"')
+        *w++ = c;
+      *w++ = c;
+      *w = '\0';
+      break;
+    } else if (isspace(c)) {
+      while (isspace(c = getch()))
+        ;
+      ungetch(c);  // ungetch the last non-whitespace char.
+    } else if (c == '/') {                     // Check if inside comment.
+      next = getch();                          // If inside comment, skip past comment.
+      if (next == '/') {                       // If not inside comment, ungetch one char.
+        // We're in a single line comment.
+        // skip through the entire comment.
+        while ((c = getch()) != '\n')
+          ;
+      } else if (next == '*') {
+        // We're in a possible multi-line comment.
+        // Skip through the entire multi-line comment.
+        while (1) {
+          // skip until the next '*' char. This may be the end.
+          while ((last = getch()) != '*')
+            ;
+          // Check to see if this really is the end of the comment.
+          if ((end = getch()) == '/') {
+            // We've found the end of the comment.
+            break;
+          } else {
+            ungetch(next);
+          }
+        }
+      } else {
+        // This is not a comment. Return the single '/' char.
+        ungetch(next);
+        *w++ = c;
+        *w = '\0';
+        break;
+      }
+    } else if (isalpha(c) || c == '_') {
+      // We may have a full word.
+      // Loop through all digit, chars, and underscores until reach space.
+      // Store results in word.
+      // Return first char.
+      *w++ = c;
+      while (isalnum(c = getch()) || c == '_')
+        *w++ = c;
+      *w = '\0';
+      ungetch(c); // ungetch that last non _aA123 char.
+      break;
+    } else {
+      // Store single character in word.
+      // Return character. (could be digit, /, *, etc.)
+      *w++ = c;
+      *w = '\0';
+      break;
+    }
+  }
+  return word[0];
 }
