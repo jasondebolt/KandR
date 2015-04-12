@@ -1408,6 +1408,13 @@ int getword(char *word, int lim) {
 /* getCToken: get next word or character from input.
  * Same as getword above, except we handle underscores, string constants
  * and preprocessor control lines.
+ * USAGE:
+ *   char s[MAX_STR_SIZE];
+ *   int c;
+ *   while ((c = getCToken(s, MAX_STR_SIZE)) != EOF) {
+ *     printf("assert(c == '%c');\n", c);
+ *     printf("assert(strcmp(word, \"%s\") == 0);\n", s);
+ *   }
  * A word is one of the following:
  *   - A string starting with a letter or an understore, containg letters, numbers
  *      or underscores.
@@ -1487,5 +1494,7 @@ int getCToken(char *word, int lim) {
       break;
     }
   }
+  if (c == EOF)
+    return EOF;
   return word[0];
 }

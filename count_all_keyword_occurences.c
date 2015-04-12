@@ -3,14 +3,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
+#include "lib.h"
 
 #define MAX_BUFF_LEN 100
 #define MAX_WORD_LEN 100
-#define FILE_TERMINATE EOF
 
 char buffer[MAX_BUFF_LEN];
 int buffp = 0;
 
+typedef int (*COMP)(char *, char *, int max);
 
 struct key {
   char *name;
@@ -30,16 +32,15 @@ struct node {
   struct node *right;
 };
 
-char getch() {
-  return (buffp > 0) ? buffer[--buffp] : getchar();
-}
-
-void ungetch(char c) {
-  if (buffp < MAX_BUFF_LEN) {
-    buffer[buffp++] = c;
-  } else {
-    fprintf(stderr, "no more buffer space.\n");
+// Compare first n characters of a string.
+int compareFirstNChars(char *a, char *b, int max) {
+  int diff;
+  while ((diff = *a - *b) == 0 && --max > 0) {
+    if (*a == '\0')
+      return 0;
+    a++, b++;
   }
+  return *a - *b;
 }
 
 int getWord(char *s, int max_len) {
@@ -49,16 +50,16 @@ int getWord(char *s, int max_len) {
     ;
   *s++ = c;
   ++len;
-  if (c == FILE_TERMINATE) {
+  if (c == EOF) {
     *s = '\0';
     return -1;
   }
-  while (!isspace(c = getch()) && --max_len > 0 && c != FILE_TERMINATE) {
+  while (!isspace(c = getch()) && --max_len > 0 && c != EOF) {
     *s++ = c;
     ++len;
   }
   *s = '\0';
-  if (c == FILE_TERMINATE)
+  if (c == EOF)
     ungetch(c);
   return len;
 }
@@ -111,15 +112,15 @@ void freeNode(struct node **root) {
   }
 }
 
-struct node *addNode(struct node *root, struct node *node) {
+struct node *addNode(struct node *root, struct node *node, COMP cmp) {
   if (root == NULL) {
     return node;
   }
-  int diff = strcmp(node->word->name, root->word->name);
+  int diff = cmp(node->word->name, root->word->name, UINT_MAX);
   if (diff < 0) {
-    root->left = addNode(root->left, node);
+    root->left = addNode(root->left, node, cmp);
   } else if (diff > 0) {
-    root->right = addNode(root->right, node);
+    root->right = addNode(root->right, node, cmp);
   } else {
     root->word->count++;
   }
@@ -203,16 +204,17 @@ void testAddNode() {
   struct node *h = createNode("H");
   assert(root->right == NULL);
   assert(root->left == NULL);
-  root = addNode(root, g);
-  root = addNode(root, c);
+  COMP cmp = (COMP) strcmp;
+  root = addNode(root, g, cmp);
+  root = addNode(root, c, cmp);
   assert(root->right == g);
   assert(root->left == c);
-  root = addNode(root, a);
-  root = addNode(root, h);
-  root = addNode(root, h);
-  root = addNode(root, h);
-  root = addNode(root, a);
-  root = addNode(root, createNode("jason"));
+  root = addNode(root, a, cmp);
+  root = addNode(root, h, cmp);
+  root = addNode(root, h, cmp);
+  root = addNode(root, h, cmp);
+  root = addNode(root, a, cmp);
+  root = addNode(root, createNode("jason"), cmp);
   inOrderPrint(root);
   printf("addNode tested.\n");
 }
@@ -221,14 +223,47 @@ void testLoadKeys() {
   char s[MAX_WORD_LEN];
   struct node *root = NULL;
   int len;
+  COMP cmp = (COMP) strcmp;
   while((len = getWord(s, MAX_WORD_LEN)) >= 0) {
-    root = addNode(root, createNode(s));
+    root = addNode(root, createNode(s), cmp);
   }
   inOrderPrint(root);
   printf("loadKeys tested.\n");
 }
 
-int main() {
+void testCompareFirstNChars() {
+  assert(compareFirstNChars("", "", 6) == 0);
+  assert(compareFirstNChars("a", "a", 6) == 0);
+  assert(compareFirstNChars(" abc ", " abc ", 6) == 0);
+  assert(compareFirstNChars("ab", "aB", 1) == 0);
+  assert(compareFirstNChars("abcABC123", "abcABC456", 6) == 0);
+  printf("compareFirstNChars tested.\n");
+}
+
+void testLoadKeysFirstNCharacters(int argc, char *argv[]) {
+  // USAGE: ./a.out 10   --> compare the first 10 characters only.
+  assert(argc == 2);
+  char s[MAX_WORD_LEN];
+  char *s_truncated;
+  struct node *root = NULL;
+  int len;
+  int num_chars;
+  //COMP cmp = (COMP) compareFirstNChars;
+  COMP cmp = (COMP) strcmp;
+  while ((len = getCToken(s, MAX_WORD_LEN)) != EOF) {
+    num_chars = atoi(argv[1]);
+    s_truncated = s;
+    while (--num_chars >= 0)
+      s_truncated++;
+    *s_truncated = '\0';
+    root = addNode(root, createNode(s), cmp);
+  }
+  inOrderPrint(root);
+  printf("loadKeys tested.\n");
+}
+
+// ./a.out 6 --> Will compare the first six characters only.
+int main(int argc, char *argv[]) {
   //testGetch();
   //testGetWord();
   //testGetWords();
@@ -237,6 +272,9 @@ int main() {
   //testCreateNode();
   //testCreateKey();
   //testAddNode();
-  testLoadKeys();
+  //testCompareFirstNChars();
+  //testGetInt();
+  //testLoadKeys();
+  testLoadKeysFirstNCharacters(argc, argv);
   return 0;
 }

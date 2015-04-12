@@ -14,3 +14,6 @@ gcc foo.c -lm
 
 RUN ALL TESTS:
 sh all_tests.sh
+
+RUN A PROGRAM THAT DEPENDS ON lib.c
+gcc -Wno-parentheses lib.c your_program.c ;./a.out

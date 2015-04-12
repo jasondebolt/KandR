@@ -1349,7 +1349,7 @@ void testGetCToken() {
          "  return 123 / 12 ** 4;\n"
          "}\n");
   char c, word[MAX_LINE_LEN];
-  //while ((c = getCToken(word, MAX_LINE_LEN))) {
+  //while ((c = getCToken(word, MAX_LINE_LEN)) != EOF) {
   //  printf("assert(c == '%c');\n", c);
   //  printf("assert(strcmp(word, \"%s\") == 0);\n", word);
   //}
