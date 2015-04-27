@@ -1048,6 +1048,41 @@ void testSwapGeneric() {
   printf("Swap generic tested.\n");
 }
 
+void testSwapAwesome() {
+
+  // Test swap ints
+  int a = 1, b = 2;
+  SWAP(a, b);
+  assert(a == 2 && b == 1);
+
+  // Test swap strings.
+  char first[50] = "jason";
+  char second[50] = "amazing";
+  SWAP(first, second);
+  assert(strcmp(first, "amazing") == 0);
+  assert(strcmp(second, "jason") == 0);
+
+  // Test swap nodes.
+  struct node {
+    int value;
+    struct node *next;
+  };
+  struct node one = {28, NULL};
+  struct node two = {89, NULL};
+  SWAP(one, two);
+  assert(one.value == 89);
+  assert(two.value == 28);
+
+  // Test swap node pointers.
+  struct node *node1 = &one;
+  struct node *node2 = &two;
+  SWAP(node1, node2);
+  assert(node1->value == 28);
+  assert(node2->value == 89);
+
+  printf("SwapAwesome tested.\n");
+}
+
 void testGetInt() {
   int n;
   getInt(&n);
@@ -1539,6 +1574,7 @@ int main() {
   testStrLen4();
   testSwap3();
   testSwapGeneric();
+  testSwapAwesome();
   testSwapMacro();
   testTrim();
   testUpperHexLetter();

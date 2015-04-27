@@ -251,6 +251,7 @@ void swap(char *one, char *two) {
 }
 
 // Copied from the web. Works with any object.
+// Use the SWAP macro + SwapAwesome function below instead of this one.
 void swap3(void *a, void *b, size_t size) {
   unsigned char *ap = a;
   unsigned char *bp = b;
@@ -269,10 +270,22 @@ void swapInt(int *one, int *two) {
   *two = tmp;
 }
 
+
+// This doesn't work for arrays of non-pointers, like arrays of ints.
 void SwapGeneric(void *vals[], int a, int b) {
   void *tmp = vals[a];
   vals[a] = vals[b];
   vals[b] = tmp;
+}
+
+// Use the SWAP macro defined in lib.h which calls this function.
+// This works for everything!
+// USAGE:
+//   SWAP(a, b) where a, b are anything (primitives, strings, chars, pointers, etc.)
+void SwapAwesome(void *first, void *second, size_t i) {
+  uint8_t tmp, *a = first, *b = second;
+  while (i--)
+    tmp = a[i], a[i] = b[i], b[i] = tmp;
 }
 
 int strComp(char s[], char t[]) {

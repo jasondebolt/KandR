@@ -26,6 +26,7 @@
 #define VERY_SMALL 1e-8
 #define max(A, B) ((A) > (B) ? (A) : (B))
 #define swapMacro(t, x, y) (t = *x, *x = *y, *y = t)
+#define SWAP(a, b) SwapAwesome(&(a), &(b), sizeof(a))
 #define paste(front, back) front ## back
 #define square(x) ((x) * (x))
 
@@ -132,6 +133,7 @@ void swap(char *one, char *two);
 void swap3(void *a, void *b, size_t size);
 void swapInt(int *one, int *two);
 void SwapGeneric(void *vals[], int a, int b);
+void SwapAwesome(void *first, void *second, size_t i);
 void unescape(char s[], char t[]);
 void ungetch(int c);
 void ungets(char s[]);
